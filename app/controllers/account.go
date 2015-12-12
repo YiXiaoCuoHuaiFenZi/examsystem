@@ -34,31 +34,31 @@ func (this Account) PostSignUp(mu *models.MockUser) revel.Result {
 		this.FlashParams()
 		return this.Redirect((*Account).SignUp)
 	}
+	
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500		
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	err = manager.SignUp(mu)	
+	if err != nil {
+		this.Validation.Clear()
+
+		// 添加错误信息，显示在页面的身份证下面
+		var e revel.ValidationError
+		e.Message = err.Error()
+		e.Key = "mu.IDCard"
+		this.Validation.Errors = append(this.Validation.Errors, &e)
+
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*Account).SignUp)
+	}
+
+	//return this.Redirect((*Account).RegisterSuccessful)
 	return this.Redirect((*Account).SignUp)
-
-	//	manager, err := models.NewDbManager()
-	//	if err != nil {
-	//		this.Response.Status = 500
-	//		return this.RenderError(err)
-	//	}
-	//	defer manager.Close()
-
-	//	err = manager.RegisterUser(mu)
-	//	if err != nil {
-	//		this.Validation.Clear()
-
-	//		// 添加错误信息，显示在页面的用户名下面
-	//		var e revel.ValidationError
-	//		e.Message = err.Error()
-	//		e.Key = "mu.NickName"
-	//		this.Validation.Errors = append(this.Validation.Errors, &e)
-
-	//		this.Validation.Keep()
-	//		this.FlashParams()
-	//		return this.Redirect((*Account).Register)
-	//	}
-
-	//	return this.Redirect((*Account).RegisterSuccessful)
 }
 
 func (this Account) SignIn() revel.Result {
