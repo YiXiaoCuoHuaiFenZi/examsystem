@@ -1,6 +1,14 @@
 {{set . "title" "注册"}}
 {{template "header.html" .}}
 
+<script type="text/javascript">
+   window.onload=function isSignUpSuccess(){	
+    {{if .SignUpStatus}}
+	   alert("注册成功！")
+	{{end}}	  
+}
+</script>
+
 </br></br></br>
 <div class="container"> 
   <div class="col-md-3"></div>

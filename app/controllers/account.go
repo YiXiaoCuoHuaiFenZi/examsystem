@@ -15,7 +15,10 @@ func (this Account) Index() revel.Result {
 	return this.Render()
 }
 
-func (this Account) SignUp() revel.Result {
+func (this Account) SignUp() revel.Result {	
+	if this.Session["SignUpStatus"] == "true"{
+		this.RenderArgs["SignUpStatus"] = true
+	}
 	return this.Render()
 }
 
@@ -34,15 +37,15 @@ func (this Account) PostSignUp(mu *models.MockUser) revel.Result {
 		this.FlashParams()
 		return this.Redirect((*Account).SignUp)
 	}
-	
+
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500		
+		this.Response.Status = 500
 		return this.RenderError(err)
 	}
 	defer manager.Close()
 
-	err = manager.SignUp(mu)	
+	err = manager.SignUp(mu)
 	if err != nil {
 		this.Validation.Clear()
 
@@ -57,7 +60,7 @@ func (this Account) PostSignUp(mu *models.MockUser) revel.Result {
 		return this.Redirect((*Account).SignUp)
 	}
 
-	//return this.Redirect((*Account).RegisterSuccessful)
+	this.Session["SignUpStatus"] = "true"
 	return this.Redirect((*Account).SignUp)
 }
 
