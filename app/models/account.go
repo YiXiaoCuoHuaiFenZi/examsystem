@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"log"
 
 	"code.google.com/p/go.crypto/bcrypt"
 	"gopkg.in/mgo.v2/bson"
@@ -27,6 +28,10 @@ func (this *DBManager) SignUp(mu *MockUser) error {
 	}
 
 	err = t.Insert(u)
+	if err == nil {
+		log.Println("成功创建用户：")
+		log.Println(u)
+	}
 
 	return err
 }
