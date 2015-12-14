@@ -8,6 +8,7 @@ GET     /                                       App.Index
 GET     /signup                                 Account.SignUp
 POST    /signup                                 Account.PostSignUp
 GET     /signin                                 Account.SignIn
+POST    /signin                                 Account.PostSignIn
 GET     /signout                                Account.SignOut
 
 # Ignore favicon requests

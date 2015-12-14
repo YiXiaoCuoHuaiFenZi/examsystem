@@ -17,7 +17,7 @@
       <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>     
         <div class="panel-body">         
           <form class="form-horizontal" role="form" action="{{url "Account.SignUp"}}" method="POST">                                
-            {{with $field := field "mu.Name" .}} 
+            {{with $field := field "signUpUser.Name" .}} 
             <div class="form-group {{$field.ErrorClass}}"> 
               <label class="col-sm-3 control-label" for="{{$field.Id}}">考生姓名</label> 
               <div class="col-sm-6"> 
@@ -29,7 +29,7 @@
             </div> 
             {{end}}  
 			
-            {{with $field := field "mu.IDCard" .}} 
+            {{with $field := field "signUpUser.IDCard" .}} 
             <div class="form-group {{$field.ErrorClass}}"> 
               <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label> 
               <div class="col-sm-6"> 
@@ -41,7 +41,7 @@
             </div> 
             {{end}} 
           
-            {{with $field := field "mu.Password" .}} 
+            {{with $field := field "signUpUser.Password" .}} 
             <div class="form-group {{$field.ErrorClass}}"> 
               <label class="col-sm-3 control-label" for="{{$field.Id}}">设置密码</label> 
               <div class="col-sm-6"> 
@@ -53,7 +53,7 @@
             </div> 
             {{end}} 
 			
-			{{with $field := field "mu.ConfirmPassword" .}} 
+			{{with $field := field "signUpUser.ConfirmPassword" .}} 
             <div class="form-group {{$field.ErrorClass}}"> 
               <label class="col-sm-3 control-label" for="{{$field.Id}}">重复密码</label> 
               <div class="col-sm-6"> 
@@ -69,13 +69,16 @@
               <label class="col-sm-3 control-label">性别</label>  
               <div class="col-sm-6">        
                 <label class="radio-inline">
-                  <input type="radio" name="mu.Gender" value="男" checked> 男
+                  <input type="radio" name="signUpUser.Gender" value="男" checked> 男
                 </label>
                 <label class="radio-inline"> 
-                  <input type="radio" name="mu.Gender" value="女"> 女
+                  <input type="radio" name="signUpUser.Gender" value="女"> 女
                 </label>  
                 <label class="radio-inline">            
-                  <button type="submit" class="btn btn-primary" id="button_Register_Form_Submit">注册</button>
+                  <button type="submit" class="btn btn-primary" id="button_SignUp_Form_Submit">注册</button>
+                </label>
+				<label class="radio-inline">
+                  <a href="{{url "Account.SignIn"}}">登录</a>
                 </label>
               </div>            
             </div>           
