@@ -1,0 +1,25 @@
+<div class="container"> 
+  <div class="row">     
+    <!--<div class="col-xs-12">-->        
+      <ul class="nav navbar-nav navbar-right">	  
+      {{if .nickName}} 
+        {{if .userid}}
+		<li>考试时间：90分钟&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>	
+		<li>总分：100分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		<li>考生姓名：李老四&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		<li id="timer"></li>           
+        <li><a href="{{url "User.Index" .nickName}}">{{.nickName}}</a></li>
+        <li><a id="logout" href="{{url "Account.Logout" }}">退出</a></li> 
+        {{end}}
+      {{else}}
+	    <li>考试时间：90分钟&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>	
+		<li>总分：100分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		<li>考生姓名：李老四&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		<li id="timer"></li>
+        <!--<li><a href="/login">登陆</a></li>
+        <li><a href="/register">注册</a></li>-->
+      {{end}}      
+      </ul>  
+   <!-- </div>  -->  
+  </div> 
+</div>

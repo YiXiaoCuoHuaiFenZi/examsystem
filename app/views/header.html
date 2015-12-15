@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="/public/img/favicon.png">
     <script src="/public/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/public/js/timer.js" type="text/javascript" charset="utf-8"></script>
     {{range .moreStyles}}
       <link rel="stylesheet" type="text/css" href="/public/{{.}}">
     {{end}}
@@ -16,4 +17,6 @@
       <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
     {{end}}
   </head>
-  <body>
+
+  <body onload="timer()">
+     {{template "navbar.html" .}}     
