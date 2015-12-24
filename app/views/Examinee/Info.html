@@ -1,0 +1,54 @@
+{{set . "title" "濮阳市龙都考试中心"}}
+{{template "header.html" .}}
+
+<div class="container">
+    <div class="row"><br></div>
+    <div class="row">
+	  <div class="col-md-2">	   
+		{{template "menu.html" .}}	
+	  </div>
+	  <div class="col-md-10">
+		  <table class="table table-hover">
+		     <thead>
+			    <tr>
+				  <th>姓名</th>
+				  <th>性别</th>
+                  <th>准考证号</th>
+				  <th>联系方式</th>
+                  <th>考试类别</th>
+                </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <th scope="row">1</th>
+                 <td>Mark</td>
+                 <td>Otto</td>
+                 <td>@mdo</td>
+               </tr>
+               <tr>
+                 <th scope="row">2</th>
+                 <td>Jacob</td>
+                 <td>Thornton</td>
+                 <td>@fat</td>
+               </tr>
+               <tr>
+                 <th scope="row">3</th>
+                 <td>Larry</td>
+                 <td>the Bird</td>
+                 <td>@twitter</td>
+               </tr>
+             </tbody>
+           </table>
+		</div>	  
+	</div>   
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+{{template "footer.html" .}}

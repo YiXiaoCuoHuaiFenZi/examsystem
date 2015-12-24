@@ -1,0 +1,57 @@
+{{set . "title" "濮阳市龙都考试中心"}}
+{{template "header.html" .}}
+
+<div class="container">
+    <div class="row"><br></div>
+    <div class="row">
+	  <div class="col-md-2">	   
+		{{template "menu.html" .}}	
+	  </div>
+	  <div class="col-md-10">
+		<form class="form-inline">
+		  <div class="form-group">
+		    <div class="row">
+              <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+              <div class="input-group">
+                 <div class="input-group-addon">A</div>
+                 <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                   <div class="input-group-addon">.00</div>
+                 </div>
+              </div>
+		    </div>
+		
+		  
+		    <div class="row">
+              <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+              <div class="input-group">
+                 <div class="input-group-addon">A</div>
+                 <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                   <div class="input-group-addon">.00</div>
+                 </div>
+              </div>
+		    </div>
+			
+		    <div class="row">
+              <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+              <div class="input-group">
+                 <div class="input-group-addon">A</div>
+                 <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                   <div class="input-group-addon">.00</div>
+                 </div>
+              </div>
+		    </div>
+          <button type="submit" class="btn btn-primary">Transfer cash</button>
+        </form>
+	  </div>	  
+	</div>   
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+{{template "footer.html" .}}
