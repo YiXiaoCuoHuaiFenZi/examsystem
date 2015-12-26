@@ -4,18 +4,26 @@
 <script src="/public/js/exampaper-create.js" type="text/javascript" charset="utf-8"></script>
 
 <div class="container">
-  <div class="row"><br></div>
-  <div class="row">
-	<div class="col-md-2">
-      {{template "menu.html" .}}
-	</div>
-	<div class="col-md-1"></div>
-	<div class="col-md-6">
-	  <form>
-		  <div class="form-group">
-		    <div class="row">
-              <div class="input-group">
-				<label class="radio-inline">题目类型：</label>
+    <div class="row"><br></div>
+    <div class="row">
+	  <div class="col-md-2">{{template "menu.html" .}}</div>
+	  <div class="col-md-10"> 
+	    <div class="panel-primary">
+          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
+          <div class="panel-body">
+		    <form class="form-horizontal" role="form" action="#" method="POST">
+			  <div class="form-group">考试类型：
+			    <label class="radio-inline">
+				  <input type="radio" name="ExamType" id="ExamTypeOne" value="交通" checked="checked">交通
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="ExamType" id="ExamTypeTwo" value="司法">司法
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">建筑
+				</label>
+			  </div>
+		      <div class="form-group">题目类型：		
 				<label class="radio-inline">
 				  <input type="radio" name="QuestionType" id="QuestionTypeOne" value="单选" checked="checked" onClick="controll('QuestionTypeOne')">单选
 				</label>
@@ -25,63 +33,9 @@
 				<label class="radio-inline">
 				  <input type="radio" name="QuestionType" id="QuestionTypeThree" value="判断" onClick="controll('QuestionTypeThree')">判断
 				</label>
-				<label class="radio-inline">考试类型：</label>
-				<label class="radio-inline">
-				  <input type="radio" name="ExamType" id="ExamTypeOne" value="交通" checked="checked">交通
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="ExamType" id="ExamTypeTwo" value="司法">司法
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">建筑
-				</label>
               </div>
-			</div>
-			<div class="row">
-              <div class="input-group">
-				 <div class="input-group-addon">题目内容</div>
-				 <textarea class="form-control" rows="2"></textarea>
-              </div>
-			</div>
-		    <div class="row" id="OptionA">
-              <div class="input-group">
-				 <div class="input-group-addon">A</div>
-				 <textarea class="form-control" rows="2"></textarea>
-              </div>
-			</div>
-			<div class="row" id="OptionB">
-              <div class="input-group">
-				 <div class="input-group-addon">B</div>
-				 <textarea class="form-control" rows="2"></textarea>
-              </div>
-			</div>
-			<div class="row" id="OptionC">
-              <div class="input-group">
-				 <div class="input-group-addon">C</div>
-				 <textarea class="form-control" rows="2"></textarea>
-              </div>
-			</div>
-			<div class="row" id="OptionD">
-              <div class="input-group">
-				 <div class="input-group-addon">D</div>
-				 <textarea class="form-control" rows="2"></textarea>
-              </div>
-			</div>
-			<div class="row" id="OptionE" style="display:none;">
-              <div class="input-group">
-				 <div class="input-group-addon">E</div>
-				 <textarea class="form-control" rows="2"></textarea>
-              </div>
-			</div>
-			<div class="row" id="OptionF" style="display:none;">
-              <div class="input-group">
-				 <div class="input-group-addon">F</div>
-				 <textarea class="form-control" rows="2"></textarea>
-              </div>
-			</div>
-			<div class="row" id="SingleAnswer">
-              <div class="input-group">
-				<label class="radio-inline">答案：</label>
+			
+			  <div class="form-group" id="SingleAnswer">正确答案：
 				<label class="radio-inline">
 				  <input type="radio" name="Answer" id="AnswerA" value="A">A
 				</label>
@@ -93,38 +47,68 @@
 				</label>
 				<label class="radio-inline">
 				  <input type="radio" name="Answer" id="AnswerD" value="D">D
-				</label>
+				</label>				
               </div>
-			  <button class="btn btn-default" type="submit">提交</button>
-			</div>
-			<div class="row" id="MultipleAnswer" style="display:none;">
-              <div class="input-group">
-				<label class="radio-inline">答案：</label>
-				<label><input type="checkbox" name="Answer" value="">&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;</label>
-				<label><input type="checkbox" name="Answer" value="">&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;</label>
-				<label><input type="checkbox" name="Answer" value="">&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;</label>
-				<label><input type="checkbox" name="Answer" value="">&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;</label>
-				<label><input type="checkbox" name="Answer" value="">&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;</label>
-				<label><input type="checkbox" name="Answer" value="">&nbsp;&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;</label>
+			
+			  <div class="form-group" id="MultipleAnswer" style="display:none;">正确答案：
+				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">A</label>
+				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">B</label>
+				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">C</label>
+				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">D</label>
+				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">E</label>
+				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">F</label>				
+              </div>			  
+
+              <div class="form-group" id="JudgeAnswer" style="display:none;">正确答案：
+				<label class="radio-inline"><input type="radio" name="Answer" id="AnswerA" value="A">对</label>
+				<label class="radio-inline"><input type="radio" name="Answer" id="AnswerB" value="B">错</label>				
+              </div>		 	 
+			  
+              <div class="form-group"> 
+				 <div class="form-group-addon">题目内容</div>				 
+				 <textarea class="form-control" rows="1"></textarea>
+              </div>		
+			
+			  <div class="form-group" id="OptionA">
+				 <div class="form-group-addon">A</div>
+				 <textarea class="form-control" rows="1"></textarea>
               </div>
-			  <button class="btn btn-default" type="submit">提交</button>
-			</div>
-			<div class="row" id="JudgeAnswer" style="display:none;">
-              <div class="input-group">
-				<label class="radio-inline">答案：</label>
-				<label class="radio-inline">
-				  <input type="radio" name="Answer" id="AnswerA" value="A">对
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="Answer" id="AnswerB" value="B">错
-				</label>
+
+              <div class="form-group" id="OptionB">
+				 <div class="form-group-addon">B</div>
+				 <textarea class="form-control" rows="1"></textarea>
               </div>
-			  <button class="btn btn-default" type="submit">提交</button>
-			</div>
-		  </div>
-        </form>
-	</div>
-  </div>
+
+              <div class="form-group" id="OptionC">
+				 <div class="form-group-addon">C</div>
+				 <textarea class="form-control" rows="1"></textarea>
+              </div>
+
+              <div class="form-group" id="OptionD">
+				 <div class="form-group-addon">D</div>
+				 <textarea class="form-control" rows="1"></textarea>
+              </div>
+
+              <div class="form-group" id="OptionE" style="display:none;">
+				 <div class="form-group-addon">E</div>
+				 <textarea class="form-control" rows="1"></textarea>
+              </div>
+
+              <div class="form-group" id="OptionF" style="display:none;">
+				 <div class="form-group-addon">F</div>
+				 <textarea class="form-control" rows="1"></textarea>
+              </div>
+              
+			  <div class="form-group">
+			    <div class="form-group-addon">
+				  <button class="btn btn-default" type="submit">提交</button>
+				</div>
+			  </div>              		  
+		    </form>           
+          </div>
+		</div>	  
+      </div>   
+    </div>
 </div>
 
 <div class="container">

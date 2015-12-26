@@ -1,4 +1,4 @@
-{{set . "title" "注册"}}
+{{set . "title" "濮阳市龙都考试中心"}}
 {{template "header.html" .}}
 
 <script type="text/javascript">
@@ -9,87 +9,93 @@
 }
 </script>
 
-</br></br></br>
-<div class="container"> 
-  <div class="col-md-3"></div>
-  <div class="col-md-6"> 
-    <div class="panel-primary">
-      <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>     
-        <div class="panel-body">         
-          <form class="form-horizontal" role="form" action="{{url "Account.SignUp"}}" method="POST">                                
-            {{with $field := field "signUpUser.Name" .}} 
-            <div class="form-group {{$field.ErrorClass}}"> 
-              <label class="col-sm-3 control-label" for="{{$field.Id}}">考生姓名</label> 
-              <div class="col-sm-6"> 
-                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入考生姓名"> 
-                {{if $field.Error}} 
-                <span class="help-inline">{{$field.Error}}</span> 
-                {{end}} 
+<div class="container">
+    <div class="row"><br></div>
+    <div class="row">
+	  <div class="col-md-2">{{template "menu.html" .}}</div>
+	  <div class="col-md-10"> 
+	    <div class="panel-primary">
+          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>     
+          <div class="panel-body">         
+            <form class="form-horizontal" role="form" action="{{url "Account.SignUp"}}" method="POST">                                
+              {{with $field := field "signUpUser.Name" .}} 
+              <div class="form-group {{$field.ErrorClass}}"> 
+                <label class="col-sm-3 control-label" for="{{$field.Id}}">考生姓名</label> 
+                <div class="col-sm-6"> 
+                  <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入考生姓名"> 
+                  {{if $field.Error}} 
+                  <span class="help-inline">{{$field.Error}}</span> 
+                  {{end}} 
+                </div> 
               </div> 
-            </div> 
-            {{end}}  
+              {{end}}  
 			
-            {{with $field := field "signUpUser.IDCard" .}} 
-            <div class="form-group {{$field.ErrorClass}}"> 
-              <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label> 
-              <div class="col-sm-6"> 
-                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号">       
-                {{if $field.Error}} 
-                <span class="help-inline">{{$field.Error}}</span> 
-                {{end}}         
+              {{with $field := field "signUpUser.IDCard" .}} 
+              <div class="form-group {{$field.ErrorClass}}"> 
+                <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label> 
+                <div class="col-sm-6"> 
+                  <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号">       
+                  {{if $field.Error}} 
+                  <span class="help-inline">{{$field.Error}}</span> 
+                  {{end}}         
+                </div> 
               </div> 
-            </div> 
-            {{end}} 
+              {{end}} 
           
-            {{with $field := field "signUpUser.Password" .}} 
-            <div class="form-group {{$field.ErrorClass}}"> 
-              <label class="col-sm-3 control-label" for="{{$field.Id}}">设置密码</label> 
-              <div class="col-sm-6"> 
-                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="设置密码"> 
-                {{if $field.Error}} 
-                <span class="help-inline">{{$field.Error}}</span> 
-                {{end}} 
+              {{with $field := field "signUpUser.Password" .}} 
+              <div class="form-group {{$field.ErrorClass}}"> 
+                <label class="col-sm-3 control-label" for="{{$field.Id}}">设置密码</label> 
+                <div class="col-sm-6"> 
+                  <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="设置密码"> 
+                  {{if $field.Error}} 
+                  <span class="help-inline">{{$field.Error}}</span> 
+                  {{end}} 
+                </div> 
               </div> 
-            </div> 
-            {{end}} 
+              {{end}} 
 			
-			{{with $field := field "signUpUser.ConfirmPassword" .}} 
-            <div class="form-group {{$field.ErrorClass}}"> 
-              <label class="col-sm-3 control-label" for="{{$field.Id}}">重复密码</label> 
-              <div class="col-sm-6"> 
-                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码"> 
-                {{if $field.Error}} 
-                <span class="help-inline">{{$field.Error}}</span> 
-                {{end}} 
+			  {{with $field := field "signUpUser.ConfirmPassword" .}} 
+              <div class="form-group {{$field.ErrorClass}}"> 
+                <label class="col-sm-3 control-label" for="{{$field.Id}}">重复密码</label> 
+                <div class="col-sm-6"> 
+                  <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码"> 
+                  {{if $field.Error}} 
+                  <span class="help-inline">{{$field.Error}}</span> 
+                  {{end}} 
+                </div> 
               </div> 
-            </div> 
-            {{end}}    
+              {{end}}    
           
-            <div class="form-group">
-              <label class="col-sm-3 control-label">性别</label>  
-              <div class="col-sm-6">        
-                <label class="radio-inline">
-                  <input type="radio" name="signUpUser.Gender" value="男" checked> 男
-                </label>
-                <label class="radio-inline"> 
-                  <input type="radio" name="signUpUser.Gender" value="女"> 女
-                </label>  
-                <label class="radio-inline">            
-                  <button type="submit" class="btn btn-primary" id="button_SignUp_Form_Submit">注册</button>
-                </label>
-				<label class="radio-inline">
-                  <a href="{{url "Account.SignIn"}}">登录</a>
-                </label>
-              </div>            
-            </div>           
-          </div>     
-        </form>    
-      </div>    
-      <div class="panel-footer text-center"></div>   
+              <div class="form-group">
+                <label class="col-sm-3 control-label">性别</label>  
+                <div class="col-sm-6">        
+                  <label class="radio-inline">
+                    <input type="radio" name="signUpUser.Gender" value="男" checked> 男
+                  </label>
+                  <label class="radio-inline"> 
+                    <input type="radio" name="signUpUser.Gender" value="女"> 女
+                  </label>  
+                  <label class="radio-inline">            
+                    <button type="submit" class="btn btn-primary" id="button_SignUp_Form_Submit">注册</button>
+                  </label>
+				  <label class="radio-inline">
+                    <a href="{{url "Account.SignIn"}}">登录</a>
+                  </label>
+                </div>            
+              </div>           
+            </form>    
+          </div>
+        </div>	  
+     </div>   
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
     </div>
   </div>
-  <div class="col-md-3"></div>
-</div> 
-</br></br></br>
+</div>
 
 {{template "footer.html" .}}
