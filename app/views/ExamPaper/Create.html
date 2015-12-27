@@ -12,7 +12,7 @@
           <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
           <div class="panel-body">
 		    <form class="form-horizontal" role="form" action="#" method="POST">
-			  <div class="form-group">考试类型：
+			  <div class="form-group">考试类别：
 			    <label class="radio-inline">
 				  <input type="radio" name="ExamType" id="ExamTypeOne" value="交通" checked="checked">交通
 				</label>
@@ -23,87 +23,105 @@
 				  <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">建筑
 				</label>
 			  </div>
-		      <div class="form-group">题目类型：		
+		      <div class="form-group">生成方式：		
 				<label class="radio-inline">
-				  <input type="radio" name="QuestionType" id="QuestionTypeOne" value="单选" checked="checked" onClick="controll('QuestionTypeOne')">单选
+				  <input type="radio" name="ExamPaperCreateMethod" id="ExamPaperCreateMethodRandom" value="随机生成" checked="checked" onClick="controll('ExamPaperCreateMethodRandom')">随机生成
 				</label>
 				<label class="radio-inline">
-				  <input type="radio" name="QuestionType" id="QuestionTypeTwo" value="多选" onClick="controll('QuestionTypeTwo')">多选
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="QuestionType" id="QuestionTypeThree" value="判断" onClick="controll('QuestionTypeThree')">判断
+				  <input type="radio" name="ExamPaperCreateMethod" id="ExamPaperCreateMethodSelect" value="套题选择" onClick="controll('ExamPaperCreateMethodSelect')">套题选择
 				</label>
               </div>
-			
-			  <div class="form-group" id="SingleAnswer">正确答案：
-				<label class="radio-inline">
-				  <input type="radio" name="Answer" id="AnswerA" value="A">A
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="Answer" id="AnswerB" value="B">B
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="Answer" id="AnswerC" value="C">C
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="Answer" id="AnswerD" value="D">D
-				</label>				
-              </div>
-			
-			  <div class="form-group" id="MultipleAnswer" style="display:none;">正确答案：
-				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">A</label>
-				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">B</label>
-				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">C</label>
-				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">D</label>
-				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">E</label>
-				<label class="checkbox-inline"><input type="checkbox" name="Answer" value="">F</label>				
-              </div>			  
-
-              <div class="form-group" id="JudgeAnswer" style="display:none;">正确答案：
-				<label class="radio-inline"><input type="radio" name="Answer" id="AnswerA" value="A">对</label>
-				<label class="radio-inline"><input type="radio" name="Answer" id="AnswerB" value="B">错</label>				
-              </div>		 	 
+			  <div id="ExamPaperCreateRandomInputs">
+			    <div class="row">
+			      <div class="form-group">
+			         <div class="col-sm-6"> 
+			  	     <div class="form-group-addon">单选题数量：</div>				 
+			  	     <input class="form-control">
+                     </div>
+			  	   <div class="col-sm-6"> 
+			  	     <div class="form-group-addon">每道题分值：</div>				 
+			  	     <input class="form-control">
+                     </div>
+			      </div>
+			    </div>				
 			  
-              <div class="form-group"> 
-				 <div class="form-group-addon">题目内容</div>				 
-				 <textarea class="form-control" rows="1"></textarea>
-              </div>		
-			
-			  <div class="form-group" id="OptionA">
-				 <div class="form-group-addon">A</div>
-				 <textarea class="form-control" rows="1"></textarea>
-              </div>
-
-              <div class="form-group" id="OptionB">
-				 <div class="form-group-addon">B</div>
-				 <textarea class="form-control" rows="1"></textarea>
-              </div>
-
-              <div class="form-group" id="OptionC">
-				 <div class="form-group-addon">C</div>
-				 <textarea class="form-control" rows="1"></textarea>
-              </div>
-
-              <div class="form-group" id="OptionD">
-				 <div class="form-group-addon">D</div>
-				 <textarea class="form-control" rows="1"></textarea>
-              </div>
-
-              <div class="form-group" id="OptionE" style="display:none;">
-				 <div class="form-group-addon">E</div>
-				 <textarea class="form-control" rows="1"></textarea>
-              </div>
-
-              <div class="form-group" id="OptionF" style="display:none;">
-				 <div class="form-group-addon">F</div>
-				 <textarea class="form-control" rows="1"></textarea>
-              </div>
-              
-			  <div class="form-group">
-			    <div class="form-group-addon">
-				  <button class="btn btn-default" type="submit">提交</button>
-				</div>
-			  </div>              		  
+			    <div class="row">
+			      <div class="form-group">
+			         <div class="col-sm-6"> 
+			  	     <div class="form-group-addon">多选题数量：</div>				 
+			  	     <input class="form-control">
+                     </div>
+			  	   <div class="col-sm-6"> 
+			  	     <div class="form-group-addon">每道题分值：</div>				 
+			  	     <input class="form-control">
+                     </div>
+			      </div>
+			    </div>
+			  
+			    <div class="row">
+			      <div class="form-group">
+			         <div class="col-sm-6"> 
+			  	     <div class="form-group-addon">判断题数量：</div>				 
+			  	     <input class="form-control">
+                     </div>
+			  	   <div class="col-sm-6"> 
+			  	     <div class="form-group-addon">每道题分值：</div>				 
+			  	     <input class="form-control">
+                     </div>
+			      </div>
+			    </div>			  
+			</div>
+			<div class="row" id="ExamPaperCreateSelectTable" style="display:none;">
+	        	<table class="table table-hover">
+	              <thead>
+	               <tr>
+	           	      <th>编号</th>
+	           	      <th>试卷类型</th>
+	           	      <th>数量</th>
+                       <th>考试类别</th>
+	        		  <th>选择</th>
+                    </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <th scope="row">1</th>
+                       <td>Mark</td>
+	           	       <td>Mark</td>
+                       <td>Otto</td>
+					   <td>
+					     <div class="checkbox">
+						  <label><input type="checkbox">选择</label>
+						</div>
+					   </td>
+                     </tr>
+                     <tr>
+                       <th scope="row">2</th>
+                       <td>Jacob</td>
+	           	       <td>Mark</td>
+                       <td>Thornton</td>
+					   <td>
+					     <div class="checkbox">
+						  <label><input type="checkbox">选择</label>
+						</div>
+					   </td>
+                     </tr>
+                     <tr>
+                       <th scope="row">3</th>
+                       <td>Larry</td>
+                       <td>the Bird</td>
+	           	       <td>Mark</td>
+					   <td>
+					     <div class="checkbox">
+						  <label><input type="checkbox">选择</label>
+						</div>
+					   </td>
+                     </tr>
+                   </tbody>
+                 </table>			
+			</div>
+			<div class="row">
+			    <button class="btn btn-default" type="submit">提交</button>
+			  </div>           		  
 		    </form>           
           </div>
 		</div>	  
