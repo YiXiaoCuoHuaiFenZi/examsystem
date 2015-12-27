@@ -1,6 +1,7 @@
 {{set . "title" "濮阳市龙都考试中心"}}
 {{template "header.html" .}}
 
+<script src="/public/js/signup.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
    window.onload=function isSignUpSuccess(){	
     {{if .SignUpStatus}}
@@ -16,8 +17,17 @@
 	  <div class="col-md-10"> 
 	    <div class="panel-primary">
           <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>     
-          <div class="panel-body">         
-            <form class="form-horizontal" role="form" action="{{url "Account.SignUp"}}" method="POST">                                
+          <div class="panel-body">		     
+		    <div class="form-group">创建方式：
+			    <label class="radio-inline">
+				  <input type="radio" name="ExamType" id="SignUpTypeOne" value="手动创建" checked="checked" onClick="controll('SignUpTypeOne')">手动创建
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="ExamType" id="SignUpTypeTwo" value="批量添加" onClick="controll('SignUpTypeTwo')">批量添加
+				</label>				
+		    </div>
+			      
+            <form class="form-horizontal" role="form" id="ManualAdd" action="{{url "Account.SignUp"}}" method="POST">                                
               {{with $field := field "signUpUser.Name" .}} 
               <div class="form-group {{$field.ErrorClass}}"> 
                 <label class="col-sm-3 control-label" for="{{$field.Id}}">考生姓名</label> 
@@ -83,6 +93,18 @@
                   </label>
                 </div>            
               </div>           
+            </form>
+			
+			<form class="form-horizontal" role="form" id="BatchAdd" action="{{url "Account.SignUp"}}" method="POST" style="display:none;">                                
+              <div class="form-group">
+			    <label class="col-sm-3 control-label"></label>  
+                <div class="col-sm-6">
+			    <label for="BatchCreate">选择账号文件</label>
+				<input type="file" id="BatchCreate" name=AccountsFile>
+                <p class="help-block">请上传指定格式的账号文件</p>
+			    <button type="submit" class="btn btn-primary" id="button_SignUp_Form_Submit">添加</button>         
+              </div>
+			   </div>			           
             </form>    
           </div>
         </div>	  

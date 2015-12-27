@@ -14,3 +14,7 @@ type ExamPaper struct {
 func (this ExamPaper) Create() revel.Result {
 	return this.Render()
 }
+
+func (this ExamPaper) View() revel.Result {
+	return this.Render()
+}
