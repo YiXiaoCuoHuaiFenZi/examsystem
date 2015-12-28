@@ -27,7 +27,7 @@
 				</label>				
 		    </div>
 			      
-            <form class="form-horizontal" role="form" id="ManualAdd" action="{{url "Account.SignUp"}}" method="POST">                                
+            <form class="form-horizontal" role="form" id="ManualAdd" action="{{url "Examinee.SignUp"}}" method="POST">                                
               {{with $field := field "signUpUser.Name" .}} 
               <div class="form-group {{$field.ErrorClass}}"> 
                 <label class="col-sm-3 control-label" for="{{$field.Id}}">考生姓名</label> 
@@ -89,13 +89,13 @@
                     <button type="submit" class="btn btn-primary" id="button_SignUp_Form_Submit">注册</button>
                   </label>
 				  <label class="radio-inline">
-                    <a href="{{url "Account.SignIn"}}">登录</a>
+                    <a href="{{url "Examinee.SignIn"}}">登录</a>
                   </label>
                 </div>            
               </div>           
             </form>
 			
-			<form class="form-horizontal" role="form" id="BatchAdd" action="{{url "Account.SignUp"}}" method="POST" style="display:none;">                                
+			<form class="form-horizontal" role="form" id="BatchAdd" action="{{url "Examinee.SignUp"}}" method="POST" style="display:none;">                                
               <div class="form-group">
 			    <label class="col-sm-3 control-label"></label>  
                 <div class="col-sm-6">

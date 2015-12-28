@@ -1,69 +1,56 @@
-function controll(id){	
-  var questionRadio1 = document.getElementById("QuestionTypeOne")
-  var questionRadio2 = document.getElementById("QuestionTypeTwo")
-  var questionRadio3 = document.getElementById("QuestionTypeThree")
+function controll(id){
+  var QuestionTypeOne = document.getElementById("QuestionTypeOne")
+  var QuestionTypeTwo = document.getElementById("QuestionTypeTwo")
+  var QuestionTypeThree = document.getElementById("QuestionTypeThree")
 
-  var singleAnswer = document.getElementById("SingleAnswer")
-  var multipleAnswer = document.getElementById("MultipleAnswer")
-  var judgeAnswer = document.getElementById("JudgeAnswer")
+  var SingleAnswer = document.getElementById("SingleAnswer")
+  var MultipleAnswer = document.getElementById("MultipleAnswer")
+  var JudgeAnswer = document.getElementById("JudgeAnswer")
 
-  var optionA = document.getElementById("OptionA")
-  var optionB = document.getElementById("OptionB")
-  var optionC = document.getElementById("OptionC")
-  var optionD = document.getElementById("OptionD")
-  var optionE = document.getElementById("OptionE")
-  var optionF = document.getElementById("OptionF")
+  var OptionA = document.getElementById("OptionA")
+  var OptionB = document.getElementById("OptionB")
+  var OptionC = document.getElementById("OptionC")
+  var OptionD = document.getElementById("OptionD")
+  var OptionE = document.getElementById("OptionE")
+  var OptionF = document.getElementById("OptionF")
 
   switch(id)
   {
-  case "QuestionTypeOne":  
-    multipleAnswer.style.display = "none";    
-    judgeAnswer.style.display = "none"; 
-	optionE.style.display = "none";    
-    optionF.style.display = "none"; 
+  case "QuestionTypeOne":
+    MultipleAnswer.style.display = "none";
+    JudgeAnswer.style.display = "none";
+    OptionE.style.display = "none";
+    OptionF.style.display = "none";
 	
-	optionA.style.display = "";    
-    optionA.style.visibility = "visible"; 
-	optionB.style.display = "";    
-    optionB.style.visibility = "visible"; 	
-	optionC.style.display = "";    
-    optionC.style.visibility = "visible"; 
-	OptionD.style.display = "";    
-    OptionD.style.visibility = "visible"; 
-	singleAnswer.style.display = "";
-    singleAnswer.style.visibility = "visible";    
+	OptionA.style.display = "";
+	OptionB.style.display = "";
+	OptionC.style.display = "";
+	OptionD.style.display = "";
+	SingleAnswer.style.display = "";
     break;
   case "QuestionTypeTwo":
-    singleAnswer.style.display = "none";    
-    judgeAnswer.style.display = "none";
+    SingleAnswer.style.display = "none";
+    JudgeAnswer.style.display = "none";
 	 
-	optionA.style.display = "";    
-    optionA.style.visibility = "visible"; 
-	optionB.style.display = "";    
-    optionB.style.visibility = "visible"; 	
-	optionC.style.display = "";    
-    optionC.style.visibility = "visible"; 
-	OptionD.style.display = "";    
-    OptionD.style.visibility = "visible"; 	
-	optionE.style.display = "";    
-    optionE.style.visibility = "visible"; 
-	optionF.style.display = "";    
-    optionF.style.visibility = "visible"; 	
-	multipleAnswer.style.display = "";
-    multipleAnswer.style.visibility = "visible";	  
+	OptionA.style.display = "";
+	OptionB.style.display = "";
+	OptionC.style.display = "";
+	OptionD.style.display = "";
+	OptionE.style.display = "";
+	OptionF.style.display = "";
+	MultipleAnswer.style.display = "";
     break;
-  case "QuestionTypeThree": 
-    singleAnswer.style.display = "none";    
-    multipleAnswer.style.display = "none";
-	optionA.style.display = "none";    
-    optionB.style.display = "none";
-	optionC.style.display = "none";    
-    OptionD.style.display = "none";	
-	optionE.style.display = "none";    
-    optionF.style.display = "none";  
+  case "QuestionTypeThree":
+    SingleAnswer.style.display = "none";
+    MultipleAnswer.style.display = "none";
+    OptionA.style.display = "none";
+    OptionB.style.display = "none";
+    OptionC.style.display = "none";
+    OptionD.style.display = "none";
+    OptionE.style.display = "none";
+    OptionF.style.display = "none";
 	
-	judgeAnswer.style.display = "";
-    judgeAnswer.style.visibility = "visible";
+	JudgeAnswer.style.display = "";
     break;
   default:
     break;

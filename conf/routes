@@ -4,12 +4,14 @@
 
 module:testrunner
 
-GET     /                                       App.Index
-GET     /signup                                 Account.SignUp
-POST    /signup                                 Account.PostSignUp
-GET     /signin                                 Account.SignIn
-POST    /signin                                 Account.PostSignIn
-GET     /signout                                Account.SignOut
+GET     /admin                                  Admin.SignIn
+POST    /admin                                  Admin.PostSignIn
+GET     /                                       Examinee.SignIn
+POST    /                                       Examinee.PostSignIn
+GET     /signup                                 Examinee.SignUp
+POST    /signup                                 Examinee.PostSignUp
+GET     /signin                                 Examinee.SignIn
+GET     /signout                                Examinee.SignOut
 
 
 # Ignore favicon requests
