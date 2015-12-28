@@ -123,6 +123,10 @@ func (this Examinee) PostSignIn(signInUser *models.SignInUser) revel.Result {
 	return this.Redirect((*Examinee).Index)
 }
 
+func (this Examinee) Exam() revel.Result {
+	return this.Render()
+}
+
 func (this Examinee) SignOut() revel.Result {
 	return this.Render()
 }

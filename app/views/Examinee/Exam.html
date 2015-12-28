@@ -1,0 +1,206 @@
+{{set . "title" "濮阳市龙都考试中心"}}
+{{template "header.html" .}}
+
+<div class="container">
+    <div class="row"><br></div>
+    <div class="row">
+	  <div class="col-md-1"></div>
+	  <div class="col-md-10">
+	     <div class="panel-default">
+		    <div class="panel-heading text-center">2015年教练员模拟考试</div>
+			<div class="text-right">考生姓名：李老四&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			     考试时间：90分钟&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			     总分：100分
+			</div>
+			<div class="text-right" id="timer"></div>
+            <div class="panel-body">
+			   <form class="form-horizontal" role="form" action="#" method="POST">
+			      <div class="form-group">一、单项选择题（共4题，每题10分）</div>			      
+		          <table class="table table-hover">
+		            <thead></thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">
+			      	      <div class="form-group">
+			                  <label>1、对驾驶拼装机动车上路行驶的驾驶人，会受到下列哪种处罚？</label><br>							
+			                  <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeOne" value="交通">A、处15日以下拘留
+			      	         </label><br>							
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeTwo" value="司法">B、依法追究刑事责任
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">C、处200以上2000以下罚款
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">D、吊销机动车行驶证
+			      	         </label>							
+			              </div>
+			      	   </th>
+			      	 </tr>
+				     <tr>
+                        <th scope="row">
+			      	      <div class="form-group">
+			                  <label>2、对驾驶拼装机动车上路行驶的驾驶人，会受到下列哪种处罚？</label><br>
+			                  <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeOne" value="交通">A、处15日以下拘留
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeTwo" value="司法">B、依法追究刑事责任
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">C、处200以上2000以下罚款
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">D、吊销机动车行驶证
+			      	         </label>
+			               </div>
+			      	   </th>
+			      	 </tr>
+				     <tr>
+                        <th scope="row">
+			      	      <div class="form-group">
+			                  <label>3、对驾驶拼装机动车上路行驶的驾驶人，会受到下列哪种处罚？</label><br>
+			                  <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeOne" value="交通">A、处15日以下拘留
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeTwo" value="司法">B、依法追究刑事责任
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">C、处200以上2000以下罚款
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">D、吊销机动车行驶证
+			      	         </label>
+			               </div>
+			      	   </th>
+			      	 </tr>
+				     <tr>
+                        <th scope="row">
+			      	      <div class="form-group">
+			                  <label>4、对驾驶拼装机动车上路行驶的驾驶人，会受到下列哪种处罚？</label><br>
+			                  <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeOne" value="交通">A、处15日以下拘留
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeTwo" value="司法">B、依法追究刑事责任
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">C、处200以上2000以下罚款
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">D、吊销机动车行驶证
+			      	         </label>
+			               </div>
+			      	    </th>
+			      	  </tr>
+                    </tbody>
+                  </table>
+				
+				  <div class="form-group">二、多项选择题（共4题，每题10分）</div>			      
+		          <table class="table table-hover">
+		            <thead></thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">
+			      	      <div class="form-group">							
+			                  <label>1、对驾驶拼装机动车上路行驶的驾驶人，会受到下列哪种处罚？</label>
+							  <div class="checkbox">
+			                    <label class="radio-inline">
+			      	              <input type="checkbox" name="ExamType" id="ExamTypeOne" value="交通">A、处15日以下拘留
+			      	            </label>
+							  </div>
+							  <div class="checkbox">
+			      	            <label class="radio-inline">
+			      	              <input type="checkbox" name="ExamType" id="ExamTypeTwo" value="司法">B、依法追究刑事责任
+			      	            </label>
+							  </div>
+							  <div class="checkbox">
+			      	            <label class="radio-inline">
+			      	              <input type="checkbox" name="ExamType" id="ExamTypeThree" value="建筑">C、处200以上2000以下罚款
+			      	            </label>
+							  </div>
+							  <div class="checkbox">
+			      	            <label class="radio-inline">
+			      	              <input type="checkbox" name="ExamType" id="ExamTypeThree" value="建筑">D、吊销机动车行驶证
+			      	            </label>
+							  </div>
+			               </div>
+			      	   </th>
+			      	 </tr>
+				     <tr>
+                        <th scope="row">
+			      	      <div class="form-group">
+			                  <label>2、对驾驶拼装机动车上路行驶的驾驶人，会受到下列哪种处罚？</label><br>
+			                  <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeOne" value="交通">A、处15日以下拘留
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeTwo" value="司法">B、依法追究刑事责任
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeThree" value="建筑">C、处200以上2000以下罚款
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeThree" value="建筑">D、吊销机动车行驶证
+			      	         </label>
+			               </div>
+			      	   </th>
+			      	 </tr>
+				     <tr>
+                        <th scope="row">
+			      	      <div class="form-group">
+			                  <label>3、对驾驶拼装机动车上路行驶的驾驶人，会受到下列哪种处罚？</label><br>
+			                  <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeOne" value="交通">A、处15日以下拘留
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeTwo" value="司法">B、依法追究刑事责任
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeThree" value="建筑">C、处200以上2000以下罚款
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeThree" value="建筑">D、吊销机动车行驶证
+			      	         </label>
+			               </div>
+			      	   </th>
+			      	 </tr>
+				     <tr>
+                        <th scope="row">
+			      	      <div class="form-group">
+			                  <label>4、对驾驶拼装机动车上路行驶的驾驶人，会受到下列哪种处罚？</label><br>
+			                  <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeOne" value="交通">A、处15日以下拘留
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeTwo" value="司法">B、依法追究刑事责任
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeThree" value="建筑">C、处200以上2000以下罚款
+			      	         </label><br>
+			      	         <label class="radio-inline">
+			      	            <input type="checkbox" name="ExamType" id="ExamTypeThree" value="建筑">D、吊销机动车行驶证
+			      	         </label>
+			               </div>
+			      	    </th>
+			      	  </tr>
+                    </tbody>
+                  </table>			      
+			   </form>			
+		   </div>
+		 </div>
+	  </div>	  
+	</div>   
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+{{template "footer.html" .}}
