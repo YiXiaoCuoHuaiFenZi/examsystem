@@ -6,6 +6,8 @@ module:testrunner
 
 GET     /admin                                  Admin.SignIn
 POST    /admin                                  Admin.PostSignIn
+GET     /admin/signup                           Admin.SignUp
+POST    /admin/signup                           Admin.PostSignUp
 GET     /                                       Examinee.SignIn
 POST    /                                       Examinee.PostSignIn
 GET     /signup                                 Examinee.SignUp

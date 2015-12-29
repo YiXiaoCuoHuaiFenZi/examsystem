@@ -10,11 +10,11 @@
         <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
         <div class="panel-body">
           <form class="form-horizontal" role="form" action="{{url "Admin.SignIn"}}" method="POST">
-            {{with $field := field "signInAdmin.Name" .}}
+            {{with $field := field "signInAdmin.IDCard" .}}
             <div class="form-group {{$field.ErrorClass}}">
-              <label class="col-sm-3 control-label" for="{{$field.Id}}">管理员账号</label>
+              <label class="col-sm-3 control-label" for="{{$field.Id}}">管理员身份证</label>
               <div class="col-sm-6"> 
-                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入管理员账号"> 
+                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入管理员身份证"> 
                 {{if $field.Error}} 
                 <span class="help-inline">{{$field.Error}}</span>
                 {{end}}

@@ -12,10 +12,16 @@ type Examinee struct {
 }
 
 func (this Examinee) Index() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }
 
 func (this Examinee) Info() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }
 
@@ -24,6 +30,10 @@ func (this Examinee) SignUp() revel.Result {
 		this.RenderArgs["SignUpStatus"] = true
 		this.Session["SignUpStatus"] = "false"
 	}
+	
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }
 
@@ -72,6 +82,9 @@ func (this Examinee) PostSignUp(signUpUser *models.SignUpUser) revel.Result {
 }
 
 func (this Examinee) SignIn() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }
 

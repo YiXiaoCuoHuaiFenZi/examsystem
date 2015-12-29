@@ -7,5 +7,8 @@ type About struct {
 }
 
 func (this About) About() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }

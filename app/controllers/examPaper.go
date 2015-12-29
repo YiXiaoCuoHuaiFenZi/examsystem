@@ -12,17 +12,29 @@ type ExamPaper struct {
 }
 
 func (this ExamPaper) Create() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }
 
 func (this ExamPaper) View() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }
 
 func (this ExamPaper) Publish() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }
 
 func (this ExamPaper) Score() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }

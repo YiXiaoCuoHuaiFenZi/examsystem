@@ -6,8 +6,9 @@ import (
 )
 
 const (
-	DBName         = "ExamSystem"
-	UserCollection = "user"
+	DBName             = "ExamSystem"
+	ExamineeCollection = "examinee"
+	AdminCollection    = "admin"
 )
 
 type DBManager struct {
@@ -27,6 +28,14 @@ func NewDBManager() (*DBManager, error) {
 	}
 
 	return &DBManager{session}, nil
+}
+
+func (manager *DBManager) DataBase(name string) *mgo.Database {
+	return manager.session.DB(name)
+}
+
+func (manager *DBManager) Collection(name string) *mgo.Collection {
+	return manager.session.DB(DBName).C(name)
 }
 
 func (manager *DBManager) Close() {

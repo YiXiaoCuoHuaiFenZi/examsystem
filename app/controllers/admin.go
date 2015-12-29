@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ExamSystem/app/models"
+	"log"
 
 	"github.com/revel/revel"
 )
@@ -11,6 +12,9 @@ type Admin struct {
 }
 
 func (this Admin) Index() revel.Result {
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	
 	return this.Render()
 }
 
@@ -19,51 +23,52 @@ func (this Admin) SignUp() revel.Result {
 		this.RenderArgs["SignUpStatus"] = true
 		this.Session["SignUpStatus"] = "false"
 	}
+	
 	return this.Render()
 }
 
 func (this Admin) PostSignUp(signUpAdmin *models.SignUpAdmin) revel.Result {
-//	this.Validation.Required(signUpAdmin.Name).Message("请输入考生姓名")
-//	this.Validation.Required(signUpAdmin.IDCard).Message("请输入身份证号码")
-//	this.Validation.Length(signUpAdmin.IDCard, 18).Message("身份证号有误")
-//	this.Validation.Required(signUpAdmin.Password).Message("请输入密码")
-//	this.Validation.Required(signUpAdmin.ConfirmPassword).Message("确认密码不能为空")
-//	this.Validation.MinSize(signUpAdmin.Password, 6).Message("密码长度不短于6位")
-//	this.Validation.Required(signUpAdmin.ConfirmPassword == signUpAdmin.Password).Message("两次输入的密码不一致")
+	this.Validation.Required(signUpAdmin.Name).Message("请输入管理员姓名")
+	this.Validation.Required(signUpAdmin.IDCard).Message("请输入身份证号码")
+	this.Validation.Length(signUpAdmin.IDCard, 18).Message("身份证号有误")
+	this.Validation.Required(signUpAdmin.Password).Message("请输入密码")
+	this.Validation.Required(signUpAdmin.ConfirmPassword).Message("确认密码不能为空")
+	this.Validation.MinSize(signUpAdmin.Password, 6).Message("密码长度不短于6位")
+	this.Validation.Required(signUpAdmin.ConfirmPassword == signUpAdmin.Password).Message("两次输入的密码不一致")
 
-//	if this.Validation.HasErrors() {
-//		this.Validation.Keep()
-//		this.FlashParams()
-//		return this.Redirect((*Examinee).SignUp)
-//	}
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*Examinee).SignUp)
+	}
 
-//	manager, err := models.NewDBManager()
-//	if err != nil {
-//		this.Response.Status = 500
-//		return this.RenderError(err)
-//	}
-//	defer manager.Close()
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
 
-//	err = manager.SignUp(signUpUser)
-//	if err != nil {
-//		this.Validation.Clear()
+	err = manager.AdminSignUp(signUpAdmin)
+	if err != nil {
+		this.Validation.Clear()
 
-//		// 添加错误信息，显示在页面的身份证下面
-//		var e revel.ValidationError
-//		e.Message = err.Error()
-//		e.Key = "signUpUser.IDCard"
-//		this.Validation.Errors = append(this.Validation.Errors, &e)
+		// 添加错误信息，显示在页面的身份证下面
+		var e revel.ValidationError
+		e.Message = err.Error()
+		e.Key = "signUpAdmin.IDCard"
+		this.Validation.Errors = append(this.Validation.Errors, &e)
 
-//		this.Validation.Keep()
-//		this.FlashParams()
-//		return this.Redirect((*Examinee).SignUp)
-//	}
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect(Admin.SignUp)
+	}
 
-//	this.Session["SignUpStatus"] = "true"
-//	log.Println("注册成功！")
-//	log.Println(signUpUser)
+	this.Session["SignUpStatus"] = "true"
+	log.Println("注册成功！")
+	log.Println(signUpAdmin)
 
-	return this.Redirect((*Examinee).SignUp)
+	return this.Redirect(Admin.SignUp)
 }
 
 func (this Admin) SignIn() revel.Result {
@@ -71,49 +76,50 @@ func (this Admin) SignIn() revel.Result {
 }
 
 func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
-	//	this.Validation.Required(signInUser.IDCard).Message("请输入身份证号码")
-	//	this.Validation.Length(signInUser.IDCard, 18).Message("身份证号有误")
-	//	this.Validation.Required(signInUser.Password).Message("请输入密码")
+	this.Validation.Required(signInAdmin.IDCard).Message("请输入身份证号码")
+	this.Validation.Length(signInAdmin.IDCard, 18).Message("身份证号有误")
+	this.Validation.Required(signInAdmin.Password).Message("请输入密码")
 
-	//	if this.Validation.HasErrors() {
-	//		this.Validation.Keep()
-	//		this.FlashParams()
-	//		return this.Redirect((*Account).SignIn)
-	//	}
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		log.Println(this.Validation.Errors)		
+		return this.Redirect(Admin.SignIn)
+	}
 
-	//	manager, err := models.NewDBManager()
-	//	if err != nil {
-	//		this.Response.Status = 500
-	//		return this.RenderError(err)
-	//	}
-	//	defer manager.Close()
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
 
-	//	var u *models.User
-	//	u, err = manager.SignIn(signInUser)
+	var a *models.Admin
+	a, err = manager.AdminSignIn(signInAdmin)
 
-	//	if err != nil {
-	//		this.Validation.Clear()
+	if err != nil {
+		this.Validation.Clear()
 
-	//		// 添加错误提示信息，显示在页面的用户名/密码下面
-	//		var e revel.ValidationError
-	//		if err.Error() == "该用户不存在" {
-	//			e.Key = "signInUser.IDCard"
-	//		} else {
-	//			e.Key = "signInUser.Password"
-	//		}
-	//		e.Message = err.Error()
-	//		this.Validation.Errors = append(this.Validation.Errors, &e)
+		// 添加错误提示信息，显示在页面的该管理员身份证/密码下面
+		var e revel.ValidationError
+		if err.Error() == "该管理员不存在" {
+			e.Key = "signInAdmin.IDCard"
+		} else {
+			e.Key = "signInAdmin.Password"
+		}
+		e.Message = err.Error()
+		this.Validation.Errors = append(this.Validation.Errors, &e)
 
-	//		this.Validation.Keep()
-	//		this.FlashParams()
-	//		return this.Redirect((*Account).SignIn)
-	//	}
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect(Admin.SignIn)
+	}
 
-	//	this.Session["userIDCard"] = u.IDCard
-	//	this.Session["userName"] = u.Name
+	this.Session["adminIDCard"] = a.IDCard
+	this.Session["adminName"] = a.Name
 
-	//	this.RenderArgs["userName"] = u.Name
-	//	log.Println("登录成功: ", u)
+	this.RenderArgs["adminName"] = a.Name
+	log.Println("登录成功: ", a)
 
 	return this.Redirect(Admin.Index)
 }

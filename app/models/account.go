@@ -9,7 +9,7 @@ import (
 )
 
 func (this *DBManager) SignUp(signUpUser *SignUpUser) error {
-	t := this.session.DB(DBName).C(UserCollection)
+	t := this.session.DB(DBName).C(ExamineeCollection)
 
 	i, _ := t.Find(bson.M{"idcard": signUpUser.IDCard}).Count()
 	if i != 0 {
@@ -37,7 +37,7 @@ func (this *DBManager) SignUp(signUpUser *SignUpUser) error {
 }
 
 func (this *DBManager) SignIn(signInUser *SignInUser) (user *User, err error) {
-	t := this.session.DB(DBName).C(UserCollection)
+	t := this.session.DB(DBName).C(ExamineeCollection)
 
 	i, _ := t.Find(bson.M{"idcard": signInUser.IDCard}).Count()
 	if i == 0 {
