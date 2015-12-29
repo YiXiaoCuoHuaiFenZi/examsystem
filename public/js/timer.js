@@ -42,7 +42,7 @@ function timer(){
 	m = checkTime(mm);
 	s = checkTime(ss);
 	ms = ms - 1000;	
-	document.getElementById("timer").innerHTML = "考试倒计时：" + h + ":" + m + ":" + s;	
+	document.getElementById("timer").innerHTML = "倒计时间：" + h + ":" + m + ":" + s;	
 	var t = setTimeout(timer, 1000)
 }			
 
