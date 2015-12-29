@@ -1,62 +1,52 @@
 {{set . "title" "登录"}}
 {{template "header.html" .}}
 
-<!--<script type="text/javascript">
-   window.onload=function isSignUpSuccess(){	
-    {{if .SignUpStatus}}
-	   alert("注册成功！")
-	{{end}}	  
-}
-</script>-->
-
 </br></br></br>
-<div class="container"> 
-  <div class="col-md-3"></div>
-  <div class="col-md-6"> 
-    <div class="panel-primary">
-      <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>     
-        <div class="panel-body">
-          <form class="form-horizontal" role="form" action="{{url "Examinee.SignIn"}}" method="POST">                                
-            		
-            {{with $field := field "signInUser.IDCard" .}} 
-            <div class="form-group {{$field.ErrorClass}}"> 
-              <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label> 
-              <div class="col-sm-6"> 
-                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号">       
-                {{if $field.Error}} 
-                <span class="help-inline">{{$field.Error}}</span> 
-                {{end}}         
-              </div> 
-            </div> 
-            {{end}} 
-          
-            {{with $field := field "signInUser.Password" .}} 
-            <div class="form-group {{$field.ErrorClass}}"> 
-              <label class="col-sm-3 control-label" for="{{$field.Id}}">输入密码</label> 
-              <div class="col-sm-6"> 
-                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="输入密码"> 
-                {{if $field.Error}} 
-                <span class="help-inline">{{$field.Error}}</span> 
-                {{end}} 
-              </div> 
-            </div> 
-            {{end}} 			
-			
-            <div class="form-group">             
-              <div class="col-sm-9 text-right"> 
-                <label class="radio-inline">            
-                  <button type="submit" class="btn btn-primary" id="button_Register_Form_Submit">登录</button>
-                </label>
-              </div>            
-            </div>           
-          </div>     
-        </form>    
-      </div>    
-      <div class="panel-footer text-center"></div>   
+<div class="container">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6"> 
+       <div class="panel-primary">
+         <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
+         <div class="panel-body">
+             <form class="form-horizontal" role="form" action="{{url "Examinee.SignIn"}}" method="POST">
+             	{{with $field := field "signInUser.IDCard" .}}
+                <div class="form-group {{$field.ErrorClass}}">
+                  <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label>
+                  <div class="col-sm-6">
+                     <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号">
+                     {{if $field.Error}} 
+                     <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                </div>
+                {{end}}
+
+                {{with $field := field "signInUser.Password" .}} 
+                <div class="form-group {{$field.ErrorClass}}"> 
+                  <label class="col-sm-3 control-label" for="{{$field.Id}}">输入密码</label> 
+                  <div class="col-sm-6"> 
+                    <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="输入密码">
+                    {{if $field.Error}} 
+                    <span class="help-inline">{{$field.Error}}</span> 
+                   {{end}} 
+                  </div> 
+                </div> 
+               {{end}}
+
+               <div class="form-group">
+                  <div class="col-sm-9 text-right">
+                    <label class="radio-inline">
+                      <button type="submit" class="btn btn-primary" id="button_Register_Form_Submit">登录</button>
+                    </label>
+                  </div>
+                </div> 
+             </form>
+         </div>
+         <div class="panel-footer text-center"></div>
+       </div>
     </div>
   </div>
-  <div class="col-md-3"></div>
-</div> 
-</br></br></br>
+</div>
 
 {{template "footer.html" .}}
