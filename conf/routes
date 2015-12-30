@@ -10,10 +10,9 @@ GET     /admin/signup                           Admin.SignUp
 POST    /admin/signup                           Admin.PostSignUp
 GET     /                                       Examinee.SignIn
 POST    /                                       Examinee.PostSignIn
-GET     /signup                                 Examinee.SignUp
-POST    /signup                                 Examinee.PostSignUp
-GET     /signin                                 Examinee.SignIn
-GET     /signout                                Examinee.SignOut
+GET     /examinee/signup                        Examinee.SignUp
+POST    /examinee/signup                        Examinee.PostSignUp
+GET     /examinee/signout                       Examinee.SignOut
 
 
 # Ignore favicon requests
