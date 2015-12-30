@@ -12,16 +12,16 @@ type Examinee struct {
 }
 
 func (this Examinee) Index() revel.Result {
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
-	
+	this.RenderArgs["examnineeIDCard"] = this.Session["examnineeIDCard"]
+	this.RenderArgs["examnineeName"] = this.Session["examnineeName"]
+
 	return this.Render()
 }
 
 func (this Examinee) Info() revel.Result {
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
-	
+
 	return this.Render()
 }
 
@@ -30,26 +30,26 @@ func (this Examinee) SignUp() revel.Result {
 		this.RenderArgs["SignUpStatus"] = true
 		this.Session["SignUpStatus"] = "false"
 	}
-	
+
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
-	
+
 	return this.Render()
 }
 
-func (this Examinee) PostSignUp(signUpUser *models.SignUpUser) revel.Result {
-	this.Validation.Required(signUpUser.Name).Message("请输入考生姓名")
-	this.Validation.Required(signUpUser.IDCard).Message("请输入身份证号码")
-	this.Validation.Length(signUpUser.IDCard, 18).Message("身份证号有误")
-	this.Validation.Required(signUpUser.Password).Message("请输入密码")
-	this.Validation.Required(signUpUser.ConfirmPassword).Message("确认密码不能为空")
-	this.Validation.MinSize(signUpUser.Password, 6).Message("密码长度不短于6位")
-	this.Validation.Required(signUpUser.ConfirmPassword == signUpUser.Password).Message("两次输入的密码不一致")
+func (this Examinee) PostSignUp(signUpExaminee *models.SignUpExaminee) revel.Result {
+	this.Validation.Required(signUpExaminee.Name).Message("请输入考生姓名")
+	this.Validation.Required(signUpExaminee.IDCard).Message("请输入身份证号码")
+	this.Validation.Length(signUpExaminee.IDCard, 18).Message("身份证号有误")
+	this.Validation.Required(signUpExaminee.Password).Message("请输入密码")
+	this.Validation.Required(signUpExaminee.ConfirmPassword).Message("确认密码不能为空")
+	this.Validation.MinSize(signUpExaminee.Password, 6).Message("密码长度不短于6位")
+	this.Validation.Required(signUpExaminee.ConfirmPassword == signUpExaminee.Password).Message("两次输入的密码不一致")
 
 	if this.Validation.HasErrors() {
 		this.Validation.Keep()
 		this.FlashParams()
-		return this.Redirect((*Examinee).SignUp)
+		return this.Redirect(Examinee.SignUp)
 	}
 
 	manager, err := models.NewDBManager()
@@ -59,24 +59,24 @@ func (this Examinee) PostSignUp(signUpUser *models.SignUpUser) revel.Result {
 	}
 	defer manager.Close()
 
-	err = manager.SignUp(signUpUser)
+	err = manager.SignUp(signUpExaminee)
 	if err != nil {
 		this.Validation.Clear()
 
 		// 添加错误信息，显示在页面的身份证下面
 		var e revel.ValidationError
 		e.Message = err.Error()
-		e.Key = "signUpUser.IDCard"
+		e.Key = "signUpExaminee.IDCard"
 		this.Validation.Errors = append(this.Validation.Errors, &e)
 
 		this.Validation.Keep()
 		this.FlashParams()
-		return this.Redirect((*Examinee).SignUp)
+		return this.Redirect(Examinee.SignUp)
 	}
 
 	this.Session["SignUpStatus"] = "true"
 	log.Println("注册成功！")
-	log.Println(signUpUser)
+	log.Println(signUpExaminee)
 
 	return this.Redirect((*Examinee).SignUp)
 }
@@ -84,14 +84,16 @@ func (this Examinee) PostSignUp(signUpUser *models.SignUpUser) revel.Result {
 func (this Examinee) SignIn() revel.Result {
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
-	
+	this.RenderArgs["examnineeIDCard"] = this.Session["examnineeIDCard"]
+	this.RenderArgs["examnineeName"] = this.Session["examnineeName"]
+
 	return this.Render()
 }
 
-func (this Examinee) PostSignIn(signInUser *models.SignInUser) revel.Result {
-	this.Validation.Required(signInUser.IDCard).Message("请输入身份证号码")
-	this.Validation.Length(signInUser.IDCard, 18).Message("身份证号有误")
-	this.Validation.Required(signInUser.Password).Message("请输入密码")
+func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Result {
+	this.Validation.Required(signInExaminee.IDCard).Message("请输入身份证号码")
+	this.Validation.Length(signInExaminee.IDCard, 18).Message("身份证号有误")
+	this.Validation.Required(signInExaminee.Password).Message("请输入密码")
 
 	if this.Validation.HasErrors() {
 		this.Validation.Keep()
@@ -106,18 +108,18 @@ func (this Examinee) PostSignIn(signInUser *models.SignInUser) revel.Result {
 	}
 	defer manager.Close()
 
-	var u *models.User
-	u, err = manager.SignIn(signInUser)
+	var e *models.Examinee
+	e, err = manager.SignIn(signInExaminee)
 
 	if err != nil {
 		this.Validation.Clear()
 
 		// 添加错误提示信息，显示在页面的用户名/密码下面
 		var e revel.ValidationError
-		if err.Error() == "该用户不存在" {
-			e.Key = "signInUser.IDCard"
+		if err.Error() == "该考生不存在" {
+			e.Key = "signInExaminee.IDCard"
 		} else {
-			e.Key = "signInUser.Password"
+			e.Key = "signInExaminee.Password"
 		}
 		e.Message = err.Error()
 		this.Validation.Errors = append(this.Validation.Errors, &e)
@@ -127,16 +129,20 @@ func (this Examinee) PostSignIn(signInUser *models.SignInUser) revel.Result {
 		return this.Redirect((*Examinee).SignIn)
 	}
 
-	this.Session["userIDCard"] = u.IDCard
-	this.Session["userName"] = u.Name
+	this.Session["examnineeIDCard"] = e.IDCard
+	this.Session["examnineeName"] = e.Name
 
-	this.RenderArgs["userName"] = u.Name
-	log.Println("登录成功: ", u)
+	this.RenderArgs["examnineeIDCard"] = e.IDCard
+	this.RenderArgs["examnineeName"] = e.Name
+	log.Println("登录成功: ", e)
 
-	return this.Redirect((*Examinee).Index)
+	return this.Redirect(Examinee.Index)
 }
 
 func (this Examinee) Exam() revel.Result {
+	this.RenderArgs["examnineeIDCard"] = this.Session["examnineeIDCard"]
+	this.RenderArgs["examnineeName"] = this.Session["examnineeName"]
+	
 	return this.Render()
 }
 

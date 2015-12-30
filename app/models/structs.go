@@ -1,7 +1,7 @@
 package models
 
 // 考生信息数据结构--用于注册
-type SignUpUser struct {
+type SignUpExaminee struct {
 	IDCard          string // 身份证号
 	Name            string // 考生姓名
 	Gender          string // 考生性别
@@ -10,7 +10,7 @@ type SignUpUser struct {
 }
 
 // 考生信息数据结构--用于登录
-type SignInUser struct {
+type SignInExaminee struct {
 	IDCard   string // 身份证号
 	Name     string // 考生姓名
 	Gender   string // 考生性别
@@ -18,7 +18,7 @@ type SignInUser struct {
 }
 
 // 考生信息数据结构--真实数据
-type User struct {
+type Examinee struct {
 	IDCard   string // 身份证号
 	Name     string // 考生姓名
 	Gender   string // 考生性别

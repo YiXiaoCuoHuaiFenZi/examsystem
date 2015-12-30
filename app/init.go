@@ -1,6 +1,11 @@
 package app
 
-import "github.com/revel/revel"
+import (
+	//"ExamSystem/app/controllers" 为什么不对？
+	"examsystem/app/controllers"
+
+	"github.com/revel/revel"
+)
 
 func init() {
 	// Filters is the default set of global filters.
@@ -23,6 +28,9 @@ func init() {
 	// ( order dependent )
 	// revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
+
+	//revel.InterceptFunc(checkUser, revel.BEFORE, &App{})
+	revel.InterceptFunc(hasAuthority, revel.BEFORE, &controllers.Admin{})
 }
 
 // TODO turn this into revel.HeaderFilter

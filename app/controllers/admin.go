@@ -14,7 +14,7 @@ type Admin struct {
 func (this Admin) Index() revel.Result {
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
-	
+
 	return this.Render()
 }
 
@@ -23,7 +23,7 @@ func (this Admin) SignUp() revel.Result {
 		this.RenderArgs["SignUpStatus"] = true
 		this.Session["SignUpStatus"] = "false"
 	}
-	
+
 	return this.Render()
 }
 
@@ -83,7 +83,7 @@ func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
 	if this.Validation.HasErrors() {
 		this.Validation.Keep()
 		this.FlashParams()
-		log.Println(this.Validation.Errors)		
+		log.Println(this.Validation.Errors)
 		return this.Redirect(Admin.SignIn)
 	}
 
@@ -117,8 +117,11 @@ func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
 
 	this.Session["adminIDCard"] = a.IDCard
 	this.Session["adminName"] = a.Name
+	this.Session["administrator"] = "true"
 
+	this.RenderArgs["adminIDCard"] = a.IDCard
 	this.RenderArgs["adminName"] = a.Name
+	this.RenderArgs["administrator"] = "true"
 	log.Println("登录成功: ", a)
 
 	return this.Redirect(Admin.Index)

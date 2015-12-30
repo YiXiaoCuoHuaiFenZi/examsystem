@@ -10,7 +10,7 @@
          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
          <div class="panel-body">
              <form class="form-horizontal" role="form" action="{{url "Examinee.SignIn"}}" method="POST">
-             	{{with $field := field "signInUser.IDCard" .}}
+             	{{with $field := field "signInExaminee.IDCard" .}}
                 <div class="form-group {{$field.ErrorClass}}">
                   <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label>
                   <div class="col-sm-6">
@@ -22,7 +22,7 @@
                 </div>
                 {{end}}
 
-                {{with $field := field "signInUser.Password" .}} 
+                {{with $field := field "signInExaminee.Password" .}} 
                 <div class="form-group {{$field.ErrorClass}}"> 
                   <label class="col-sm-3 control-label" for="{{$field.Id}}">输入密码</label> 
                   <div class="col-sm-6"> 
@@ -37,7 +37,7 @@
                <div class="form-group">
                   <div class="col-sm-9 text-right">
                     <label class="radio-inline">
-                      <button type="submit" class="btn btn-primary" id="button_Register_Form_Submit">登录</button>
+                      <button type="submit" class="btn btn-primary" id="SignInFormSubmit">登录</button>
                     </label>
                   </div>
                 </div> 
