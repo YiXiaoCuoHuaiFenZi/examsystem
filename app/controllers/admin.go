@@ -121,7 +121,6 @@ func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
 
 	this.RenderArgs["adminIDCard"] = a.IDCard
 	this.RenderArgs["adminName"] = a.Name
-	this.RenderArgs["administrator"] = "true"
 	log.Println("登录成功: ", a)
 
 	return this.Redirect(Admin.Index)

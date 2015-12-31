@@ -131,6 +131,7 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 
 	this.Session["examnineeIDCard"] = e.IDCard
 	this.Session["examnineeName"] = e.Name
+	this.Session["examinee"] = "true"
 
 	this.RenderArgs["examnineeIDCard"] = e.IDCard
 	this.RenderArgs["examnineeName"] = e.Name

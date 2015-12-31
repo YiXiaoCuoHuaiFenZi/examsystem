@@ -30,7 +30,7 @@ func init() {
 	// revel.OnAppStart(FillCache)
 
 	//revel.InterceptFunc(checkUser, revel.BEFORE, &App{})
-	revel.InterceptFunc(hasAuthority, revel.BEFORE, &controllers.Admin{})
+	revel.InterceptFunc(checkAuthority, revel.BEFORE, &controllers.Admin{})
 }
 
 // TODO turn this into revel.HeaderFilter
