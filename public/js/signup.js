@@ -3,7 +3,7 @@ function controll(id){
   var SignUpTypeTwo = document.getElementById("SignUpTypeTwo")
 
   var ManualAdd = document.getElementById("ManualAdd")
-  var BatchAdd = document.getElementById("BatchAdd")
+  var BatchAdd = document.getElementById("BatchSignUp")
 
   switch(id)
   {

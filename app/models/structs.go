@@ -1,30 +1,5 @@
 package models
 
-// 考生信息数据结构--用于注册
-type SignUpExaminee struct {
-	IDCard          string // 身份证号
-	Name            string // 考生姓名
-	Gender          string // 考生性别
-	Password        string // 账号密码
-	ConfirmPassword string // 确认密码
-}
-
-// 考生信息数据结构--用于登录
-type SignInExaminee struct {
-	IDCard   string // 身份证号
-	Name     string // 考生姓名
-	Gender   string // 考生性别
-	Password string // 账号密码
-}
-
-// 考生信息数据结构--真实数据
-type Examinee struct {
-	IDCard   string // 身份证号
-	Name     string // 考生姓名
-	Gender   string // 考生性别
-	Password []byte // 账号密码
-}
-
 // 管理员信息数据结构--用于注册
 type SignUpAdmin struct {
 	IDCard          string // 身份证号
@@ -49,4 +24,33 @@ type Admin struct {
 	Gender   string // 管理员性别
 	Password []byte // 账号密码
 	Level    int    // 管理员权限级别
+}
+
+// 考生信息数据结构--用于注册
+type SignUpExaminee struct {
+	IDCard          string // 身份证号
+	Name            string // 考生姓名
+	Gender          string // 考生性别
+	Password        string // 账号密码
+	ConfirmPassword string // 确认密码
+}
+
+// 考生信息数据结构--用于登录
+type SignInExaminee struct {
+	IDCard   string // 身份证号
+	Name     string // 考生姓名
+	Gender   string // 考生性别
+	Password string // 账号密码
+}
+
+// 考生信息数据结构--真实数据
+type Examinee struct {
+	IDCard     string // 身份证号
+	Name       string // 考生姓名
+	Gender     string // 考生性别
+	Password   []byte // 账号密码
+	Mobile     int    // 手机号码
+	ExamType   string // 所属考试类别、科目
+	ExamStatus string // 考试状态：未完成、完成
+	Score      int    // 考试分数
 }
