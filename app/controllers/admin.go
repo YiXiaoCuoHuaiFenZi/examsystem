@@ -125,3 +125,10 @@ func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
 
 	return this.Redirect(Admin.Index)
 }
+
+func (this Admin) SignOut() revel.Result {
+	for k := range this.Session {
+		delete(this.Session, k)
+	}
+	return this.Redirect(Admin.SignIn)
+}

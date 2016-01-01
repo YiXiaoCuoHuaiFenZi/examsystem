@@ -143,10 +143,13 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 func (this Examinee) Exam() revel.Result {
 	this.RenderArgs["examnineeIDCard"] = this.Session["examnineeIDCard"]
 	this.RenderArgs["examnineeName"] = this.Session["examnineeName"]
-	
+
 	return this.Render()
 }
 
 func (this Examinee) SignOut() revel.Result {
-	return this.Render()
+	for k := range this.Session {
+		delete(this.Session, k)
+	}
+	return this.Redirect(Examinee.SignIn)
 }
