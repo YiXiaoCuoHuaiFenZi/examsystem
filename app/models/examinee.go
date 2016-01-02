@@ -20,6 +20,7 @@ func (this *DBManager) SignUp(signUpExaminee *SignUpExaminee) error {
 	e.IDCard = signUpExaminee.IDCard
 	e.Gender = signUpExaminee.Gender
 	e.Name = signUpExaminee.Name
+	e.Mobile = signUpExaminee.Mobile
 	p, err := bcrypt.GenerateFromPassword([]byte(signUpExaminee.Password), bcrypt.DefaultCost)
 	e.Password = p
 
@@ -60,4 +61,25 @@ func (this *DBManager) SignIn(signInExaminee *SignInExaminee) (examinee *Examine
 		err = errors.New("密码不正确")
 	}
 	return
+}
+
+func (this *DBManager) GetAllExaminee() ([]Examinee, error) {
+	t := this.session.DB(DBName).C(ExamineeCollection)
+
+	count, err := t.Count()
+	log.Println("共有考生 ", count, "位")
+
+	examinees := []Examinee{}
+	err = t.Find(nil).All(&examinees)
+
+	return examinees, err
+}
+
+func (this *DBManager) GetExamineeByIDCard(idCard string) (Examinee, error) {
+	t := this.session.DB(DBName).C(ExamineeCollection)
+
+	examinee := Examinee{}
+	err := t.Find(bson.M{"idcard": idCard}).One(&examinee)
+
+	return examinee, err
 }

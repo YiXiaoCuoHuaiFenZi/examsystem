@@ -31,6 +31,7 @@ type SignUpExaminee struct {
 	IDCard          string // 身份证号
 	Name            string // 考生姓名
 	Gender          string // 考生性别
+	Mobile          string // 手机号码
 	Password        string // 账号密码
 	ConfirmPassword string // 确认密码
 }
@@ -49,7 +50,7 @@ type Examinee struct {
 	Name       string // 考生姓名
 	Gender     string // 考生性别
 	Password   []byte // 账号密码
-	Mobile     int    // 手机号码
+	Mobile     string // 手机号码
 	ExamType   string // 所属考试类别、科目
 	ExamStatus string // 考试状态：未完成、完成
 	Score      int    // 考试分数

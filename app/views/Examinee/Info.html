@@ -23,30 +23,18 @@
                </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-		   	      <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-		   	      <td>@大学</td>
+				{{range $index, $examinee := .examinees}}			    
+				<tr>
+                  <th scope="row">{{addOne $index}}</th>
+                  <td>{{.Name}}</td>
+		   	      <td>{{.Gender}}</td>
+                  <td>{{.IDCard}}</td>
+                  <td>{{.Mobile}}</td>
+		   	      <td>{{.ExamType}}</td>
+				  <td>{{.ExamStatus}}</td>
+				  <td>{{.Score}}</td>
                 </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-		   	      <td>Mark</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-		   	      <td>@大学</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Larry</td>
-                  <td>the Bird</td>
-		   	      <td>Mark</td>
-                  <td>@twitter</td>
-		   	      <td>@大学</td>
-                </tr>
+			    {{end}}
               </tbody>
             </table>
 		   </div>

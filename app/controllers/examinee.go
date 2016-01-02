@@ -15,13 +15,46 @@ type Examinee struct {
 }
 
 func (this Examinee) Index() revel.Result {
-	this.RenderArgs["examnineeIDCard"] = this.Session["examnineeIDCard"]
-	this.RenderArgs["examnineeName"] = this.Session["examnineeName"]
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	idCard := this.Session["examineeIDCard"]
+	examinee, e := manager.GetExamineeByIDCard(idCard)
+	log.Println("**************")
+	log.Println(idCard)
+	log.Println(e)
+	log.Println(examinee)
+	if e != nil {
+		this.Response.Status = 500
+		return this.RenderError(e)
+	}
+
+	this.RenderArgs["examinee"] = examinee
+	this.RenderArgs["examineeIDCard"] = idCard
+	this.RenderArgs["examineeName"] = this.Session["examineeName"]
 
 	return this.Render()
 }
 
 func (this Examinee) Info() revel.Result {
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	examinees, e := manager.GetAllExaminee()
+	if e != nil {
+		this.Response.Status = 500
+		return this.RenderError(e)
+	}
+
+	this.RenderArgs["examinees"] = examinees
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
 
@@ -123,6 +156,7 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 		e.Name = lineArr[0]
 		e.IDCard = lineArr[1]
 		e.Gender = lineArr[2]
+		e.Mobile = lineArr[3]
 		// 密码为身份证后六位
 		e.Password = e.IDCard[len(e.IDCard)-6:]
 		e.ConfirmPassword = e.Password
@@ -152,8 +186,8 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 func (this Examinee) SignIn() revel.Result {
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
-	this.RenderArgs["examnineeIDCard"] = this.Session["examnineeIDCard"]
-	this.RenderArgs["examnineeName"] = this.Session["examnineeName"]
+	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
+	this.RenderArgs["examineeName"] = this.Session["examineeName"]
 
 	return this.Render()
 }
@@ -197,20 +231,20 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 		return this.Redirect((*Examinee).SignIn)
 	}
 
-	this.Session["examnineeIDCard"] = e.IDCard
-	this.Session["examnineeName"] = e.Name
+	this.Session["examineeIDCard"] = e.IDCard
+	this.Session["examineeName"] = e.Name
 	this.Session["examinee"] = "true"
 
-	this.RenderArgs["examnineeIDCard"] = e.IDCard
-	this.RenderArgs["examnineeName"] = e.Name
+	this.RenderArgs["examineeIDCard"] = e.IDCard
+	this.RenderArgs["examineeName"] = e.Name
 	log.Println("登录成功: ", e)
 
 	return this.Redirect(Examinee.Index)
 }
 
 func (this Examinee) Exam() revel.Result {
-	this.RenderArgs["examnineeIDCard"] = this.Session["examnineeIDCard"]
-	this.RenderArgs["examnineeName"] = this.Session["examnineeName"]
+	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
+	this.RenderArgs["examineeName"] = this.Session["examineeName"]
 
 	return this.Render()
 }

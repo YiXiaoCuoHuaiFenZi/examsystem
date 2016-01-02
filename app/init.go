@@ -29,6 +29,9 @@ func init() {
 	// revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
 
+	// 注册模板里的字符串相加函数
+	revel.TemplateFuncs["addOne"] = func(a int) int { return a + 1 }
+
 	//revel.InterceptFunc(checkUser, revel.BEFORE, &App{})
 	revel.InterceptFunc(beforeAdminController, revel.BEFORE, &controllers.Admin{})
 	revel.InterceptFunc(beforeExamineeController, revel.BEFORE, &controllers.Examinee{})
