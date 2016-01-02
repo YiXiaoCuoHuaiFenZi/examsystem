@@ -3,12 +3,9 @@ package controllers
 import (
 	"ExamSystem/app/models"
 	"encoding/csv"
-	"fmt"
 	"io"
-	//"io/ioutil"
 	"log"
 	"os"
-	//"path/filepath"
 
 	"github.com/revel/revel"
 )
@@ -92,6 +89,8 @@ func (this Examinee) BatchSignUp() revel.Result {
 }
 
 func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
+	// TODO csv文件默认是ascII编码， 需要进行处理
+	// 暂时强制要求手动转换为utf8
 	reader := csv.NewReader(CSVFile)
 	defer CSVFile.Close()
 
@@ -103,44 +102,50 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 	defer manager.Close()
 
 	var i = 0
+	var errorMsg = ""
+	var successMsg = ""
 	for {
-
 		lineArr, err := reader.Read()
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			fmt.Println("Error:", err)
+			log.Println(err)
+			return this.RenderError(err)
 		}
 
+		//忽略第一行表头
 		i += 1
-		if i == 1 {			
+		if i == 1 {
 			continue
 		}
-
-		fmt.Println(lineArr) // record has the type []string
 
 		var e models.SignUpExaminee
 		e.Name = lineArr[0]
 		e.IDCard = lineArr[1]
 		e.Gender = lineArr[2]
+		// 密码为身份证后六位
 		e.Password = e.IDCard[len(e.IDCard)-6:]
 		e.ConfirmPassword = e.Password
 
 		err = manager.SignUp(&e)
 		if err != nil {
-			this.Validation.Clear()
-
-			// 添加错误信息，显示在页面的身份证下面
-			var e revel.ValidationError
-			e.Message = err.Error()
-			e.Key = "e.IDCard"
-			this.Validation.Errors = append(this.Validation.Errors, &e)
-
-			this.Validation.Keep()
-			this.FlashParams()
+			m := err.Error() + "：" + e.IDCard + "  <br>"
+			errorMsg += m
+			log.Println(m)
+		} else {
+			successMsg += "注册成功：" + e.IDCard + "  <br>"
+			log.Println("注册成功：", e)
 		}
-		log.Println("注册成功：", e)
 	}
+
+	this.Flash.Error(successMsg + errorMsg)
+	//	if errorMsg != "" {
+	//		this.Flash.Error(successMsg+errorMsg)
+	//	}
+	//	if successMsg != "" {
+	//		this.Flash.Success("注册成功：", successMsg)
+	//	}
+	//this.Session["SignUpStatus"] = "true"
 	return this.Redirect(Examinee.SignUp)
 }
 
