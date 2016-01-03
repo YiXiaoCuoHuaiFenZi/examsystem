@@ -24,10 +24,7 @@ func (this Examinee) Index() revel.Result {
 
 	idCard := this.Session["examineeIDCard"]
 	examinee, e := manager.GetExamineeByIDCard(idCard)
-	log.Println("**************")
-	log.Println(idCard)
-	log.Println(e)
-	log.Println(examinee)
+
 	if e != nil {
 		this.Response.Status = 500
 		return this.RenderError(e)

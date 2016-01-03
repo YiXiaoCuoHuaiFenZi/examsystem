@@ -55,3 +55,31 @@ type Examinee struct {
 	ExamStatus string // 考试状态：未完成、完成
 	Score      int    // 考试分数
 }
+
+type SingleChoice struct {
+	Type        string // 所属考试类别
+	Discription string // 题目描述
+	A           string // 选项A
+	B           string // 选项B
+	C           string // 选项C
+	D           string // 选项D
+	Answer      string // 正确答案
+}
+
+type MultipleChoice struct {
+	Type        string   // 所属考试类别
+	Discription string   // 题目描述
+	A           string   // 选项A
+	B           string   // 选项B
+	C           string   // 选项C
+	D           string   // 选项D
+	E           string   // 选项E
+	F           string   // 选项F
+	Answer      []string // 正确答案
+}
+
+type TrueFalse struct {
+	Type        string // 所属考试类别
+	Discription string // 题目描述
+	Answer      string // 正确答案
+}

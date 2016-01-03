@@ -6,9 +6,12 @@ import (
 )
 
 const (
-	DBName             = "ExamSystem"
-	ExamineeCollection = "examinee"
-	AdminCollection    = "admin"
+	DBName                   = "ExamSystem"
+	ExamineeCollection       = "examinee"
+	AdminCollection          = "admin"
+	SingleChoiceCollection   = "singlechoice"
+	MultipleChoiceCollection = "multiplechoice"
+	TrueFalseCollection      = "truefalse"
 )
 
 type DBManager struct {
