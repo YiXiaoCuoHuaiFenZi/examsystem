@@ -1,0 +1,58 @@
+{{set . "title" "濮阳市龙都考试中心"}}
+{{template "header.html" .}}
+
+<script src="/public/js/signup.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+   window.onload=function isSignUpSuccess(){	
+    {{if .SignUpStatus}}
+	   alert("注册成功！")
+	{{end}}	  
+}
+</script>
+
+<div class="container">
+    <div class="row"><br></div>
+    <div class="row">
+	  <div class="col-md-2">{{template "menu.html" .}}</div>
+	  <div class="col-md-10"> 
+	    <div class="panel-primary">
+          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div> 
+          <div class="panel-body">
+		    <br><br><br><br><br><br><br><br><br>
+            <form class="form-horizontal" role="form" id="QueryScoreForm" action="{{url "ExamPaper.PostQueryScore"}}" method="POST">                                
+              {{with $field := field "examineeIDCard" .}} 
+              <div class="form-group {{$field.ErrorClass}}"> 
+                <label class="col-sm-4 control-label" for="{{$field.Id}}">身份证号</label> 
+                <div class="col-sm-4"> 
+                  <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号进行查询">       
+                  {{if $field.Error}} 
+                  <span class="help-inline">{{$field.Error}}</span> 
+                  {{end}}
+                </div> 
+              </div> 
+              {{end}}
+
+              <div class="form-group">
+			    <label class="col-sm-4 control-label"></label>
+                <div class="col-sm-4 text-center">
+                  <label class="radio-inline">
+                    <button type="submit" class="btn btn-primary" id="QueryScoreFormSubmit">查询</button>
+                  </label>
+                </div>
+              </div>
+            </form>			
+          </div>
+        </div>	  
+     </div>   
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+{{template "footer.html" .}}

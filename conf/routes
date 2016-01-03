@@ -13,6 +13,7 @@ POST    /                                       Examinee.PostSignIn
 GET     /examinee/signup                        Examinee.SignUp
 POST    /examinee/signup                        Examinee.PostSignUp
 GET     /examinee/signout                       Examinee.SignOut
+GET     /ExamPaper/Score/:idCard                ExamPaper.Score
 
 
 # Ignore favicon requests
