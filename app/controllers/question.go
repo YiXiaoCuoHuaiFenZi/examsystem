@@ -19,6 +19,95 @@ func (this Question) Create() revel.Result {
 }
 
 func (this Question) View() revel.Result {
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	var singleChoiceSummary map[string]int
+	singleChoiceSummary, err = manager.GetSingleChoiceSummary()
+	if err != nil {
+		return this.RenderError(err)
+	}
+
+	var multipleChoiceSummary map[string]int
+	multipleChoiceSummary, err = manager.GetMultipleChoiceSummary()
+	if err != nil {
+		return this.RenderError(err)
+	}
+
+	var trueFalseSummary map[string]int
+	trueFalseSummary, err = manager.GetTrueFalseSummary()
+	if err != nil {
+		return this.RenderError(err)
+	}
+
+	trafficQuestionInfo := make(map[string]int)
+	lawQuestionInfo := make(map[string]int)
+	constructionQuestionInfo := make(map[string]int)
+
+	if v, ok := singleChoiceSummary["交通"]; ok {
+		trafficQuestionInfo["单选"] = v
+	} else {
+		trafficQuestionInfo["单选"] = 0
+	}
+
+	if v, ok := multipleChoiceSummary["交通"]; ok {
+		trafficQuestionInfo["多选"] = v
+	} else {
+		trafficQuestionInfo["多选"] = 0
+	}
+
+	if v, ok := trueFalseSummary["交通"]; ok {
+		trafficQuestionInfo["判断"] = v
+	} else {
+		trafficQuestionInfo["判断"] = 0
+	}
+
+	if v, ok := singleChoiceSummary["司法"]; ok {
+		lawQuestionInfo["单选"] = v
+	} else {
+		lawQuestionInfo["单选"] = 0
+	}
+
+	if v, ok := multipleChoiceSummary["司法"]; ok {
+		lawQuestionInfo["多选"] = v
+	} else {
+		lawQuestionInfo["多选"] = 0
+	}
+
+	if v, ok := trueFalseSummary["司法"]; ok {
+		lawQuestionInfo["判断"] = v
+	} else {
+		lawQuestionInfo["判断"] = 0
+	}
+
+	if v, ok := singleChoiceSummary["建筑"]; ok {
+		constructionQuestionInfo["单选"] = v
+	} else {
+		constructionQuestionInfo["单选"] = 0
+	}
+
+	if v, ok := multipleChoiceSummary["建筑"]; ok {
+		constructionQuestionInfo["多选"] = v
+	} else {
+		constructionQuestionInfo["多选"] = 0
+	}
+
+	if v, ok := trueFalseSummary["建筑"]; ok {
+		constructionQuestionInfo["判断"] = v
+	} else {
+		constructionQuestionInfo["判断"] = 0
+	}
+
+	results := make(map[string]map[string]int)
+	results["交通"] = trafficQuestionInfo
+	results["司法"] = lawQuestionInfo
+	results["建筑"] = constructionQuestionInfo
+
+	this.RenderArgs["results"] = results
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
 

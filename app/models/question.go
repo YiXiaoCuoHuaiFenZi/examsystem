@@ -110,3 +110,66 @@ func (this *DBManager) AddTrueFalse(f *TrueFalse) error {
 
 	return nil
 }
+
+func (this *DBManager) GetSingleChoiceSummary() (map[string]int, error) {
+	t := this.session.DB(DBName).C(SingleChoiceCollection)
+
+	scs := []SingleChoice{}
+	err := t.Find(nil).All(&scs)
+	if err != nil {
+		return nil, err
+	}
+
+	results := make(map[string]int)
+	for _, sc := range scs {
+		if v, ok := results[sc.Type]; ok {
+			results[sc.Type] = v + 1
+		} else {
+			results[sc.Type] = 1
+		}
+	}
+
+	return results, err
+}
+
+func (this *DBManager) GetMultipleChoiceSummary() (map[string]int, error) {
+	t := this.session.DB(DBName).C(MultipleChoiceCollection)
+
+	mcs := []MultipleChoice{}
+	err := t.Find(nil).All(&mcs)
+	if err != nil {
+		return nil, err
+	}
+
+	results := make(map[string]int)
+	for _, mc := range mcs {
+		if v, ok := results[mc.Type]; ok {
+			results[mc.Type] = v + 1
+		} else {
+			results[mc.Type] = 1
+		}
+	}
+
+	return results, err
+}
+
+func (this *DBManager) GetTrueFalseSummary() (map[string]int, error) {
+	t := this.session.DB(DBName).C(TrueFalseCollection)
+
+	tfs := []TrueFalse{}
+	err := t.Find(nil).All(&tfs)
+	if err != nil {
+		return nil, err
+	}
+
+	results := make(map[string]int)
+	for _, tf := range tfs {
+		if v, ok := results[tf.Type]; ok {
+			results[tf.Type] = v + 1
+		} else {
+			results[tf.Type] = 1
+		}
+	}
+
+	return results, err
+}

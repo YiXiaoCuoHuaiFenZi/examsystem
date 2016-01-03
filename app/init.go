@@ -31,6 +31,9 @@ func init() {
 
 	// 注册模板里的字符串相加函数
 	revel.TemplateFuncs["addOne"] = func(a int) int { return a + 1 }
+	revel.TemplateFuncs["eq"] = func(a, b interface{}) bool {
+        return a == 0  || a == b
+    }
 
 	//revel.InterceptFunc(checkUser, revel.BEFORE, &App{})
 	revel.InterceptFunc(beforeAdminController, revel.BEFORE, &controllers.Admin{})
