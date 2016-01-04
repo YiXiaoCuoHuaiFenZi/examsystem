@@ -11,65 +11,123 @@
 	    <div class="panel-primary">
           <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
           <div class="panel-body">
-		    <form class="form-horizontal" role="form" action="#" method="POST">
+		    <form class="form-horizontal" role="form" action="{{url "ExamPaper.PostCreate"}}" method="POST">
 			  <div class="form-group">考试类别：
 			    <label class="radio-inline">
-				  <input type="radio" name="ExamType" id="ExamTypeOne" value="交通" checked="checked">交通
+				  <input type="radio" name="examPaper.Type" id="ExamTypeOne" value="交通" checked="checked">交通
 				</label>
 				<label class="radio-inline">
-				  <input type="radio" name="ExamType" id="ExamTypeTwo" value="司法">司法
+				  <input type="radio" name="examPaper.Type" id="ExamTypeTwo" value="司法">司法
 				</label>
 				<label class="radio-inline">
-				  <input type="radio" name="ExamType" id="ExamTypeThree" value="建筑">建筑
+				  <input type="radio" name="examPaper.Type" id="ExamTypeThree" value="建筑">建筑
 				</label>
 			  </div>
 		      <div class="form-group">生成方式：		
 				<label class="radio-inline">
-				  <input type="radio" name="ExamPaperCreateMethod" id="ExamPaperCreateMethodRandom" value="随机生成" checked="checked" onClick="controll('ExamPaperCreateMethodRandom')">随机生成
+				  <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodRandom" value="随机生成" checked="checked" onClick="controll('ExamPaperCreateMethodRandom')">随机生成
 				</label>
 				<label class="radio-inline">
-				  <input type="radio" name="ExamPaperCreateMethod" id="ExamPaperCreateMethodSelect" value="套题选择" onClick="controll('ExamPaperCreateMethodSelect')">套题选择
+				  <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodSelect" value="套题选择" onClick="controll('ExamPaperCreateMethodSelect')">套题选择
 				</label>
               </div>
 			  <div id="ExamPaperCreateRandomInputs">
+				<div class="row">
+			       {{with $field := field "examPaper.Title" .}} 
+                   <div class="form-group {{$field.ErrorClass}}">
+				      <div class="col-sm-12">
+				         <div class="form-group-addon" for="{{$field.Id}}">试卷标题：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+                   </div> 
+                   {{end}}
+				</div>
+				
+				<div class="row">
+			       {{with $field := field "examPaper.Discription" .}} 
+                   <div class="form-group {{$field.ErrorClass}}">
+				      <div class="col-sm-12">
+				         <div class="form-group-addon" for="{{$field.Id}}">试卷描述：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+                   </div> 
+                   {{end}}
+				</div>
+				
 			    <div class="row">
-			      <div class="form-group">
-			         <div class="col-sm-6"> 
-			  	     <div class="form-group-addon">单选题数量：</div>				 
-			  	     <input class="form-control">
-                     </div>
-			  	   <div class="col-sm-6"> 
-			  	     <div class="form-group-addon">每道题分值：</div>				 
-			  	     <input class="form-control">
-                     </div>
-			      </div>
-			    </div>				
-			  
-			    <div class="row">
-			      <div class="form-group">
-			         <div class="col-sm-6"> 
-			  	     <div class="form-group-addon">多选题数量：</div>				 
-			  	     <input class="form-control">
-                     </div>
-			  	   <div class="col-sm-6"> 
-			  	     <div class="form-group-addon">每道题分值：</div>				 
-			  	     <input class="form-control">
-                     </div>
-			      </div>
-			    </div>
-			  
-			    <div class="row">
-			      <div class="form-group">
-			         <div class="col-sm-6"> 
-			  	     <div class="form-group-addon">判断题数量：</div>				 
-			  	     <input class="form-control">
-                     </div>
-			  	   <div class="col-sm-6"> 
-			  	     <div class="form-group-addon">每道题分值：</div>				 
-			  	     <input class="form-control">
-                     </div>
-			      </div>
-			    </div>			  
+                   <div class="form-group">
+				      {{with $field := field "examPaper.SCCount" .}} 
+				      <div class="col-sm-6 {{$field.ErrorClass}}">
+				         <div class="form-group-addon" for="{{$field.Id}}">单选题数量：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+					  {{end}}
+					  {{with $field := field "examPaper.SCScore" .}}
+					  <div class="col-sm-6 {{$field.ErrorClass}}">
+				         <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+					  {{end}}
+                   </div>
+				</div>
+
+				<div class="row">
+                   <div class="form-group">
+				      {{with $field := field "examPaper.MCCount" .}} 
+				      <div class="col-sm-6 {{$field.ErrorClass}}">
+				         <div class="form-group-addon" for="{{$field.Id}}">多选题数量：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+					  {{end}}
+					  {{with $field := field "examPaper.MCScore" .}}
+					  <div class="col-sm-6 {{$field.ErrorClass}}">
+				         <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+					  {{end}}
+                   </div>
+				</div>
+
+				<div class="row">
+                   <div class="form-group">
+				      {{with $field := field "examPaper.TFCount" .}} 
+				      <div class="col-sm-6 {{$field.ErrorClass}}">
+				         <div class="form-group-addon" for="{{$field.Id}}">判断题数量：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+					  {{end}}
+					  {{with $field := field "examPaper.TFScore" .}}
+					  <div class="col-sm-6 {{$field.ErrorClass}}">
+				         <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+					  {{end}}
+                   </div>
+				</div>
 			</div>
 			<div class="row" id="ExamPaperCreateSelectTable" style="display:none;">
 	        	<table class="table table-hover">
@@ -79,7 +137,7 @@
 	           	      <th>试卷类型</th>
 	           	      <th>数量</th>
                        <th>考试类别</th>
-	        		  <th>选择</th>
+	        		  <th>选择</th>I
                     </tr>
                    </thead>
                    <tbody>

@@ -2,9 +2,93 @@ package models
 
 import (
 	"errors"
+	"log"
+	"math/rand"
+	"time"
 
 	"gopkg.in/mgo.v2/bson"
 )
+
+func (this *DBManager) GetRandomSingleChoice(count int) ([]SingleChoice, error) {
+	t := this.session.DB(DBName).C(SingleChoiceCollection)
+
+	ss := []SingleChoice{}
+	err := t.Find(nil).All(&ss)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	c := len(ss)
+	if c < count {
+		log.Println("随机数大于单选题库题目数")
+		return nil, errors.New("随机数大于单选题库题目数")
+	}
+
+	results := []SingleChoice{}
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	for i := 0; i < count; i++ {
+		rn := r.Intn(c)
+		log.Println(rn)
+		results = append(results, ss[rn])
+	}
+
+	return results, err
+}
+
+func (this *DBManager) GetRandomMultipleChoice(count int) ([]MultipleChoice, error) {
+	t := this.session.DB(DBName).C(MultipleChoiceCollection)
+
+	mc := []MultipleChoice{}
+	err := t.Find(nil).All(&mc)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	c := len(mc)
+	if c < count {
+		log.Println("随机数大于单选题库题目数")
+		return nil, errors.New("随机数大于单选题库题目数")
+	}
+
+	results := []MultipleChoice{}
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	for i := 0; i < count; i++ {
+		rn := r.Intn(c)
+		log.Println(rn)
+		results = append(results, mc[rn])
+	}
+
+	return results, err
+}
+
+func (this *DBManager) GetRandomTrueFalse(count int) ([]TrueFalse, error) {
+	t := this.session.DB(DBName).C(TrueFalseCollection)
+
+	tf := []TrueFalse{}
+	err := t.Find(nil).All(&tf)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	c := len(tf)
+	if c < count {
+		log.Println("随机数大于单选题库题目数")
+		return nil, errors.New("随机数大于单选题库题目数")
+	}
+
+	results := []TrueFalse{}
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	for i := 0; i < count; i++ {
+		rn := r.Intn(c)
+		log.Println(rn)
+		results = append(results, tf[rn])
+	}
+
+	return results, err
+}
 
 func (this *DBManager) GetSingleChoiceByDiscription(discription string) ([]SingleChoice, error) {
 	t := this.session.DB(DBName).C(SingleChoiceCollection)

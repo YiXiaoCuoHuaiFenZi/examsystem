@@ -12,6 +12,7 @@ const (
 	SingleChoiceCollection   = "singlechoice"
 	MultipleChoiceCollection = "multiplechoice"
 	TrueFalseCollection      = "truefalse"
+	ExamPaperCollection      = "exampaper"
 )
 
 type DBManager struct {
