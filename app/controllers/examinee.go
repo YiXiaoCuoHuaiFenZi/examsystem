@@ -64,6 +64,7 @@ func (this Examinee) SignUp() revel.Result {
 		this.Session["SignUpStatus"] = "false"
 	}
 
+	this.RenderArgs["batch"] = this.Session["batch"]
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
 
@@ -177,6 +178,7 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 	//		this.Flash.Success("注册成功：", successMsg)
 	//	}
 	//this.Session["SignUpStatus"] = "true"
+	this.Session["batch"] = "true"
 	return this.Redirect(Examinee.SignUp)
 }
 

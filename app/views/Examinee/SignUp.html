@@ -10,6 +10,24 @@
 }
 </script>
 
+{{if .batch}}
+<script type="text/javascript">
+// 模拟点击
+setTimeout(function() {
+  // IE
+  if(document.all) {
+    document.getElementById("SignUpTypeTwo").click();
+  }
+  // 其它浏览器
+  else {
+    var e = document.createEvent("MouseEvents");
+    e.initEvent("click", true, true);
+    document.getElementById("SignUpTypeTwo").dispatchEvent(e);
+  }
+}, 0);
+</script>
+{{end}}
+
 <div class="container">
     <div class="row"><br></div>
     <div class="row">
@@ -24,7 +42,7 @@
 				</label>
 				<label class="radio-inline">
 				  <input type="radio" name="ExamType" id="SignUpTypeTwo" value="批量添加" onClick="controll('SignUpTypeTwo')">批量添加
-				</label>				
+                </label>
 		    </div>
 			      
             <form class="form-horizontal" role="form" id="ManualAdd" action="{{url "Examinee.SignUp"}}" method="POST">                                
@@ -94,17 +112,45 @@
 			
 			<form class="form-horizontal" role="form" id="BatchSignUp" enctype="multipart/form-data" action="{{url "Examinee.PostBatchSignUp"}}" method="POST" style="display:none;">                                
               <div class="form-group">
-			    <label class="col-sm-3 control-label"></label>  
-                <div class="col-sm-6">
-			    <label for="CSVFile">选择账号文件</label>
-				<input type="file" id="CSVFile" name=CSVFile>
-                <p class="help-block">请上传CSV账号文件</p>
-			    <button type="submit" class="btn btn-primary" id="BatchSignUpFormSubmit">添加</button>         
-              </div>
-			   </div>			           
-            </form>    
+			    <div class="row">
+				  <div class="col-sm-3"></div>
+				  <label class="col-sm-3">第一步：下载账号模板</label>
+				  <div class="col-sm-6">
+				    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+				    <a href="/public/accs/批量注册账号模板.csv" id="download">批量注册账号模板.csv</a>
+				  </div>
+                </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="row">
+				  <div class="col-sm-3"></div>
+				  <label class="col-sm-3">第二步：填写账号信息</label>
+				  <div class="col-sm-6">
+				    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+				  </div>  
+                </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="row">
+				  <div class="col-sm-3"></div>
+				  <label class="col-sm-3" for="download">第三步：上传账号文件</label>
+                  <div class="col-sm-6">
+				     <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+				     <input type="file" id="CSVFile" name=CSVFile>
+                     <p class="help-block">请上传CSV账号文件</p>
+			         <button type="submit" class="btn btn-primary" id="BatchSignUpFormSubmit">注册</button>
+                  </div>
+				</div>
+			  </div>
+			  <div class="form-group">
+			    <div class="row">
+				  <div class="col-sm-3"></div>
+				  <label class="col-sm-9">第四步：查看本页下面的注册信息，注册成功的账号密码为身份证后六位</label>
+                </div>
+			  </div>
+            </form>
           </div>
-        </div>	  
+        </div>
      </div>   
   </div>
 </div>
