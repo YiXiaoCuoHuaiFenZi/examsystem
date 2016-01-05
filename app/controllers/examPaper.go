@@ -3,7 +3,9 @@ package controllers
 import (
 	"ExamSystem/app/models"
 	"log"
+	"strconv"
 	"strings"
+	"time"
 	//"strconv"
 
 	"github.com/revel/revel"
@@ -30,6 +32,8 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	this.Validation.Required(examPaper.CreateMethod).Message("请选择试卷生成方式")
 	this.Validation.Required(examPaper.Title).Message("请填写试卷标题")
 	this.Validation.Required(examPaper.Discription).Message("请填写试卷描述")
+	this.Validation.Required(examPaper.Score > 0).Message("请设置试卷总分数(大于零)")
+	this.Validation.Required(examPaper.Time > 0).Message("请设置考试时间(大于零)")
 	this.Validation.Required(examPaper.SCCount > 0).Message("请设置单选题数量(大于零)")
 	this.Validation.Required(examPaper.SCScore > 0).Message("请设置单选题每题分值(大于零)")
 	this.Validation.Required(examPaper.MCCount > 0).Message("请设置多选题数量(大于零)")
@@ -81,6 +85,12 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	examPaper.MC = mc
 	examPaper.TF = tf
 
+	t := time.Now()
+	examPaper.TimeStamp = t.Format("2006-01-02 15:04:05")
+	examPaper.IDCode = "HGY" + strconv.Itoa(t.Year()) + strconv.Itoa((int)(t.Month())) +
+		strconv.Itoa(t.Day()) + strconv.Itoa(t.Hour()) +
+		strconv.Itoa(t.Minute()) + strconv.Itoa(t.Second())
+
 	err = manager.AddExamPaper(examPaper)
 	if err != nil {
 		this.Response.Status = 500
@@ -94,6 +104,22 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 }
 
 func (this ExamPaper) View() revel.Result {
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	examPapers, e := manager.GetAllExamPaper()
+
+	if e != nil {
+		log.Println(e)
+		this.Response.Status = 500
+		return this.RenderError(e)
+	}
+
+	this.RenderArgs["examPapers"] = examPapers
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
 
@@ -141,7 +167,7 @@ func (this ExamPaper) QueryScore() revel.Result {
 
 func (this ExamPaper) PostQueryScore(examineeIDCard string) revel.Result {
 	examineeIDCard = strings.TrimSpace(examineeIDCard)
-	
+
 	this.Validation.Required(examineeIDCard).Message("请输入身份证号码")
 	this.Validation.Length(examineeIDCard, 18).Message("身份证号有误")
 

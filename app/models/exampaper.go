@@ -7,6 +7,24 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+func (this *DBManager) GetAllExamPaper() ([]ExamPaper, error) {
+	t := this.session.DB(DBName).C(ExamPaperCollection)
+
+	exp := []ExamPaper{}
+
+	err := t.Find(nil).All(&exp)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(exp) == 0 {
+		log.Println("试卷库没有可用试卷")
+		return nil, errors.New("试卷库没有可用试卷")
+	}
+
+	return exp, nil
+}
+
 func (this *DBManager) AddExamPaper(exp *ExamPaper) error {
 	t := this.session.DB(DBName).C(ExamPaperCollection)
 

@@ -12,31 +12,29 @@
 		    <table class="table table-hover">
 		      <thead>
 		       <tr>
-		   	      <th>编号</th>
-		   	      <th>试卷类型</th>
-		   	      <th>数量</th>
-                  <th>考试类别</th>
+			      <th>序号</th>
+		   	      <th>试卷标题</th>
+		   	      <th>考试类别</th>
+		   	      <th>总分值</th>
+                  <th>考试时间</th>
+				  <th>编号</th>
+                  <th>生成方式</th>
+				  <th>创建时间</th>
                </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-		   	      <td>Mark</td>
-                  <td>Otto</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-		   	      <td>Mark</td>
-                  <td>Thornton</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Larry</td>
-                  <td>the Bird</td>
-		   	      <td>Mark</td>
-                </tr>
+                 {{range $index, $examPaper := .examPapers}}
+				 <tr>
+				 <th scope="row">{{addOne $index}}</th>                  
+				 <td>{{$examPaper.Title}}</td>
+		   	     <td>{{$examPaper.Type}}</td>
+                 <td>{{$examPaper.Score}}</td>
+                 <td>{{$examPaper.Time}}</td>
+		   	     <td>{{$examPaper.IDCode}}</td>
+				 <td>{{$examPaper.CreateMethod}}</td>
+				 <td>{{$examPaper.TimeStamp}}</td>
+				 </tr>
+				 {{end}}  
               </tbody>
             </table>
 		   </div>

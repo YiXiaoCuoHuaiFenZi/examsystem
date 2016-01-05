@@ -59,7 +59,30 @@
                    </div> 
                    {{end}}
 				</div>
-				
+
+				<div class="row">
+                   <div class="form-group">
+				      {{with $field := field "examPaper.Score" .}} 
+				      <div class="col-sm-6 {{$field.ErrorClass}}">
+				         <div class="form-group-addon" for="{{$field.Id}}">试卷总分数：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+					  {{end}}
+					  {{with $field := field "examPaper.Time" .}}
+					  <div class="col-sm-6 {{$field.ErrorClass}}">
+				         <div class="form-group-addon" for="{{$field.Id}}">考试时间：</div>
+                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">       
+                         {{if $field.Error}} 
+                         <span class="help-inline">{{$field.Error}}</span> 
+                         {{end}}
+					  </div>
+					  {{end}}
+                   </div>
+				</div>
+
 			    <div class="row">
                    <div class="form-group">
 				      {{with $field := field "examPaper.SCCount" .}} 
