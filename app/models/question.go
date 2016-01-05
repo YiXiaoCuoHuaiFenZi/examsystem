@@ -26,11 +26,12 @@ func (this *DBManager) GetRandomSingleChoice(count int) ([]SingleChoice, error) 
 	}
 
 	results := []SingleChoice{}
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for i := 0; i < count; i++ {
-		rn := r.Intn(c)
-		log.Println(rn)
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		rn := r.Intn(len(ss))
+
 		results = append(results, ss[rn])
+		ss = append(ss[:rn], ss[rn+1:]...)
 	}
 
 	return results, err
@@ -53,11 +54,12 @@ func (this *DBManager) GetRandomMultipleChoice(count int) ([]MultipleChoice, err
 	}
 
 	results := []MultipleChoice{}
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for i := 0; i < count; i++ {
-		rn := r.Intn(c)
-		log.Println(rn)
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		rn := r.Intn(len(mc))
+
 		results = append(results, mc[rn])
+		mc = append(mc[:rn], mc[rn+1:]...)
 	}
 
 	return results, err
@@ -80,11 +82,12 @@ func (this *DBManager) GetRandomTrueFalse(count int) ([]TrueFalse, error) {
 	}
 
 	results := []TrueFalse{}
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for i := 0; i < count; i++ {
-		rn := r.Intn(c)
-		log.Println(rn)
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		rn := r.Intn(len(tf))
+
 		results = append(results, tf[rn])
+		tf = append(tf[:rn], tf[rn+1:]...)
 	}
 
 	return results, err
