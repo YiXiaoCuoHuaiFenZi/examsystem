@@ -3,6 +3,7 @@ package controllers
 import (
 	"ExamSystem/app/models"
 	"log"
+	"strings"
 
 	"github.com/revel/revel"
 )
@@ -28,6 +29,11 @@ func (this Admin) SignUp() revel.Result {
 }
 
 func (this Admin) PostSignUp(signUpAdmin *models.SignUpAdmin) revel.Result {
+	signUpAdmin.Name = strings.TrimSpace(signUpAdmin.Name)
+	signUpAdmin.IDCard = strings.TrimSpace(signUpAdmin.IDCard)
+	signUpAdmin.Password = strings.TrimSpace(signUpAdmin.Password)
+	signUpAdmin.ConfirmPassword = strings.TrimSpace(signUpAdmin.ConfirmPassword)
+
 	this.Validation.Required(signUpAdmin.Name).Message("请输入管理员姓名")
 	this.Validation.Required(signUpAdmin.IDCard).Message("请输入身份证号码")
 	this.Validation.Length(signUpAdmin.IDCard, 18).Message("身份证号有误")
@@ -76,6 +82,9 @@ func (this Admin) SignIn() revel.Result {
 }
 
 func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
+	signInAdmin.IDCard = strings.TrimSpace(signInAdmin.IDCard)
+	signInAdmin.Password = strings.TrimSpace(signInAdmin.Password)
+
 	this.Validation.Required(signInAdmin.IDCard).Message("请输入身份证号码")
 	this.Validation.Length(signInAdmin.IDCard, 18).Message("身份证号有误")
 	this.Validation.Required(signInAdmin.Password).Message("请输入密码")

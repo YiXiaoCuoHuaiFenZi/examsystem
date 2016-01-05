@@ -3,6 +3,7 @@ package controllers
 import (
 	"ExamSystem/app/models"
 	"log"
+	"strings"
 	//"strconv"
 
 	"github.com/revel/revel"
@@ -20,16 +21,21 @@ func (this ExamPaper) Create() revel.Result {
 }
 
 func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
+	examPaper.Type = strings.TrimSpace(examPaper.Type)
+	examPaper.CreateMethod = strings.TrimSpace(examPaper.CreateMethod)
+	examPaper.Title = strings.TrimSpace(examPaper.Title)
+	examPaper.Discription = strings.TrimSpace(examPaper.Discription)
+
 	this.Validation.Required(examPaper.Type).Message("请选择试卷类别")
 	this.Validation.Required(examPaper.CreateMethod).Message("请选择试卷生成方式")
 	this.Validation.Required(examPaper.Title).Message("请填写试卷标题")
 	this.Validation.Required(examPaper.Discription).Message("请填写试卷描述")
-	this.Validation.Required(examPaper.SCCount).Message("请设置单选题数量")
-	this.Validation.Required(examPaper.SCScore).Message("请设置单选题每题分值")
-	this.Validation.Required(examPaper.MCCount).Message("请设置多选题数量")
-	this.Validation.Required(examPaper.MCScore).Message("请设置多选题每题分值")
-	this.Validation.Required(examPaper.TFCount).Message("请设置判断题数量")
-	this.Validation.Required(examPaper.TFScore).Message("请设置判断题每题分值")
+	this.Validation.Required(examPaper.SCCount > 0).Message("请设置单选题数量(大于零)")
+	this.Validation.Required(examPaper.SCScore > 0).Message("请设置单选题每题分值(大于零)")
+	this.Validation.Required(examPaper.MCCount > 0).Message("请设置多选题数量(大于零)")
+	this.Validation.Required(examPaper.MCScore > 0).Message("请设置多选题每题分值(大于零)")
+	this.Validation.Required(examPaper.TFCount > 0).Message("请设置判断题数量(大于零)")
+	this.Validation.Required(examPaper.TFScore > 0).Message("请设置判断题每题分值(大于零)")
 
 	if this.Validation.HasErrors() {
 		this.Validation.Keep()
@@ -134,7 +140,10 @@ func (this ExamPaper) QueryScore() revel.Result {
 }
 
 func (this ExamPaper) PostQueryScore(examineeIDCard string) revel.Result {
+	examineeIDCard = strings.TrimSpace(examineeIDCard)
+	
 	this.Validation.Required(examineeIDCard).Message("请输入身份证号码")
+	this.Validation.Length(examineeIDCard, 18).Message("身份证号有误")
 
 	if this.Validation.HasErrors() {
 		this.Validation.Keep()

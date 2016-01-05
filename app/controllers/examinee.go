@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/revel/revel"
 )
@@ -72,6 +73,11 @@ func (this Examinee) SignUp() revel.Result {
 }
 
 func (this Examinee) PostSignUp(signUpExaminee *models.SignUpExaminee) revel.Result {
+	signUpExaminee.Name = strings.TrimSpace(signUpExaminee.Name)
+	signUpExaminee.IDCard = strings.TrimSpace(signUpExaminee.IDCard)
+	signUpExaminee.Password = strings.TrimSpace(signUpExaminee.Password)
+	signUpExaminee.ConfirmPassword = strings.TrimSpace(signUpExaminee.ConfirmPassword)
+
 	this.Validation.Required(signUpExaminee.Name).Message("请输入考生姓名")
 	this.Validation.Required(signUpExaminee.IDCard).Message("请输入身份证号码")
 	this.Validation.Length(signUpExaminee.IDCard, 18).Message("身份证号有误")
@@ -192,6 +198,9 @@ func (this Examinee) SignIn() revel.Result {
 }
 
 func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Result {
+	signInExaminee.IDCard = strings.TrimSpace(signInExaminee.IDCard)
+	signInExaminee.Password = strings.TrimSpace(signInExaminee.Password)
+
 	this.Validation.Required(signInExaminee.IDCard).Message("请输入身份证号码")
 	this.Validation.Length(signInExaminee.IDCard, 18).Message("身份证号有误")
 	this.Validation.Required(signInExaminee.Password).Message("请输入密码")

@@ -94,12 +94,12 @@ type ExamPaper struct {
 	IDCode       string           // 编号
 	CreateMethod string           // 试卷的生成方式：随机、套题
 	SCCount      int              // 单选题数量
-	SCScore      int              // 单选题每题分值
+	SCScore      float32          // 单选题每题分值
 	SC           []SingleChoice   // 单选题
 	MCCount      int              // 多选题数量
-	MCScore      int              // 多选题每题分值
+	MCScore      float32          // 多选题每题分值
 	MC           []MultipleChoice // 多选题
 	TFCount      int              // 判断题数量
-	TFScore      int              // 判断题每题分值
+	TFScore      float32          // 判断题每题分值
 	TF           []TrueFalse      // 判断题
 }

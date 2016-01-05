@@ -3,6 +3,7 @@ package controllers
 import (
 	"ExamSystem/app/models"
 	"log"
+	"strings"
 
 	"github.com/revel/revel"
 )
@@ -115,6 +116,14 @@ func (this Question) View() revel.Result {
 }
 
 func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.Result {
+	singleChoice.Type = strings.TrimSpace(singleChoice.Type)
+	singleChoice.Discription = strings.TrimSpace(singleChoice.Discription)
+	singleChoice.A = strings.TrimSpace(singleChoice.A)
+	singleChoice.B = strings.TrimSpace(singleChoice.B)
+	singleChoice.C = strings.TrimSpace(singleChoice.C)
+	singleChoice.D = strings.TrimSpace(singleChoice.D)
+	singleChoice.Answer = strings.TrimSpace(singleChoice.Answer)
+
 	this.Validation.Required(singleChoice.Type).Message("请选择试题类别")
 	this.Validation.Required(singleChoice.Discription).Message("题目描述不能为空")
 	this.Validation.Required(singleChoice.A).Message("选项A不能为空")
@@ -170,6 +179,16 @@ func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.R
 }
 
 func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, answers []string) revel.Result {
+	multipleChoice.Type = strings.TrimSpace(multipleChoice.Type)
+	multipleChoice.Discription = strings.TrimSpace(multipleChoice.Discription)
+	multipleChoice.A = strings.TrimSpace(multipleChoice.A)
+	multipleChoice.B = strings.TrimSpace(multipleChoice.B)
+	multipleChoice.C = strings.TrimSpace(multipleChoice.C)
+	multipleChoice.D = strings.TrimSpace(multipleChoice.D)
+	multipleChoice.E = strings.TrimSpace(multipleChoice.E)
+	multipleChoice.F = strings.TrimSpace(multipleChoice.F)
+	//multipleChoice.Answer = strings.TrimSpace(multipleChoice.Answer)
+
 	this.Validation.Required(multipleChoice.Type).Message("请选择试题类别")
 	this.Validation.Required(multipleChoice.Discription).Message("题目描述不能为空")
 	this.Validation.Required(multipleChoice.A).Message("选项A不能为空")
@@ -178,6 +197,7 @@ func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, a
 	this.Validation.Required(multipleChoice.D).Message("选项D不能为空")
 	this.Validation.Required(multipleChoice.E).Message("选项E不能为空")
 	this.Validation.Required(multipleChoice.F).Message("选项F不能为空")
+	//this.Validation.Required(len(answers)>0).Message("答案不能为空")
 	this.Validation.Required(answers).Message("答案不能为空")
 
 	var as []string
@@ -235,6 +255,10 @@ func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, a
 }
 
 func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
+	trueFalse.Type = strings.TrimSpace(trueFalse.Type)
+	trueFalse.Discription = strings.TrimSpace(trueFalse.Discription)
+	trueFalse.Answer = strings.TrimSpace(trueFalse.Answer)
+
 	this.Validation.Required(trueFalse.Type).Message("请选择试题类别")
 	this.Validation.Required(trueFalse.Discription).Message("题目描述不能为空")
 	this.Validation.Required(trueFalse.Answer).Message("答案不能为空")
