@@ -3,6 +3,7 @@ package controllers
 import (
 	"ExamSystem/app/models"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/revel/revel"
@@ -294,4 +295,16 @@ func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
 	log.Println("创建题目成功：", trueFalse)
 
 	return this.Redirect(Question.Create)
+}
+
+func (this Question) PostBatchSingleChoice(BatchSingleChoiceFile *os.File) revel.Result {
+	return this.Render()
+}
+
+func (this Question) PostBatchMultipleChoice(BatchMultipleChoiceFile *os.File) revel.Result {
+	return this.Render()
+}
+
+func (this Question) PostBatchTrueFalse(BatchTrueFalseFile *os.File) revel.Result {
+	return this.Render()
 }

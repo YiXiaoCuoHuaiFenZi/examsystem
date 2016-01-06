@@ -9,245 +9,395 @@
 	  <div class="col-md-2">{{template "menu.html" .}}</div>
 	  <div class="col-md-10"> 
 	    <div class="panel-primary">
-          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
-          <div class="panel-body">
-		    <div class="row">
+          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
+          <div class="panel-body">		    
+			<div class="row">
 		       <div class="form-group">
-			      <label class="radio-group">题目类型：</label>
+			      <label class="radio-group">创建方式：</label>
 			      <label class="radio-inline">
-			         <input type="radio" name="QuestionType" id="SingleChoiceType" value="单选" checked="checked" onClick="controll('SingleChoiceType')">单选
+			         <input type="radio" name="CreateMethod" id="ManualCreateRadio" value="手工创建" checked="checked" onClick="createMethodControll('ManualCreateRadio')">手工创建
 			      </label>
 			      <label class="radio-inline">
-			         <input type="radio" name="QuestionType" id="MultipleChoiceType" value="多选" onClick="controll('MultipleChoiceType')">多选
-			      </label>
-			      <label class="radio-inline">
-			         <input type="radio" name="QuestionType" id="TrueFalseType" value="判断" onClick="controll('TrueFalseType')">判断
-			      </label>
+			         <input type="radio" name="CreateMethod" id="BatchCreateRadio" value="批量创建" onClick="createMethodControll('BatchCreateRadio')">批量创建
+			      </label>			      
 			   </div>
 			</div>
-
-			<form class="form-horizontal" role="form" id="SingleChoiceForm" action="{{url "Question.PostSingleChoice"}}" method="POST">
-		      <div class="form-group">
-			     <label class="radio-group">考试类别：</label>
-			     <label class="radio-inline">
-				    <input type="radio" name="singleChoice.Type" id="ExamTypeOne" value="交通" checked="checked">交通
-			     </label>
-			     <label class="radio-inline">
-				    <input type="radio" name="singleChoice.Type" id="ExamTypeTwo" value="司法">司法
-			     </label>
-			     <label class="radio-inline">
-				    <input type="radio" name="singleChoice.Type" id="ExamTypeThree" value="建筑">建筑
-			     </label>
-			  </div>
-
-			  {{with $field := field "singleChoice.Discription" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">题目内容</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "singleChoice.A" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">A</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写A选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "singleChoice.B" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">B</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写B选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "singleChoice.C" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">C</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写C选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "singleChoice.D" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">D</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写D选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  <div class="form-group" id="SingleChoiceAnswer">正确答案：
-				<label class="radio-inline">
-				  <input type="radio" name="singleChoice.Answer" id="AnswerA" value="A">A
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="singleChoice.Answer" id="AnswerB" value="B">B
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="singleChoice.Answer" id="AnswerC" value="C">C
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="singleChoice.Answer" id="AnswerD" value="D">D
-				</label>
-              </div>
-
-			  <div class="form-group">
-			    <div class="form-group-addon">
-				  <button class="btn btn-default" type="submit">提交</button>
-				</div>
-			  </div>
+			
+			<div id="ManualCreate">
+		       <div class="row">
+		          <div class="form-group">
+		   	         <label class="radio-group">题目类型：</label>
+		   	         <label class="radio-inline">
+		   	            <input type="radio" name="QuestionType" id="SingleChoiceType" value="单选" checked="checked" onClick="manualCreateFormsContorll('SingleChoiceType')">单选
+		   	         </label>
+		   	         <label class="radio-inline">
+		   	            <input type="radio" name="QuestionType" id="MultipleChoiceType" value="多选" onClick="manualCreateFormsContorll('MultipleChoiceType')">多选
+		   	         </label>
+		   	         <label class="radio-inline">
+		   	            <input type="radio" name="QuestionType" id="TrueFalseType" value="判断" onClick="manualCreateFormsContorll('TrueFalseType')">判断
+		   	         </label>
+		   	      </div>
+		   	   </div>
+           
+		       <form class="form-horizontal" role="form" id="SingleChoiceForm" action="{{url "Question.PostSingleChoice"}}" method="POST">
+		          <div class="form-group">
+		             <label class="radio-group">考试类别：</label>
+		             <label class="radio-inline">
+		       	        <input type="radio" name="singleChoice.Type" id="ExamTypeOne" value="交通" checked="checked">交通
+		             </label>
+		             <label class="radio-inline">
+		       	        <input type="radio" name="singleChoice.Type" id="ExamTypeTwo" value="司法">司法
+		             </label>
+		             <label class="radio-inline">
+		       	        <input type="radio" name="singleChoice.Type" id="ExamTypeThree" value="建筑">建筑
+		             </label>
+		          </div>
+               
+		          {{with $field := field "singleChoice.Discription" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">题目内容</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>
+		       	     {{if $field.Error}}
+                     <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                   </div>
+                   {{end}}
+                  
+		          {{with $field := field "singleChoice.A" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">A</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写A选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                  
+		          {{with $field := field "singleChoice.B" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">B</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写B选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                  
+		          {{with $field := field "singleChoice.C" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">C</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写C选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                  
+		          {{with $field := field "singleChoice.D" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">D</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写D选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                     </div>
+                  {{end}}
+               
+		          <div class="form-group" id="SingleChoiceAnswer">正确答案：
+		             <label class="radio-inline">
+		               <input type="radio" name="singleChoice.Answer" id="AnswerA" value="A">A
+		             </label>
+		             <label class="radio-inline">
+		               <input type="radio" name="singleChoice.Answer" id="AnswerB" value="B">B
+		             </label>
+		             <label class="radio-inline">
+		               <input type="radio" name="singleChoice.Answer" id="AnswerC" value="C">C
+		             </label>
+		             <label class="radio-inline">
+		               <input type="radio" name="singleChoice.Answer" id="AnswerD" value="D">D
+		             </label>
+                  </div>
+               
+		         <div class="form-group">
+		           <div class="form-group-addon">
+		       	   <button class="btn btn-default" type="submit">提交</button>
+		         </div>
+		       </div>
 		    </form>
-
-			<form class="form-horizontal" role="form" id="MultipleChoiceForm" action="{{url "Question.PostMultipleChoice"}}" method="POST" style="display:none;">
-              <div class="form-group">
-			     <label class="radio-group">考试类别：</label>
-			     <label class="radio-inline">
-				    <input type="radio" name="multipleChoice.Type" id="ExamTypeOne" value="交通" checked="checked">交通
-			     </label>
-			     <label class="radio-inline">
-				    <input type="radio" name="multipleChoice.Type" id="ExamTypeTwo" value="司法">司法
-			     </label>
-			     <label class="radio-inline">
-				    <input type="radio" name="multipleChoice.Type" id="ExamTypeThree" value="建筑">建筑
-			     </label>
-			  </div>
-
-			  {{with $field := field "multipleChoice.Discription" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">题目内容</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "multipleChoice.A" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">A</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写A选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "multipleChoice.B" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">B</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写B选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "multipleChoice.C" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">C</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写C选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "multipleChoice.D" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">D</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写D选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "multipleChoice.E" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">E</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写E选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  {{with $field := field "multipleChoice.F" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">F</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写F选项内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  <div class="form-group" id="MultipleChoiceAnswer">正确答案：
-				<label class="checkbox-inline"><input type="checkbox" name="answers[]" value="A">A</label>
-				<label class="checkbox-inline"><input type="checkbox" name="answers[]" value="B">B</label>
-				<label class="checkbox-inline"><input type="checkbox" name="answers[]" value="C">C</label>
-				<label class="checkbox-inline"><input type="checkbox" name="answers[]" value="D">D</label>
-				<label class="checkbox-inline"><input type="checkbox" name="answers[]" value="E">E</label>
-				<label class="checkbox-inline"><input type="checkbox" name="answers[]" value="F">F</label>				
-              </div>
-
-			  <div class="form-group">
-			    <div class="form-group-addon">
-				  <button class="btn btn-default" type="submit">提交</button>
-				</div>
-			  </div>
-		    </form>
-
-            <form class="form-horizontal" role="form" id="TrueFalseForm" action="{{url "Question.PostTrueFalse"}}" method="POST" style="display:none;">
-              <div class="form-group">
-			     <label class="radio-group">考试类别：</label>
-			     <label class="radio-inline">
-				    <input type="radio" name="trueFalse.Type" id="ExamTypeOne" value="交通" checked="checked">交通
-			     </label>
-			     <label class="radio-inline">
-				    <input type="radio" name="trueFalse.Type" id="ExamTypeTwo" value="司法">司法
-			     </label>
-			     <label class="radio-inline">
-				    <input type="radio" name="trueFalse.Type" id="ExamTypeThree" value="建筑">建筑
-			     </label>
-			  </div>
-
-			  {{with $field := field "trueFalse.Discription" .}}
-              <div class="form-group {{$field.ErrorClass}}"> 
-			     <div class="form-group-addon">题目内容</div>	
-				 <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>
-				 {{if $field.Error}}
-                 <span class="help-inline">{{$field.Error}}</span> 
-                 {{end}}
-              </div>
-              {{end}}
-
-			  <div class="form-group" id="TrueFalseAnswer">正确答案：
-				<label class="radio-inline"><input type="radio" name="trueFalse.Answer" value="对">对</label>
-				<label class="radio-inline"><input type="radio" name="trueFalse.Answer" value="错">错</label>				
-              </div>
-
-			  <div class="form-group">
-			    <div class="form-group-addon">
-				  <button class="btn btn-default" type="submit">提交</button>
-				</div>
-			  </div>
-		    </form>
-
+           
+		       <form class="form-horizontal" role="form" id="MultipleChoiceForm" action="{{url "Question.PostMultipleChoice"}}" method="POST" style="display:none;">
+                  <div class="form-group">
+		            <label class="radio-group">考试类别：</label>
+		            <label class="radio-inline">
+		       	      <input type="radio" name="multipleChoice.Type" id="ExamTypeOne" value="交通" checked="checked">交通
+		            </label>
+		            <label class="radio-inline">
+		       	      <input type="radio" name="multipleChoice.Type" id="ExamTypeTwo" value="司法">司法
+		            </label>
+		            <label class="radio-inline">
+		       	      <input type="radio" name="multipleChoice.Type" id="ExamTypeThree" value="建筑">建筑
+		            </label>
+		          </div>
+               
+		          {{with $field := field "multipleChoice.Discription" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">题目内容</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                 
+		          {{with $field := field "multipleChoice.A" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">A</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写A选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                 
+		          {{with $field := field "multipleChoice.B" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">B</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写B选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                 
+		          {{with $field := field "multipleChoice.C" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">C</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写C选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                 
+		          {{with $field := field "multipleChoice.D" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">D</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写D选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                 
+		          {{with $field := field "multipleChoice.E" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">E</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写E选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                 
+		          {{with $field := field "multipleChoice.F" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">F</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写F选项内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                 
+		          <div class="form-group" id="MultipleChoiceAnswer">正确答案：
+		       	     <label class="checkbox-inline"><input type="checkbox" name="answers[]" value="A">A</label>
+		       	     <label class="checkbox-inline"><input type="checkbox" name="answers[]" value="B">B</label>
+		       	     <label class="checkbox-inline"><input type="checkbox" name="answers[]" value="C">C</label>
+		       	     <label class="checkbox-inline"><input type="checkbox" name="answers[]" value="D">D</label>
+		       	     <label class="checkbox-inline"><input type="checkbox" name="answers[]" value="E">E</label>
+		       	     <label class="checkbox-inline"><input type="checkbox" name="answers[]" value="F">F</label>				
+                  </div>
+                 
+		          <div class="form-group">
+		            <div class="form-group-addon">
+		       	      <button class="btn btn-default" type="submit">提交</button>
+		            </div>
+		          </div>
+		       </form>
+           
+               <form class="form-horizontal" role="form" id="TrueFalseForm" action="{{url "Question.PostTrueFalse"}}" method="POST" style="display:none;">
+                  <div class="form-group">
+		             <label class="radio-group">考试类别：</label>
+		             <label class="radio-inline">
+		       	       <input type="radio" name="trueFalse.Type" id="ExamTypeOne" value="交通" checked="checked">交通
+		             </label>
+		             <label class="radio-inline">
+		       	        <input type="radio" name="trueFalse.Type" id="ExamTypeTwo" value="司法">司法
+		             </label>
+		             <label class="radio-inline">
+		       	        <input type="radio" name="trueFalse.Type" id="ExamTypeThree" value="建筑">建筑
+		             </label>
+		          </div>
+                  
+		          {{with $field := field "trueFalse.Discription" .}}
+                  <div class="form-group {{$field.ErrorClass}}"> 
+		             <div class="form-group-addon">题目内容</div>	
+		       	     <textarea class="form-control" rows="1" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>
+		       	     {{if $field.Error}}
+                        <span class="help-inline">{{$field.Error}}</span> 
+                     {{end}}
+                  </div>
+                  {{end}}
+                   
+		          <div class="form-group" id="TrueFalseAnswer">正确答案：
+		       	     <label class="radio-inline"><input type="radio" name="trueFalse.Answer" value="对">对</label>
+		       	     <label class="radio-inline"><input type="radio" name="trueFalse.Answer" value="错">错</label>				
+                  </div>
+               
+		          <div class="form-group">
+		              <div class="form-group-addon">
+		       	         <button class="btn btn-default" type="submit">提交</button>
+		       	      </div>
+		          </div>
+		       </form>
+            </div>
+		   	
+			<div id="BatchCreate" style="display:none;">
+			   <div class="row">
+		          <div class="form-group">
+		   	         <label class="radio-group">题目类型：</label>
+		   	         <label class="radio-inline">
+		   	            <input type="radio" name="BatchQuestionType" id="BatchSingleChoiceType" value="单选" checked="checked" onClick="batchCreateFormsContorll('BatchSingleChoiceType')">单选
+		   	         </label>
+		   	         <label class="radio-inline">
+		   	            <input type="radio" name="BatchQuestionType" id="BatchMultipleChoiceType" value="多选" onClick="batchCreateFormsContorll('BatchMultipleChoiceType')">多选
+		   	         </label>
+		   	         <label class="radio-inline">
+		   	            <input type="radio" name="BatchQuestionType" id="BatchTrueFalseType" value="判断" onClick="batchCreateFormsContorll('BatchTrueFalseType')">判断
+		   	         </label>
+		   	      </div>
+		   	   </div>
+				
+			   <form class="form-horizontal" role="form" id="BatchSingleChoiceForm" enctype="multipart/form-data" action="{{url "Question.PostBatchSingleChoice"}}" method="POST">                                
+                  <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3">第一步：下载单选题模板</label>
+			       	    <div class="col-sm-6">
+			       	      <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+			       	      <a href="/public/accs/批量单选题模板.txt" id="download">批量单选题模板.txt</a>
+			       	    </div>
+                     </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3">第二步：填写单选题模板</label>
+			       	    <div class="col-sm-6">
+			       	       <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+			       	    </div>  
+                     </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3" for="download">第三步：上传单选题文件</label>
+                        <div class="col-sm-6">
+			       	       <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+			       	       <input type="file" id="BatchSingleChoiceFile" name=BatchSingleChoiceFile>
+                           <p class="help-block">请上传单选题文件</p>
+			               <button type="submit" class="btn btn-primary" id="BatchSingleChoiceFormSubmit">上传</button>
+                        </div>
+			       	 </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-9">第四步：查看本页下面的录入信息，失败的题目请检查后再单独上传</label>
+                     </div>
+			      </div>
+               </form>
+			   
+			   <form class="form-horizontal" role="form" id="BatchMultipleChoiceForm" enctype="multipart/form-data" action="{{url "Question.PostBatchMultipleChoice"}}" method="POST" style="display:none;">                                
+                  <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3">第一步：下载多选题模板</label>
+			       	    <div class="col-sm-6">
+			       	      <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+			       	      <a href="/public/accs/批量单选题模板.txt" id="download">批量多选题模板.txt</a>
+			       	    </div>
+                     </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3">第二步：填写多选题模板</label>
+			       	    <div class="col-sm-6">
+			       	       <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+			       	    </div>  
+                     </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3" for="download">第三步：上传多选题文件</label>
+                        <div class="col-sm-6">
+			       	       <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+			       	       <input type="file" id="BatchMultipleChoiceFile" name=BatchMultipleChoiceFile>
+                           <p class="help-block">请上传多选题文件</p>
+			               <button type="submit" class="btn btn-primary" id="BatchMultipleChoiceFormSubmit">上传</button>
+                        </div>
+			       	 </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-9">第四步：查看本页下面的录入信息，失败的题目请检查后再单独上传</label>
+                     </div>
+			      </div>
+               </form>
+			   
+			   <form class="form-horizontal" role="form" id="BatchTrueFalseForm" enctype="multipart/form-data" action="{{url "Question.PostBatchTrueFalse"}}" method="POST" style="display:none;">                                
+                  <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3">第一步：下载判断题模板</label>
+			       	    <div class="col-sm-6">
+			       	      <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+			       	      <a href="/public/accs/批量判断题模板.txt" id="download">批量判断题模板.txt</a>
+			       	    </div>
+                     </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3">第二步：填写判断题模板</label>
+			       	    <div class="col-sm-6">
+			       	       <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+			       	    </div>  
+                     </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-3" for="download">第三步：上传判断题文件</label>
+                        <div class="col-sm-6">
+			       	       <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+			       	       <input type="file" id="BatchTrueFalseFile" name=BatchTrueFalseFile>
+                           <p class="help-block">请上传判断题文件</p>
+			               <button type="submit" class="btn btn-primary" id="BatchTrueFalseFormSubmit">上传</button>
+                        </div>
+			       	 </div>
+			      </div>
+			      <div class="form-group">
+			         <div class="row">
+			       	    <div class="col-sm-3"></div>
+			       	    <label class="col-sm-9">第四步：查看本页下面的录入信息，失败的题目请检查后再单独上传</label>
+                     </div>
+			      </div>
+               </form>
+			</div>
           </div>
 		</div>
       </div>
