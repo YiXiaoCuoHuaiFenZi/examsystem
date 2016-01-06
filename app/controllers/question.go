@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"ExamSystem/app/models"
+	"bufio"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -297,8 +299,97 @@ func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
 	return this.Redirect(Question.Create)
 }
 
+func parseFile(file *os.File) ([]models.SingleChoice, error) {
+	//	f, err := os.Open("批量多选题模板.txt")
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	defer file.Close()
+
+	r := bufio.NewReader(file)
+	scs := []models.SingleChoice{}
+	sc := models.SingleChoice{}
+	for {
+		line := make([]byte, 1024, 1024)
+		line, _, err := r.ReadLine()
+		if err == io.EOF {
+			break
+		}
+
+		l := strings.TrimSpace(string(line))
+
+		if strings.HasPrefix(l, "题目：") {
+			sc.Discription = strings.TrimPrefix(l, "题目：")
+		}
+		if strings.HasPrefix(l, "A.") {
+			sc.A = strings.TrimPrefix(l, "A.")
+		}
+		if strings.HasPrefix(l, "B.") {
+			sc.B = strings.TrimPrefix(l, "B.")
+		}
+		if strings.HasPrefix(l, "C.") {
+			sc.C = strings.TrimPrefix(l, "C.")
+		}
+		if strings.HasPrefix(l, "D.") {
+			sc.D = strings.TrimPrefix(l, "D.")
+		}
+		if strings.HasPrefix(l, "答案：") {
+			sc.Answer = strings.TrimPrefix(l, "答案：")
+			switch sc.Answer {
+			case "A":
+				sc.Answer = sc.A
+			case "B":
+				sc.Answer = sc.B
+			case "C":
+				sc.Answer = sc.C
+			case "D":
+				sc.Answer = sc.D
+			default:
+				break
+			}
+			scs = append(scs, sc)
+		}
+	}
+	return scs, nil
+}
 func (this Question) PostBatchSingleChoice(BatchSingleChoiceFile *os.File) revel.Result {
-	return this.Render()
+	// TODO 文件默认是ascII编码， 需要进行处理
+	// 暂时强制要求手动转换为utf8
+	scs, err := parseFile(BatchSingleChoiceFile)
+
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	var errorMsg = ""
+	var successMsg = ""
+	for _, sc := range scs {
+		err = manager.AddSingleChoice(&sc)
+		if err != nil {
+			if err != nil {
+				m := err.Error() + "：" + sc.Discription + "  <br>"
+				errorMsg += m
+				log.Println(m)
+			} else {
+				successMsg += "创建成功：" + sc.Discription + "  <br>"
+				log.Println("创建成功：", sc)
+			}
+		}
+	}
+
+	this.Flash.Error(successMsg + errorMsg)
+	if errorMsg != "" {
+		this.Flash.Error(successMsg + errorMsg)
+	}
+	//	if successMsg != "" {
+	//		this.Flash.Success("创建成功：", successMsg)
+	//	}
+	//this.Session["SignUpStatus"] = "true"
+	this.Session["batch"] = "true"
+	return this.Redirect(Question.Create)
 }
 
 func (this Question) PostBatchMultipleChoice(BatchMultipleChoiceFile *os.File) revel.Result {
