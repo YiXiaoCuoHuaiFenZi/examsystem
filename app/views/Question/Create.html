@@ -264,7 +264,7 @@
 		   	
 			<div id="BatchCreate" style="display:none;">
 			   <div class="row">
-		          <div class="form-group">
+		           <div class="form-group">
 		   	         <label class="radio-group">题目类型：</label>
 		   	         <label class="radio-inline">
 		   	            <input type="radio" name="BatchQuestionType" id="BatchSingleChoiceType" value="单选" checked="checked" onClick="batchCreateFormsContorll('BatchSingleChoiceType')">单选
@@ -275,10 +275,23 @@
 		   	         <label class="radio-inline">
 		   	            <input type="radio" name="BatchQuestionType" id="BatchTrueFalseType" value="判断" onClick="batchCreateFormsContorll('BatchTrueFalseType')">判断
 		   	         </label>
-		   	      </div>
+		   	       </div>
 		   	   </div>
+							   		
 			   <form class="form-horizontal" role="form" id="BatchSingleChoiceForm" enctype="multipart/form-data" action="{{url "Question.PostBatchSingleChoice"}}" method="POST">                                
-                  <div class="form-group">
+     	         <div class="form-group">
+		            <label class="radio-group">考试类别：</label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeOne" value="交通" checked="checked">交通
+		            </label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeTwo" value="司法">司法
+		            </label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeThree" value="建筑">建筑
+		            </label>
+		         </div>		   	
+				 <div class="form-group">
 			         <div class="row">
 			       	    <div class="col-sm-3"></div>
 			       	    <label class="col-sm-3">第一步：下载单选题模板</label>
@@ -303,7 +316,7 @@
 			       	    <label class="col-sm-3" for="download">第三步：上传单选题文件</label>
                         <div class="col-sm-6">
 			       	       <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-			       	       <input type="file" id="BatchSingleChoiceFile" name=BatchSingleChoiceFile>
+			       	       <input type="file" id="batchSingleChoiceFile" name=batchSingleChoiceFile>
                            <p class="help-block">请上传单选题文件</p>
 			               <button type="submit" class="btn btn-primary" id="BatchSingleChoiceFormSubmit">上传</button>
                         </div>
@@ -319,12 +332,24 @@
 			   
 			   <form class="form-horizontal" role="form" id="BatchMultipleChoiceForm" enctype="multipart/form-data" action="{{url "Question.PostBatchMultipleChoice"}}" method="POST" style="display:none;">                                
                   <div class="form-group">
+		            <label class="radio-group">考试类别：</label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeOne" value="交通" checked="checked">交通
+		            </label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeTwo" value="司法">司法
+		            </label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeThree" value="建筑">建筑
+		            </label>
+		          </div>
+				  <div class="form-group">
 			         <div class="row">
 			       	    <div class="col-sm-3"></div>
 			       	    <label class="col-sm-3">第一步：下载多选题模板</label>
 			       	    <div class="col-sm-6">
 			       	      <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-			       	      <a href="/public/accs/批量单选题模板.txt" id="download">批量多选题模板.txt</a>
+			       	      <a href="/public/tpls/批量多选题模板.zip" id="download">批量多选题模板.zip</a>
 			       	    </div>
                      </div>
 			      </div>
@@ -343,7 +368,7 @@
 			       	    <label class="col-sm-3" for="download">第三步：上传多选题文件</label>
                         <div class="col-sm-6">
 			       	       <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-			       	       <input type="file" id="BatchMultipleChoiceFile" name=BatchMultipleChoiceFile>
+			       	       <input type="file" id="batchMultipleChoiceFile" name=batchMultipleChoiceFile>
                            <p class="help-block">请上传多选题文件</p>
 			               <button type="submit" class="btn btn-primary" id="BatchMultipleChoiceFormSubmit">上传</button>
                         </div>
@@ -359,12 +384,24 @@
 			   
 			   <form class="form-horizontal" role="form" id="BatchTrueFalseForm" enctype="multipart/form-data" action="{{url "Question.PostBatchTrueFalse"}}" method="POST" style="display:none;">                                
                   <div class="form-group">
+		            <label class="radio-group">考试类别：</label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeOne" value="交通" checked="checked">交通
+		            </label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeTwo" value="司法">司法
+		            </label>
+		            <label class="radio-inline">
+		       	       <input type="radio" name="qType" id="ExamTypeThree" value="建筑">建筑
+		            </label>
+		          </div>
+				  <div class="form-group">
 			         <div class="row">
 			       	    <div class="col-sm-3"></div>
 			       	    <label class="col-sm-3">第一步：下载判断题模板</label>
 			       	    <div class="col-sm-6">
 			       	      <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-			       	      <a href="/public/accs/批量判断题模板.txt" id="download">批量判断题模板.txt</a>
+			       	      <a href="/public/tpls/批量判断题模板.zip" id="download">批量判断题模板.zip</a>
 			       	    </div>
                      </div>
 			      </div>
@@ -383,7 +420,7 @@
 			       	    <label class="col-sm-3" for="download">第三步：上传判断题文件</label>
                         <div class="col-sm-6">
 			       	       <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-			       	       <input type="file" id="BatchTrueFalseFile" name=BatchTrueFalseFile>
+			       	       <input type="file" id="batchTrueFalseFile" name=batchTrueFalseFile>
                            <p class="help-block">请上传判断题文件</p>
 			               <button type="submit" class="btn btn-primary" id="BatchTrueFalseFormSubmit">上传</button>
                         </div>

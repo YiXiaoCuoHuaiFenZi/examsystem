@@ -299,14 +299,9 @@ func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
 	return this.Redirect(Question.Create)
 }
 
-func parseFile(file *os.File) ([]models.SingleChoice, error) {
-	//	f, err := os.Open("批量多选题模板.txt")
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	defer file.Close()
-
+func parseSingleChoiceFile(file *os.File, qType string) ([]models.SingleChoice, error) {
 	r := bufio.NewReader(file)
+
 	scs := []models.SingleChoice{}
 	sc := models.SingleChoice{}
 	for {
@@ -335,7 +330,7 @@ func parseFile(file *os.File) ([]models.SingleChoice, error) {
 		}
 		if strings.HasPrefix(l, "答案：") {
 			sc.Answer = strings.TrimPrefix(l, "答案：")
-			switch sc.Answer {
+			switch strings.TrimSpace(sc.Answer) {
 			case "A":
 				sc.Answer = sc.A
 			case "B":
@@ -347,15 +342,106 @@ func parseFile(file *os.File) ([]models.SingleChoice, error) {
 			default:
 				break
 			}
+			sc.Type = qType
 			scs = append(scs, sc)
 		}
 	}
 	return scs, nil
 }
-func (this Question) PostBatchSingleChoice(BatchSingleChoiceFile *os.File) revel.Result {
+
+func parseMultipleChoiceFile(file *os.File, qType string) ([]models.MultipleChoice, error) {
+	r := bufio.NewReader(file)
+
+	mcs := []models.MultipleChoice{}
+	mc := models.MultipleChoice{}
+	for {
+		line := make([]byte, 1024, 1024)
+		line, _, err := r.ReadLine()
+		if err == io.EOF {
+			break
+		}
+
+		l := strings.TrimSpace(string(line))
+
+		if strings.HasPrefix(l, "题目：") {
+			mc.Discription = strings.TrimPrefix(l, "题目：")
+		}
+		if strings.HasPrefix(l, "A.") {
+			mc.A = strings.TrimPrefix(l, "A.")
+		}
+		if strings.HasPrefix(l, "B.") {
+			mc.B = strings.TrimPrefix(l, "B.")
+		}
+		if strings.HasPrefix(l, "C.") {
+			mc.C = strings.TrimPrefix(l, "C.")
+		}
+		if strings.HasPrefix(l, "D.") {
+			mc.D = strings.TrimPrefix(l, "D.")
+		}
+		if strings.HasPrefix(l, "E.") {
+			mc.D = strings.TrimPrefix(l, "E.")
+		}
+		if strings.HasPrefix(l, "F.") {
+			mc.D = strings.TrimPrefix(l, "F.")
+		}
+		if strings.HasPrefix(l, "答案：") {
+			answers := strings.Split(strings.TrimPrefix(l, "答案："), ",")
+			var as []string
+			for _, a := range answers {
+				switch strings.TrimSpace(a) {
+				case "A":
+					as = append(as, mc.A)
+				case "B":
+					as = append(as, mc.B)
+				case "C":
+					as = append(as, mc.C)
+				case "D":
+					as = append(as, mc.D)
+				case "E":
+					as = append(as, mc.E)
+				case "F":
+					as = append(as, mc.F)
+				default:
+					break
+				}
+			}
+			mc.Answer = as
+			mc.Type = qType
+			mcs = append(mcs, mc)
+		}
+	}
+	return mcs, nil
+}
+
+func parseTrueFalseFile(file *os.File, qType string) ([]models.TrueFalse, error) {
+	r := bufio.NewReader(file)
+
+	tfs := []models.TrueFalse{}
+	tf := models.TrueFalse{}
+	for {
+		line := make([]byte, 1024, 1024)
+		line, _, err := r.ReadLine()
+		if err == io.EOF {
+			break
+		}
+
+		l := strings.TrimSpace(string(line))
+		if strings.HasPrefix(l, "题目：") {
+			tf.Discription = strings.TrimPrefix(l, "题目：")
+		}
+		if strings.HasPrefix(l, "答案：") {
+			tf.Answer = strings.TrimPrefix(l, "答案：")
+			tf.Type = qType
+			tfs = append(tfs, tf)
+		}
+	}
+	return tfs, nil
+}
+func (this Question) PostBatchSingleChoice(batchSingleChoiceFile *os.File, qType string) revel.Result {
 	// TODO 文件默认是ascII编码， 需要进行处理
 	// 暂时强制要求手动转换为utf8
-	scs, err := parseFile(BatchSingleChoiceFile)
+	scs, err := parseSingleChoiceFile(batchSingleChoiceFile, qType)
+	defer batchSingleChoiceFile.Close()
 
 	manager, err := models.NewDBManager()
 	if err != nil {
@@ -392,10 +478,84 @@ func (this Question) PostBatchSingleChoice(BatchSingleChoiceFile *os.File) revel
 	return this.Redirect(Question.Create)
 }
 
-func (this Question) PostBatchMultipleChoice(BatchMultipleChoiceFile *os.File) revel.Result {
-	return this.Render()
+func (this Question) PostBatchMultipleChoice(batchMultipleChoiceFile *os.File, qType string) revel.Result {
+	// TODO 文件默认是ascII编码， 需要进行处理
+	// 暂时强制要求手动转换为utf8
+	mcs, err := parseMultipleChoiceFile(batchMultipleChoiceFile, qType)
+	defer batchMultipleChoiceFile.Close()
+
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	var errorMsg = ""
+	var successMsg = ""
+	for _, mc := range mcs {
+		err = manager.AddMultipleChoice(&mc)
+		if err != nil {
+			if err != nil {
+				m := err.Error() + "：" + mc.Discription + "  <br>"
+				errorMsg += m
+				log.Println(m)
+			} else {
+				successMsg += "创建成功：" + mc.Discription + "  <br>"
+				log.Println("创建成功：", mc)
+			}
+		}
+	}
+
+	this.Flash.Error(successMsg + errorMsg)
+	if errorMsg != "" {
+		this.Flash.Error(successMsg + errorMsg)
+	}
+	//	if successMsg != "" {
+	//		this.Flash.Success("创建成功：", successMsg)
+	//	}
+	//this.Session["SignUpStatus"] = "true"
+	this.Session["batch"] = "true"
+	return this.Redirect(Question.Create)
 }
 
-func (this Question) PostBatchTrueFalse(BatchTrueFalseFile *os.File) revel.Result {
-	return this.Render()
+func (this Question) PostBatchTrueFalse(batchTrueFalseFile *os.File, qType string) revel.Result {
+	// TODO 文件默认是ascII编码， 需要进行处理
+	// 暂时强制要求手动转换为utf8
+	tfs, err := parseTrueFalseFile(batchTrueFalseFile, qType)
+	defer batchTrueFalseFile.Close()
+
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	var errorMsg = ""
+	var successMsg = ""
+	for _, tf := range tfs {
+		err = manager.AddTrueFalse(&tf)
+		if err != nil {
+			if err != nil {
+				m := err.Error() + "：" + tf.Discription + "  <br>"
+				errorMsg += m
+				log.Println(m)
+			} else {
+				successMsg += "创建成功：" + tf.Discription + "  <br>"
+				log.Println("创建成功：", tf)
+			}
+		}
+	}
+
+	this.Flash.Error(successMsg + errorMsg)
+	if errorMsg != "" {
+		this.Flash.Error(successMsg + errorMsg)
+	}
+	//	if successMsg != "" {
+	//		this.Flash.Success("创建成功：", successMsg)
+	//	}
+	//this.Session["SignUpStatus"] = "true"
+	this.Session["batch"] = "true"
+	return this.Redirect(Question.Create)
 }
