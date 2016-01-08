@@ -28,8 +28,30 @@ function numCheck(id) {
         alert("请输入数字");
         input.value = "";
     }
-    var score = document.getElementById("totalScore")
-    score.innerHTML = Number(score.innerHTML) + Number(input.value)
+
+}
+
+function checkScore() {
+    var totalScore = document.getElementById("totalScore")
+    var examPaper_Score = document.getElementById("examPaper_Score")
+    var examPaper_SCCount = document.getElementById("examPaper_SCCount")
+    var examPaper_SCScore = document.getElementById("examPaper_SCScore")
+    var examPaper_MCCount = document.getElementById("examPaper_MCCount")
+    var examPaper_MCScore = document.getElementById("examPaper_MCScore")
+    var examPaper_TFCount = document.getElementById("examPaper_TFCount")
+    var examPaper_TFScore = document.getElementById("examPaper_TFScore")
+
+    totalScore = Number(examPaper_SCCount.value) * Number(examPaper_SCScore.value) +
+        Number(examPaper_MCCount.value) * Number(examPaper_MCScore.value) +
+        Number(examPaper_TFCount.value) * Number(examPaper_TFScore.value);
+
+    if (totalScore != Number(examPaper_Score.value)) {
+        alert("预设试卷总分数：" + examPaper_Score.value + "\n实际题目总分数：" +
+            totalScore + "\n预设试卷总分数与实际题目分数总和不一致，请重新设置");
+    } else {
+        alert("预设试卷总分数：" + examPaper_Score.value + "\n实际题目总分数：" +
+            totalScore + "\n预设试卷总分数与实际题目分数总和一致")
+    }
 }
 
 // 检查输入是否是数字，只允许整数

@@ -10,7 +10,7 @@
             <div class="panel-primary">
                 <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" action="{{url " ExamPaper.PostCreate "}}" method="POST">
+                    <form class="form-horizontal" role="form" action="{{url "ExamPaper.PostCreate"}}" method="POST">
                         <div class="form-group">考试类别：
                             <label class="radio-inline">
                                 <input type="radio" name="examPaper.Type" id="ExamTypeOne" value="交通" checked="checked">交通
@@ -174,11 +174,9 @@
                             </table>
                         </div>
                         <div class="row">
-                            <div class="form-group-addon" id="">总分：</div>
-                            <div class="form-group-addon" id="totalScore">0</div>
-                        </div>
-                        <div class="row">
-                            <button class="btn btn-default" type="submit">提交</button>
+                            <input class="col-sm-2 btn btn-default" type="button" value="检查分值" onclick="checkScore()" />
+                            <div class="col-sm-1"></div>
+                            <button class="col-sm-2 btn btn-default" type="submit">提交</button>
                         </div>
                     </form>
                 </div>

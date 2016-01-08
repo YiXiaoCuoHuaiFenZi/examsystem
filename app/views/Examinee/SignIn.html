@@ -9,7 +9,7 @@
             <div class="panel-primary">
                 <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" action="{{url " Examinee.SignIn "}}" method="POST">
+                    <form class="form-horizontal" role="form" action="{{url "Examinee.SignIn"}}" method="POST">
                         {{with $field := field "signInExaminee.IDCard" .}}
                         <div class="form-group {{$field.ErrorClass}}">
                             <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label>

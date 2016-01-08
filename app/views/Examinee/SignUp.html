@@ -49,7 +49,7 @@ setTimeout(function() {
                             <input type="radio" name="ExamType" id="SignUpTypeTwo" value="批量添加" onClick="controll('SignUpTypeTwo')">批量添加
                         </label>
                     </div>
-                    <form class="form-horizontal" role="form" id="ManualAdd" action="{{url " Examinee.SignUp "}}" method="POST">
+                    <form class="form-horizontal" role="form" id="ManualAdd" action="{{url "Examinee.SignUp"}}" method="POST">
                         {{with $field := field "signUpExaminee.Name" .}}
                         <div class="form-group {{$field.ErrorClass}}">
                             <label class="col-sm-3 control-label" for="{{$field.Id}}">考生姓名</label>
@@ -98,7 +98,7 @@ setTimeout(function() {
                             </div>
                         </div>
                     </form>
-                    <form class="form-horizontal" role="form" id="BatchSignUp" enctype="multipart/form-data" action="{{url " Examinee.PostBatchSignUp "}}" method="POST" style="display:none;">
+                    <form class="form-horizontal" role="form" id="BatchSignUp" enctype="multipart/form-data" action="{{url "Examinee.PostBatchSignUp"}}" method="POST" style="display:none;">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-sm-3"></div>
