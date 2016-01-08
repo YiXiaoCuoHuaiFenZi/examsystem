@@ -55,7 +55,7 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	defer manager.Close()
 
 	sc := []models.SingleChoice{}
-	sc, err = manager.GetRandomSingleChoice(examPaper.SCCount)
+	sc, err = manager.GetRandomSingleChoice(examPaper.Type, examPaper.SCCount)
 	log.Println(sc)
 	if err != nil {
 		log.Println(err)
@@ -64,7 +64,7 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	}
 
 	mc := []models.MultipleChoice{}
-	mc, err = manager.GetRandomMultipleChoice(examPaper.MCCount)
+	mc, err = manager.GetRandomMultipleChoice(examPaper.Type, examPaper.MCCount)
 	log.Println(mc)
 	if err != nil {
 		log.Println(err)
@@ -73,7 +73,7 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	}
 
 	tf := []models.TrueFalse{}
-	tf, err = manager.GetRandomTrueFalse(examPaper.TFCount)
+	tf, err = manager.GetRandomTrueFalse(examPaper.Type, examPaper.TFCount)
 	log.Println(tf)
 	if err != nil {
 		log.Println(err)
@@ -101,6 +101,10 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	this.RenderArgs["adminName"] = this.Session["adminName"]
 
 	return this.Redirect(ExamPaper.Create)
+}
+
+func (this ExamPaper) PostUpload(examPaper *models.ExamPaper) revel.Result {
+	return this.Render()
 }
 
 func (this ExamPaper) Preview(title string) revel.Result {

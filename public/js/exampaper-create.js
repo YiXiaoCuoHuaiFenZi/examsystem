@@ -1,20 +1,20 @@
-function controll(id) {
+function createMethodControll(id) {
     var ExamPaperCreateMethodRandom = document.getElementById("ExamPaperCreateMethodRandom")
-    var ExamPaperCreateMethodSelect = document.getElementById("ExamPaperCreateMethodSelect")
+    var ExamPaperCreateMethodUpload = document.getElementById("ExamPaperCreateMethodUpload")
 
-    var ExamPaperCreateRandomInputs = document.getElementById("ExamPaperCreateRandomInputs")
-    var ExamPaperCreateSelectTable = document.getElementById("ExamPaperCreateSelectTable")
+    var ExamPaperRandomForm = document.getElementById("ExamPaperRandomForm")
+    var ExamPaperUploadForm = document.getElementById("ExamPaperUploadForm")
 
     switch (id) {
         case "ExamPaperCreateMethodRandom":
-            ExamPaperCreateSelectTable.style.display = "none";
+            ExamPaperUploadForm.style.display = "none";
 
-            ExamPaperCreateRandomInputs.style.display = "";
+            ExamPaperRandomForm.style.display = "";
             break;
-        case "ExamPaperCreateMethodSelect":
-            ExamPaperCreateRandomInputs.style.display = "none";
+        case "ExamPaperCreateMethodUpload":
+            ExamPaperRandomForm.style.display = "none";
 
-            ExamPaperCreateSelectTable.style.display = "";
+            ExamPaperUploadForm.style.display = "";
             break;
         default:
             break;

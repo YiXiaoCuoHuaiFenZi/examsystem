@@ -9,11 +9,11 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func (this *DBManager) GetRandomSingleChoice(count int) ([]SingleChoice, error) {
+func (this *DBManager) GetRandomSingleChoice(qtype string, count int) ([]SingleChoice, error) {
 	t := this.session.DB(DBName).C(SingleChoiceCollection)
 
 	ss := []SingleChoice{}
-	err := t.Find(nil).All(&ss)
+	err := t.Find(bson.M{"type": qtype}).All(&ss)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -37,11 +37,11 @@ func (this *DBManager) GetRandomSingleChoice(count int) ([]SingleChoice, error) 
 	return results, err
 }
 
-func (this *DBManager) GetRandomMultipleChoice(count int) ([]MultipleChoice, error) {
+func (this *DBManager) GetRandomMultipleChoice(qtype string, count int) ([]MultipleChoice, error) {
 	t := this.session.DB(DBName).C(MultipleChoiceCollection)
 
 	mc := []MultipleChoice{}
-	err := t.Find(nil).All(&mc)
+	err := t.Find(bson.M{"type": qtype}).All(&mc)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -65,11 +65,11 @@ func (this *DBManager) GetRandomMultipleChoice(count int) ([]MultipleChoice, err
 	return results, err
 }
 
-func (this *DBManager) GetRandomTrueFalse(count int) ([]TrueFalse, error) {
+func (this *DBManager) GetRandomTrueFalse(qtype string, count int) ([]TrueFalse, error) {
 	t := this.session.DB(DBName).C(TrueFalseCollection)
 
 	tf := []TrueFalse{}
-	err := t.Find(nil).All(&tf)
+	err := t.Find(bson.M{"type": qtype}).All(&tf)
 	if err != nil {
 		log.Println(err)
 		return nil, err
