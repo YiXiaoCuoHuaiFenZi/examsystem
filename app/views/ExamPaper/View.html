@@ -1,54 +1,52 @@
-{{set . "title" "濮阳市龙都考试中心"}}
-{{template "header.html" .}}
-
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
 <div class="container">
-    <div class="row"><br></div>
     <div class="row">
-	  <div class="col-md-2">{{template "menu.html" .}}</div>
-	  <div class="col-md-10">
-	     <div class="panel-primary">
-            <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
-            <div class="panel-body">
-		    <table class="table table-hover">
-		      <thead>
-		       <tr>
-			      <th>序号</th>
-		   	      <th>试卷标题</th>
-		   	      <th>考试类别</th>
-		   	      <th>总分值</th>
-                  <th>考试时间</th>
-				  <th>编号</th>
-                  <th>生成方式</th>
-				  <th>创建时间</th>
-               </tr>
-              </thead>
-              <tbody>
-                 {{range $index, $examPaper := .examPapers}}
-				 <tr>
-				 <th scope="row">{{addOne $index}}</th>                  
-				 <td>{{$examPaper.Title}}</td>
-		   	     <td>{{$examPaper.Type}}</td>
-                 <td>{{$examPaper.Score}}</td>
-                 <td>{{$examPaper.Time}}</td>
-		   	     <td>{{$examPaper.IDCode}}</td>
-				 <td>{{$examPaper.CreateMethod}}</td>
-				 <td>{{$examPaper.TimeStamp}}</td>
-				 </tr>
-				 {{end}}  
-              </tbody>
-            </table>
-		   </div>
-		 </div>
-	  </div>	  
-	</div>   
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="span6">
-      {{template "flash.html" .}}
+        <br>
     </div>
-  </div>
+    <div class="row">
+        <div class="col-md-2">{{template "menu.html" .}}</div>
+        <div class="col-md-10">
+            <div class="panel-primary">
+                <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>试卷标题</th>
+                                <th>考试类别</th>
+                                <th>总分值</th>
+                                <th>考试时间</th>
+                                <th>编号</th>
+                                <th>生成方式</th>
+                                <th>创建时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range $index, $examPaper := .examPapers}}
+                            <tr>
+                                <th scope="row">{{addOne $index}}</th>
+                                <td>{{$examPaper.Title}}</td>
+                                <td>{{$examPaper.Type}}</td>
+                                <td>{{$examPaper.Score}}</td>
+                                <td>{{$examPaper.Time}}</td>
+                                <td>{{$examPaper.IDCode}}</td>
+                                <td>{{$examPaper.CreateMethod}}</td>
+                                <td>{{$examPaper.TimeStamp}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
+    </div>
+</div>
 {{template "footer.html" .}}

@@ -1,81 +1,81 @@
-{{set . "title" "濮阳市龙都考试中心"}}
-{{template "header.html" .}}
-
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
 <script src="/public/js/exampaper-create.js" type="text/javascript" charset="utf-8"></script>
-
 <div class="container">
-    <div class="row"><br></div>
     <div class="row">
-	  <div class="col-md-2">{{template "menu.html" .}}</div>
-	  <div class="col-md-10"> 
-	    <div class="panel-primary">
-          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
-          <div class="panel-body">
-		    <form class="form-horizontal" role="form" action="#" method="POST">  			  
-			  <div class="row">
-	        	<table class="table table-hover">
-	              <thead>
-	               <tr>
-	           	      <th>编号</th>
-	           	      <th>试卷名称</th>
-	           	      <th>试卷类型</th>
-                      <th>考试类别</th>
-	        		  <th>选择</th>
-                    </tr>
-                   </thead>
-                   <tbody>
-                     <tr>
-                       <th scope="row">1</th>
-                       <td>Mark</td>
-	           	       <td>套题</td>
-                       <td>Otto</td>
-					   <td>
-					     <div class="radio-inline">
-						  <label><input name="choose" type="radio" checked="checked">选择</label>
-						 </div>
-					   </td>
-                     </tr>
-                     <tr>
-                       <th scope="row">2</th>
-                       <td>Jacob</td>
-	           	       <td>随机</td>
-                       <td>Thornton</td>
-					   <td>
-					     <div class="radio-inline">
-						  <label><input name="choose" type="radio">选择</label>
-						 </div>
-					   </td>
-                     </tr>
-                     <tr>
-                       <th scope="row">3</th>
-                       <td>Larry</td>
-                       <td>the Bird</td>
-	           	       <td>Mark</td>
-					   <td>
-					     <div class="radio-inline">
-						  <label><input name="choose" type="radio">选择</label>
-						 </div>
-					   </td>
-                     </tr>
-                   </tbody>
-                 </table>			
-			   </div>
-			  <div class="row">
-			    <button class="btn btn-default" type="submit">发布</button>
-			  </div>           		  
-		    </form>           
-          </div>
-		</div>	  
-      </div>   
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-2">{{template "menu.html" .}}</div>
+        <div class="col-md-10">
+            <div class="panel-primary">
+                <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form" action="#" method="POST">
+                        <div class="row">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>编号</th>
+                                        <th>试卷名称</th>
+                                        <th>试卷类型</th>
+                                        <th>考试类别</th>
+                                        <th>选择</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>套题</td>
+                                        <td>Otto</td>
+                                        <td>
+                                            <div class="radio-inline">
+                                                <label>
+                                                    <input name="choose" type="radio" checked="checked">选择</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>随机</td>
+                                        <td>Thornton</td>
+                                        <td>
+                                            <div class="radio-inline">
+                                                <label>
+                                                    <input name="choose" type="radio">选择</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>Mark</td>
+                                        <td>
+                                            <div class="radio-inline">
+                                                <label>
+                                                    <input name="choose" type="radio">选择</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-default" type="submit">发布</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 <div class="container">
-  <div class="row">
-    <div class="span6">
-      {{template "flash.html" .}}
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
     </div>
-  </div>
 </div>
-
 {{template "footer.html" .}}

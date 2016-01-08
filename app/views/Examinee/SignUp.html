@@ -1,166 +1,152 @@
-{{set . "title" "濮阳市龙都考试中心"}}
-{{template "header.html" .}}
-
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
 <script src="/public/js/signup.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-   window.onload=function isSignUpSuccess(){	
-    {{if .SignUpStatus}}
-	   alert("注册成功！")
-	{{end}}	  
+window.onload = function isSignUpSuccess() {
+    {
+        {
+            if .SignUpStatus
+        }
+    }
+    alert("注册成功！") {
+        {
+            end
+        }
+    }
 }
 </script>
-
 {{if .batch}}
 <script type="text/javascript">
 // 模拟点击
 setTimeout(function() {
-  // IE
-  if(document.all) {
-    document.getElementById("SignUpTypeTwo").click();
-  }
-  // 其它浏览器
-  else {
-    var e = document.createEvent("MouseEvents");
-    e.initEvent("click", true, true);
-    document.getElementById("SignUpTypeTwo").dispatchEvent(e);
-  }
+    // IE
+    if (document.all) {
+        document.getElementById("SignUpTypeTwo").click();
+    }
+    // 其它浏览器
+    else {
+        var e = document.createEvent("MouseEvents");
+        e.initEvent("click", true, true);
+        document.getElementById("SignUpTypeTwo").dispatchEvent(e);
+    }
 }, 0);
 </script>
 {{end}}
-
 <div class="container">
-    <div class="row"><br></div>
     <div class="row">
-	  <div class="col-md-2">{{template "menu.html" .}}</div>
-	  <div class="col-md-10"> 
-	    <div class="panel-primary">
-          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>     
-          <div class="panel-body">		     
-		    <div class="form-group">创建方式：
-			    <label class="radio-inline">
-				  <input type="radio" name="ExamType" id="SignUpTypeOne" value="手动创建" checked="checked" onClick="controll('SignUpTypeOne')">手动创建
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="ExamType" id="SignUpTypeTwo" value="批量添加" onClick="controll('SignUpTypeTwo')">批量添加
-                </label>
-		    </div>
-			      
-            <form class="form-horizontal" role="form" id="ManualAdd" action="{{url "Examinee.SignUp"}}" method="POST">                                
-              {{with $field := field "signUpExaminee.Name" .}} 
-              <div class="form-group {{$field.ErrorClass}}"> 
-                <label class="col-sm-3 control-label" for="{{$field.Id}}">考生姓名</label> 
-                <div class="col-sm-6"> 
-                  <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入考生姓名"> 
-                  {{if $field.Error}} 
-                  <span class="help-inline">{{$field.Error}}</span> 
-                  {{end}} 
-                </div> 
-              </div> 
-              {{end}}  
-			
-              {{with $field := field "signUpExaminee.IDCard" .}} 
-              <div class="form-group {{$field.ErrorClass}}"> 
-                <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label> 
-                <div class="col-sm-6"> 
-                  <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号">       
-                  {{if $field.Error}} 
-                  <span class="help-inline">{{$field.Error}}</span> 
-                  {{end}}         
-                </div> 
-              </div> 
-              {{end}} 
-          
-              {{with $field := field "signUpExaminee.Password" .}} 
-              <div class="form-group {{$field.ErrorClass}}"> 
-                <label class="col-sm-3 control-label" for="{{$field.Id}}">设置密码</label> 
-                <div class="col-sm-6"> 
-                  <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="设置密码"> 
-                  {{if $field.Error}} 
-                  <span class="help-inline">{{$field.Error}}</span> 
-                  {{end}} 
-                </div> 
-              </div> 
-              {{end}} 
-			
-			  {{with $field := field "signUpExaminee.ConfirmPassword" .}} 
-              <div class="form-group {{$field.ErrorClass}}"> 
-                <label class="col-sm-3 control-label" for="{{$field.Id}}">重复密码</label> 
-                <div class="col-sm-6"> 
-                  <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码"> 
-                  {{if $field.Error}} 
-                  <span class="help-inline">{{$field.Error}}</span> 
-                  {{end}} 
-                </div> 
-              </div> 
-              {{end}}    
-          
-              <div class="form-group">
-                <label class="col-sm-3 control-label">性别</label>  
-                <div class="col-sm-6">        
-                  <label class="radio-inline">
-                    <input type="radio" name="signUpExaminee.Gender" value="男" checked> 男
-                  </label>
-                  <label class="radio-inline"> 
-                    <input type="radio" name="signUpExaminee.Gender" value="女"> 女
-                  </label>  
-                  <label class="radio-inline">            
-                    <button type="submit" class="btn btn-primary" id="SignUpFormSubmit">注册</button>
-                  </label>
-                </div>
-              </div>
-            </form>
-			
-			<form class="form-horizontal" role="form" id="BatchSignUp" enctype="multipart/form-data" action="{{url "Examinee.PostBatchSignUp"}}" method="POST" style="display:none;">                                
-              <div class="form-group">
-			    <div class="row">
-				  <div class="col-sm-3"></div>
-				  <label class="col-sm-3">第一步：下载账号模板</label>
-				  <div class="col-sm-6">
-				    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-				    <a href="/public/tpls/批量注册账号模板.zip" id="download">批量注册账号模板.zip</a>
-				  </div>
-                </div>
-			  </div>
-			  <div class="form-group">
-			    <div class="row">
-				  <div class="col-sm-3"></div>
-				  <label class="col-sm-3">第二步：填写账号信息</label>
-				  <div class="col-sm-6">
-				    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-				  </div>  
-                </div>
-			  </div>
-			  <div class="form-group">
-			    <div class="row">
-				  <div class="col-sm-3"></div>
-				  <label class="col-sm-3" for="download">第三步：上传账号文件</label>
-                  <div class="col-sm-6">
-				     <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-				     <input type="file" id="CSVFile" name=CSVFile>
-                     <p class="help-block">请上传CSV账号文件</p>
-			         <button type="submit" class="btn btn-primary" id="BatchSignUpFormSubmit">注册</button>
-                  </div>
-				</div>
-			  </div>
-			  <div class="form-group">
-			    <div class="row">
-				  <div class="col-sm-3"></div>
-				  <label class="col-sm-9">第四步：查看本页下面的注册信息，注册成功的账号密码为身份证后六位</label>
-                </div>
-			  </div>
-            </form>
-          </div>
-        </div>
-     </div>   
-  </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="span6">
-      {{template "flash.html" .}}
+        <br>
     </div>
-  </div>
+    <div class="row">
+        <div class="col-md-2">{{template "menu.html" .}}</div>
+        <div class="col-md-10">
+            <div class="panel-primary">
+                <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
+                <div class="panel-body">
+                    <div class="form-group">创建方式：
+                        <label class="radio-inline">
+                            <input type="radio" name="ExamType" id="SignUpTypeOne" value="手动创建" checked="checked" onClick="controll('SignUpTypeOne')">手动创建
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="ExamType" id="SignUpTypeTwo" value="批量添加" onClick="controll('SignUpTypeTwo')">批量添加
+                        </label>
+                    </div>
+                    <form class="form-horizontal" role="form" id="ManualAdd" action="{{url " Examinee.SignUp "}}" method="POST">
+                        {{with $field := field "signUpExaminee.Name" .}}
+                        <div class="form-group {{$field.ErrorClass}}">
+                            <label class="col-sm-3 control-label" for="{{$field.Id}}">考生姓名</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入考生姓名"> {{if $field.Error}}
+                                <span class="help-inline">{{$field.Error}}</span> {{end}}
+                            </div>
+                        </div>
+                        {{end}} {{with $field := field "signUpExaminee.IDCard" .}}
+                        <div class="form-group {{$field.ErrorClass}}">
+                            <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号"> {{if $field.Error}}
+                                <span class="help-inline">{{$field.Error}}</span> {{end}}
+                            </div>
+                        </div>
+                        {{end}} {{with $field := field "signUpExaminee.Password" .}}
+                        <div class="form-group {{$field.ErrorClass}}">
+                            <label class="col-sm-3 control-label" for="{{$field.Id}}">设置密码</label>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="设置密码"> {{if $field.Error}}
+                                <span class="help-inline">{{$field.Error}}</span> {{end}}
+                            </div>
+                        </div>
+                        {{end}} {{with $field := field "signUpExaminee.ConfirmPassword" .}}
+                        <div class="form-group {{$field.ErrorClass}}">
+                            <label class="col-sm-3 control-label" for="{{$field.Id}}">重复密码</label>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码"> {{if $field.Error}}
+                                <span class="help-inline">{{$field.Error}}</span> {{end}}
+                            </div>
+                        </div>
+                        {{end}}
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">性别</label>
+                            <div class="col-sm-6">
+                                <label class="radio-inline">
+                                    <input type="radio" name="signUpExaminee.Gender" value="男" checked> 男
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="signUpExaminee.Gender" value="女"> 女
+                                </label>
+                                <label class="radio-inline">
+                                    <button type="submit" class="btn btn-primary" id="SignUpFormSubmit">注册</button>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                    <form class="form-horizontal" role="form" id="BatchSignUp" enctype="multipart/form-data" action="{{url " Examinee.PostBatchSignUp "}}" method="POST" style="display:none;">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <label class="col-sm-3">第一步：下载账号模板</label>
+                                <div class="col-sm-6">
+                                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                                    <a href="/public/tpls/批量注册账号模板.zip" id="download">批量注册账号模板.zip</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <label class="col-sm-3">第二步：填写账号信息</label>
+                                <div class="col-sm-6">
+                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <label class="col-sm-3" for="download">第三步：上传账号文件</label>
+                                <div class="col-sm-6">
+                                    <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+                                    <input type="file" id="CSVFile" name=CSVFile>
+                                    <p class="help-block">请上传CSV账号文件</p>
+                                    <button type="submit" class="btn btn-primary" id="BatchSignUpFormSubmit">注册</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <label class="col-sm-9">第四步：查看本页下面的注册信息，注册成功的账号密码为身份证后六位</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
+    </div>
+</div>
 {{template "footer.html" .}}

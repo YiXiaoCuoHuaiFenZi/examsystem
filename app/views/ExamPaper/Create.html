@@ -1,221 +1,196 @@
-{{set . "title" "濮阳市龙都考试中心"}}
-{{template "header.html" .}}
-
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
 <script src="/public/js/exampaper-create.js" type="text/javascript" charset="utf-8"></script>
-
 <div class="container">
-    <div class="row"><br></div>
     <div class="row">
-	  <div class="col-md-2">{{template "menu.html" .}}</div>
-	  <div class="col-md-10"> 
-	    <div class="panel-primary">
-          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
-          <div class="panel-body">
-		    <form class="form-horizontal" role="form" action="{{url "ExamPaper.PostCreate"}}" method="POST">
-			  <div class="form-group">考试类别：
-			    <label class="radio-inline">
-				  <input type="radio" name="examPaper.Type" id="ExamTypeOne" value="交通" checked="checked">交通
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="examPaper.Type" id="ExamTypeTwo" value="司法">司法
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="examPaper.Type" id="ExamTypeThree" value="建筑">建筑
-				</label>
-			  </div>
-		      <div class="form-group">生成方式：		
-				<label class="radio-inline">
-				  <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodRandom" value="随机生成" checked="checked" onClick="controll('ExamPaperCreateMethodRandom')">随机生成
-				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodSelect" value="套题选择" onClick="controll('ExamPaperCreateMethodSelect')">套题选择
-				</label>
-              </div>
-			  <div id="ExamPaperCreateRandomInputs">
-				<div class="row">
-			       {{with $field := field "examPaper.Title" .}} 
-                   <div class="form-group {{$field.ErrorClass}}">
-				      <div class="col-sm-12">
-				         <div class="form-group-addon" for="{{$field.Id}}">试卷标题：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-                   </div> 
-                   {{end}}
-				</div>
-				
-				<div class="row">
-			       {{with $field := field "examPaper.Discription" .}} 
-                   <div class="form-group {{$field.ErrorClass}}">
-				      <div class="col-sm-12">
-				         <div class="form-group-addon" for="{{$field.Id}}">试卷描述：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}">       
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-                   </div> 
-                   {{end}}
-				</div>
-
-				<div class="row">
-                   <div class="form-group">
-				      {{with $field := field "examPaper.Score" .}} 
-				      <div class="col-sm-6 {{$field.ErrorClass}}">
-				         <div class="form-group-addon" for="{{$field.Id}}">试卷总分数：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-					  {{end}}
-					  {{with $field := field "examPaper.Time" .}}
-					  <div class="col-sm-6 {{$field.ErrorClass}}">
-				         <div class="form-group-addon" for="{{$field.Id}}">考试时间：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">       
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-					  {{end}}
-                   </div>
-				</div>
-
-			    <div class="row">
-                   <div class="form-group">
-				      {{with $field := field "examPaper.SCCount" .}} 
-				      <div class="col-sm-6 {{$field.ErrorClass}}">
-				         <div class="form-group-addon" for="{{$field.Id}}">单选题数量：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-					  {{end}}
-					  {{with $field := field "examPaper.SCScore" .}}
-					  <div class="col-sm-6 {{$field.ErrorClass}}">
-				         <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">       
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-					  {{end}}
-                   </div>
-				</div>
-
-				<div class="row">
-                   <div class="form-group">
-				      {{with $field := field "examPaper.MCCount" .}} 
-				      <div class="col-sm-6 {{$field.ErrorClass}}">
-				         <div class="form-group-addon" for="{{$field.Id}}">多选题数量：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">       
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-					  {{end}}
-					  {{with $field := field "examPaper.MCScore" .}}
-					  <div class="col-sm-6 {{$field.ErrorClass}}">
-				         <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">       
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-					  {{end}}
-                   </div>
-				</div>
-
-				<div class="row">
-                   <div class="form-group">
-				      {{with $field := field "examPaper.TFCount" .}} 
-				      <div class="col-sm-6 {{$field.ErrorClass}}">
-				         <div class="form-group-addon" for="{{$field.Id}}">判断题数量：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">       
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-					  {{end}}
-					  {{with $field := field "examPaper.TFScore" .}}
-					  <div class="col-sm-6 {{$field.ErrorClass}}">
-				         <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
-                         <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});">       
-                         {{if $field.Error}} 
-                         <span class="help-inline">{{$field.Error}}</span> 
-                         {{end}}
-					  </div>
-					  {{end}}
-                   </div>
-				</div>
-			</div>
-			<div class="row" id="ExamPaperCreateSelectTable" style="display:none;">
-	        	<table class="table table-hover">
-	              <thead>
-	               <tr>
-	           	      <th>编号</th>
-	           	      <th>试卷类型</th>
-	           	      <th>数量</th>
-                       <th>考试类别</th>
-	        		  <th>选择</th>I
-                    </tr>
-                   </thead>
-                   <tbody>
-                     <tr>
-                       <th scope="row">1</th>
-                       <td>Mark</td>
-	           	       <td>Mark</td>
-                       <td>Otto</td>
-					   <td>
-					     <div class="checkbox">
-						  <label><input type="checkbox">选择</label>
-						</div>
-					   </td>
-                     </tr>
-                     <tr>
-                       <th scope="row">2</th>
-                       <td>Jacob</td>
-	           	       <td>Mark</td>
-                       <td>Thornton</td>
-					   <td>
-					     <div class="checkbox">
-						  <label><input type="checkbox">选择</label>
-						</div>
-					   </td>
-                     </tr>
-                     <tr>
-                       <th scope="row">3</th>
-                       <td>Larry</td>
-                       <td>the Bird</td>
-	           	       <td>Mark</td>
-					   <td>
-					     <div class="checkbox">
-						  <label><input type="checkbox">选择</label>
-						</div>
-					   </td>
-                     </tr>
-                   </tbody>
-                 </table>			
-			</div>
-			<div class="row">
-			    <button class="btn btn-default" type="submit">提交</button>
-			  </div>           		  
-		    </form>           
-          </div>
-		</div>	  
-      </div>   
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-2">{{template "menu.html" .}}</div>
+        <div class="col-md-10">
+            <div class="panel-primary">
+                <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form" action="{{url " ExamPaper.PostCreate "}}" method="POST">
+                        <div class="form-group">考试类别：
+                            <label class="radio-inline">
+                                <input type="radio" name="examPaper.Type" id="ExamTypeOne" value="交通" checked="checked">交通
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="examPaper.Type" id="ExamTypeTwo" value="司法">司法
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="examPaper.Type" id="ExamTypeThree" value="建筑">建筑
+                            </label>
+                        </div>
+                        <div class="form-group">生成方式：
+                            <label class="radio-inline">
+                                <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodRandom" value="随机生成" checked="checked" onClick="controll('ExamPaperCreateMethodRandom')">随机生成
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodSelect" value="套题选择" onClick="controll('ExamPaperCreateMethodSelect')">套题选择
+                            </label>
+                        </div>
+                        <div id="ExamPaperCreateRandomInputs">
+                            <div class="row">
+                                {{with $field := field "examPaper.Title" .}}
+                                <div class="form-group {{$field.ErrorClass}}">
+                                    <div class="col-sm-12">
+                                        <div class="form-group-addon" for="{{$field.Id}}">试卷标题：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                </div>
+                                {{end}}
+                            </div>
+                            <div class="row">
+                                {{with $field := field "examPaper.Discription" .}}
+                                <div class="form-group {{$field.ErrorClass}}">
+                                    <div class="col-sm-12">
+                                        <div class="form-group-addon" for="{{$field.Id}}">试卷描述：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                </div>
+                                {{end}}
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    {{with $field := field "examPaper.Score" .}}
+                                    <div class="col-sm-6 {{$field.ErrorClass}}">
+                                        <div class="form-group-addon" for="{{$field.Id}}">试卷总分数：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                    {{end}} {{with $field := field "examPaper.Time" .}}
+                                    <div class="col-sm-6 {{$field.ErrorClass}}">
+                                        <div class="form-group-addon" for="{{$field.Id}}">考试时间：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                    {{end}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    {{with $field := field "examPaper.SCCount" .}}
+                                    <div class="col-sm-6 {{$field.ErrorClass}}">
+                                        <div class="form-group-addon" for="{{$field.Id}}">单选题数量：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                    {{end}} {{with $field := field "examPaper.SCScore" .}}
+                                    <div class="col-sm-6 {{$field.ErrorClass}}">
+                                        <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                    {{end}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    {{with $field := field "examPaper.MCCount" .}}
+                                    <div class="col-sm-6 {{$field.ErrorClass}}">
+                                        <div class="form-group-addon" for="{{$field.Id}}">多选题数量：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                    {{end}} {{with $field := field "examPaper.MCScore" .}}
+                                    <div class="col-sm-6 {{$field.ErrorClass}}">
+                                        <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                    {{end}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    {{with $field := field "examPaper.TFCount" .}}
+                                    <div class="col-sm-6 {{$field.ErrorClass}}">
+                                        <div class="form-group-addon" for="{{$field.Id}}">判断题数量：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                    {{end}} {{with $field := field "examPaper.TFScore" .}}
+                                    <div class="col-sm-6 {{$field.ErrorClass}}">
+                                        <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
+                                        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                        <span class="help-inline">{{$field.Error}}</span> {{end}}
+                                    </div>
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="ExamPaperCreateSelectTable" style="display:none;">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>编号</th>
+                                        <th>试卷类型</th>
+                                        <th>数量</th>
+                                        <th>考试类别</th>
+                                        <th>选择</th>I
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox">选择</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Mark</td>
+                                        <td>Thornton</td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox">选择</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>Mark</td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox">选择</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="form-group-addon" id="">总分：</div>
+                            <div class="form-group-addon" id="totalScore">0</div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-default" type="submit">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 <div class="container">
-  <div class="row">
-    <div class="span6">
-      {{template "flash.html" .}}
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
     </div>
-  </div>
 </div>
-
 {{template "footer.html" .}}

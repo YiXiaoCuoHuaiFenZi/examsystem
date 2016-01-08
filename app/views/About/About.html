@@ -1,33 +1,30 @@
-{{set . "title" "濮阳市龙都考试中心"}}
-{{template "header.html" .}}
-
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
 <script src="/public/js/exampaper-create.js" type="text/javascript" charset="utf-8"></script>
-
 <div class="container">
-    <div class="row"><br></div>
     <div class="row">
-	  <div class="col-md-2">{{template "menu.html" .}}</div>
-	  <div class="col-md-10"> 
-	    <div class="panel-primary">
-          <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
-          <div class="panel-body">
-		     <div class="row">
-			    <p class="text-left">邮件地址： xausee@gmail.com</p>
-				<p class="text-left">移动电话： 15220134343</p>
-				<p class="text-left">QQ号码： 249664317</p>			    
-			 </div> 			  
-			</div>
-		</div>	  
-      </div>   
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-2">{{template "menu.html" .}}</div>
+        <div class="col-md-10">
+            <div class="panel-primary">
+                <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <p class="text-left">邮件地址： xausee@gmail.com</p>
+                        <p class="text-left">移动电话： 15220134343</p>
+                        <p class="text-left">QQ号码： 249664317</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 <div class="container">
-  <div class="row">
-    <div class="span6">
-      {{template "flash.html" .}}
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
     </div>
-  </div>
 </div>
-
 {{template "footer.html" .}}

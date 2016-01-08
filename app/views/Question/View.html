@@ -1,47 +1,45 @@
-{{set . "title" "濮阳市龙都考试中心"}}
-{{template "header.html" .}}
-
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
 <div class="container">
-    <div class="row"><br></div>
     <div class="row">
-	  <div class="col-md-2">{{template "menu.html" .}}</div>
-	  <div class="col-md-10">
-	     <div class="panel-primary">
-            <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>  
-            <div class="panel-body">
-			<!--results: map[考试类别]map[题目类型]题目数量-->
-			<!--{{.results}}-->
-			{{range $key, $value := .results}}
-			<div class="text-left">{{$key}}试题库信息：</div>
-		    <table class="table table-hover table-condensed">
-		      <thead>
-		       <tr>
-		   	      <th>类型</th>
-		   	      <th>数量</th>
-               </tr>
-              </thead>
-              <tbody>
-			   {{range $k, $v := $value}}
-				<tr>
-				  <td>{{$k}}</td>
-				  <td>{{$v}}</td>
-                </tr>
-				{{end}}
-              </tbody>
-            </table>
-			{{end}}
-		   </div>
-		 </div>
-	  </div>	  
-	</div>   
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="span6">
-      {{template "flash.html" .}}
+        <br>
     </div>
-  </div>
+    <div class="row">
+        <div class="col-md-2">{{template "menu.html" .}}</div>
+        <div class="col-md-10">
+            <div class="panel-primary">
+                <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
+                <div class="panel-body">
+                    <!--results: map[考试类别]map[题目类型]题目数量-->
+                    <!--{{.results}}-->
+                    {{range $key, $value := .results}}
+                    <div class="text-left">{{$key}}试题库信息：</div>
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>数量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range $k, $v := $value}}
+                            <tr>
+                                <td>{{$k}}</td>
+                                <td>{{$v}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
+    </div>
+</div>
 {{template "footer.html" .}}
