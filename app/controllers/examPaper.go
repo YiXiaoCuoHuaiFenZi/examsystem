@@ -110,14 +110,13 @@ func (this ExamPaper) Preview(title string) revel.Result {
 		return this.RenderError(err)
 	}
 	defer manager.Close()
-	log.Println(title)
+
 	examPaper, e := manager.GetExamPaperByTitle(title)
 	if e != nil {
 		this.Response.Status = 500
 		return this.RenderError(e)
 	}
 
-	log.Println(examPaper)
 	scCount := len(examPaper.SC)
 	mcCount := len(examPaper.MC)
 	tfCount := len(examPaper.TF)
