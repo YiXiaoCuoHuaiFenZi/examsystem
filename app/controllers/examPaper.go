@@ -103,6 +103,35 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	return this.Redirect(ExamPaper.Create)
 }
 
+func (this ExamPaper) Preview(title string) revel.Result {
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+	log.Println(title)
+	examPaper, e := manager.GetExamPaperByTitle(title)
+	if e != nil {
+		this.Response.Status = 500
+		return this.RenderError(e)
+	}
+
+	log.Println(examPaper)
+	scCount := len(examPaper.SC)
+	mcCount := len(examPaper.MC)
+	tfCount := len(examPaper.TF)
+
+	this.RenderArgs["scCount"] = scCount
+	this.RenderArgs["mcCount"] = mcCount
+	this.RenderArgs["tfCount"] = tfCount
+	this.RenderArgs["examPaper"] = examPaper
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+
+	return this.Render()
+}
+
 func (this ExamPaper) View() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
@@ -127,6 +156,22 @@ func (this ExamPaper) View() revel.Result {
 }
 
 func (this ExamPaper) Publish() revel.Result {
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	examPapers, e := manager.GetAllExamPaper()
+
+	if e != nil {
+		log.Println(e)
+		this.Response.Status = 500
+		return this.RenderError(e)
+	}
+
+	this.RenderArgs["examPapers"] = examPapers
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
 

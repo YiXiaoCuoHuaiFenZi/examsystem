@@ -26,7 +26,7 @@
                             {{range $index, $examPaper := .examPapers}}
                             <tr>
                                 <th scope="row">{{addOne $index}}</th>
-                                <td>{{$examPaper.Title}}</td>
+                                <td><a href="{{url "ExamPaper.Preview" $examPaper.Title}}">{{$examPaper.Title}}</td>
                                 <td>{{$examPaper.Type}}</td>
                                 <td>{{$examPaper.Score}}</td>
                                 <td>{{$examPaper.Time}}</td>

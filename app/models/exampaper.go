@@ -40,3 +40,15 @@ func (this *DBManager) AddExamPaper(exp *ExamPaper) error {
 
 	return err
 }
+
+func (this *DBManager) GetExamPaperByTitle(title string) (ExamPaper, error) {
+	t := this.session.DB(DBName).C(ExamPaperCollection)
+
+	exp := ExamPaper{}
+	err := t.Find(bson.M{"title": title}).One(&exp)
+	if err != nil {
+		return exp, err
+	}
+
+	return exp, err
+}
