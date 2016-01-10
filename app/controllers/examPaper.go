@@ -2,10 +2,16 @@ package controllers
 
 import (
 	"ExamSystem/app/models"
+	"bufio"
+	"io"
+	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+
 	//"strconv"
 
 	"github.com/revel/revel"
@@ -103,8 +109,175 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	return this.Redirect(ExamPaper.Create)
 }
 
-func (this ExamPaper) PostUpload(examPaper *models.ExamPaper) revel.Result {
-	return this.Render()
+func (this ExamPaper) parseExamPaperFile(examPaperFile *os.File) (string, string, string, error) {
+	// 使用revel requst formfile获取文件数据
+	file, handler, err := this.Request.FormFile("examPaperFile")
+	if err != nil {
+		this.Response.Status = 500
+		log.Println(err)
+		return "", "", "", err
+	}
+	// 读取所有数据
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		this.Response.Status = 500
+		log.Println(err)
+		return "", "", "", err
+	}
+
+	// 获取当前路径
+	dir, patherr := filepath.Abs(filepath.Dir(os.Args[0]))
+	if patherr != nil {
+		this.Response.Status = 500
+		log.Println(err)
+		return "", "", "", err
+	}
+
+	// 文件路径
+	filePath := dir + "/" + handler.Filename
+
+	// 保存到文件
+	err = ioutil.WriteFile(filePath, data, 0777)
+	if err != nil {
+		this.Response.Status = 500
+		log.Println(err)
+		return "", "", "", err
+	}
+
+	scFilePath := dir + "/scs.txt"
+	mcFilePath := dir + "/mcs.txt"
+	tfFilePath := dir + "/tfs.txt"
+
+	f, err := os.Open(filePath)
+	scf, err := os.Create(scFilePath)
+	if err != nil {
+		this.Response.Status = 500
+		log.Println(err)
+		return "", "", "", err
+	}
+	defer scf.Close()
+	mcf, err := os.Create(mcFilePath)
+	if err != nil {
+		this.Response.Status = 500
+		log.Println(err)
+		return "", "", "", err
+	}
+	defer mcf.Close()
+	tff, err := os.Create(tfFilePath)
+	if err != nil {
+		this.Response.Status = 500
+		log.Println(err)
+		return "", "", "", err
+	}
+	defer tff.Close()
+
+	r := bufio.NewReader(f)
+	sc, mc, tf := false, false, false
+	for {
+		line := make([]byte, 1024, 1024)
+		line, _, err := r.ReadLine()
+		if err == io.EOF {
+			break
+		}
+		l := string(line)
+		if l == "********************单选题********************" {
+			sc, mc, tf = true, false, false
+		} else if l == "********************多选题********************" {
+			sc, mc, tf = false, true, false
+		} else if l == "********************判断题********************" {
+			sc, mc, tf = false, false, true
+		}
+
+		if sc {
+			n, e := scf.WriteString(l + "\r\n")
+			if err != nil {
+				this.Response.Status = 500
+				log.Println(n, e)
+				return "", "", "", e
+			}
+		}
+		if mc {
+			n, e := mcf.WriteString(l + "\r\n")
+			if err != nil {
+				this.Response.Status = 500
+				log.Println(n, e)
+				return "", "", "", e
+			}
+		}
+		if tf {
+			n, e := tff.WriteString(l + "\r\n")
+			if err != nil {
+				this.Response.Status = 500
+				log.Println(n, e)
+				return "", "", "", e
+			}
+		}
+	}
+	return scFilePath, mcFilePath, tfFilePath, nil
+}
+
+func (this ExamPaper) PostUpload(file *os.File, qType string) revel.Result {
+	scFilePath, mcFilePath, tfFilePath, err := this.parseExamPaperFile(file)
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+
+	scf, err := os.Open(scFilePath)
+	if err != nil {
+		return this.RenderError(err)
+	}
+	defer scf.Close()
+	mcf, err := os.Open(mcFilePath)
+	if err != nil {
+		return this.RenderError(err)
+	}
+	defer mcf.Close()
+	tff, err := os.Open(tfFilePath)
+	if err != nil {
+		return this.RenderError(err)
+	}
+	defer tff.Close()
+
+	scs, err := models.ParseSingleChoiceFile(scf, qType)
+	mcs, err := models.ParseMultipleChoiceFile(mcf, qType)
+	tfs, err := models.ParseTrueFalseFile(tff, qType)
+	examPaper := models.ExamPaper{}
+	examPaper.Type = qType
+	examPaper.Title = "1"
+	//	examPaper.Discription = qType
+	//	examPaper.Score = qType
+	//	examPaper.Time = qType
+	//	examPaper.TimeStamp = qType
+	//	examPaper.IDCode = qType
+	//	examPaper.CreateMethod = qType
+	//	examPaper.SCCount = qType
+	//	examPaper.SCScore = qType
+	examPaper.SC = scs
+	//	examPaper.MCCount = qType
+	//	examPaper.MCScore = qType
+	examPaper.MC = mcs
+	//	examPaper.TFCount = qType
+	//	examPaper.TFScore = qType
+	examPaper.TF = tfs
+
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+	
+	err = manager.AddExamPaper(&examPaper)
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+
+	return this.Redirect(ExamPaper.Create)
 }
 
 func (this ExamPaper) Preview(title string) revel.Result {
