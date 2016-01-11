@@ -16,7 +16,7 @@
                                 <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodRandom" value="随机生成" checked="checked" onClick="createMethodControll('ExamPaperCreateMethodRandom')">随机生成
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodUpload" value="套题选择" onClick="createMethodControll('ExamPaperCreateMethodUpload')">套题上传
+                                <input type="radio" name="examPaper.CreateMethod" id="ExamPaperCreateMethodUpload" value="套题上传" onClick="createMethodControll('ExamPaperCreateMethodUpload')">套题上传
                             </label>
                         </div>
                     </div>
@@ -131,13 +131,13 @@
                     <form class="form-horizontal" role="form" id="ExamPaperUploadForm" enctype="multipart/form-data" action="{{url "ExamPaper.PostUpload"}}" method="POST" style="display:none;">
                         <div class="form-group">考试类别：
                             <label class="radio-inline">
-                                <input type="radio" name="examPaper.Type" id="ExamTypeOne" value="交通" checked="checked">交通
+                                <input type="radio" name="pType" id="ExamTypeOne" value="交通" checked="checked">交通
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="examPaper.Type" id="ExamTypeTwo" value="司法">司法
+                                <input type="radio" name="pType" id="ExamTypeTwo" value="司法">司法
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="examPaper.Type" id="ExamTypeThree" value="建筑">建筑
+                                <input type="radio" name="pType" id="ExamTypeThree" value="建筑">建筑
                             </label>
                         </div>
                         <div class="form-group">

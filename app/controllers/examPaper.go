@@ -2,8 +2,6 @@ package controllers
 
 import (
 	"ExamSystem/app/models"
-	"bufio"
-	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -11,8 +9,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	//"strconv"
 
 	"github.com/revel/revel"
 )
@@ -109,115 +105,52 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	return this.Redirect(ExamPaper.Create)
 }
 
-func (this ExamPaper) parseExamPaperFile(examPaperFile *os.File) (string, string, string, error) {
+func (this ExamPaper) saveExamPaperFile(examPaperFile *os.File) (filePath string, err error) {
 	// 使用revel requst formfile获取文件数据
 	file, handler, err := this.Request.FormFile("examPaperFile")
 	if err != nil {
 		this.Response.Status = 500
 		log.Println(err)
-		return "", "", "", err
+		return "", err
 	}
 	// 读取所有数据
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
 		this.Response.Status = 500
 		log.Println(err)
-		return "", "", "", err
+		return "", err
 	}
 
 	// 获取当前路径
-	dir, patherr := filepath.Abs(filepath.Dir(os.Args[0]))
-	if patherr != nil {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
 		this.Response.Status = 500
 		log.Println(err)
-		return "", "", "", err
+		return "", err
 	}
 
 	// 文件路径
-	filePath := dir + "/" + handler.Filename
+	filePath = dir + "/" + handler.Filename
 
 	// 保存到文件
 	err = ioutil.WriteFile(filePath, data, 0777)
 	if err != nil {
 		this.Response.Status = 500
 		log.Println(err)
-		return "", "", "", err
+		return "", err
 	}
 
-	scFilePath := dir + "/scs.txt"
-	mcFilePath := dir + "/mcs.txt"
-	tfFilePath := dir + "/tfs.txt"
-
-	f, err := os.Open(filePath)
-	scf, err := os.Create(scFilePath)
-	if err != nil {
-		this.Response.Status = 500
-		log.Println(err)
-		return "", "", "", err
-	}
-	defer scf.Close()
-	mcf, err := os.Create(mcFilePath)
-	if err != nil {
-		this.Response.Status = 500
-		log.Println(err)
-		return "", "", "", err
-	}
-	defer mcf.Close()
-	tff, err := os.Create(tfFilePath)
-	if err != nil {
-		this.Response.Status = 500
-		log.Println(err)
-		return "", "", "", err
-	}
-	defer tff.Close()
-
-	r := bufio.NewReader(f)
-	sc, mc, tf := false, false, false
-	for {
-		line := make([]byte, 1024, 1024)
-		line, _, err := r.ReadLine()
-		if err == io.EOF {
-			break
-		}
-		l := string(line)
-		if l == "********************单选题********************" {
-			sc, mc, tf = true, false, false
-		} else if l == "********************多选题********************" {
-			sc, mc, tf = false, true, false
-		} else if l == "********************判断题********************" {
-			sc, mc, tf = false, false, true
-		}
-
-		if sc {
-			n, e := scf.WriteString(l + "\r\n")
-			if err != nil {
-				this.Response.Status = 500
-				log.Println(n, e)
-				return "", "", "", e
-			}
-		}
-		if mc {
-			n, e := mcf.WriteString(l + "\r\n")
-			if err != nil {
-				this.Response.Status = 500
-				log.Println(n, e)
-				return "", "", "", e
-			}
-		}
-		if tf {
-			n, e := tff.WriteString(l + "\r\n")
-			if err != nil {
-				this.Response.Status = 500
-				log.Println(n, e)
-				return "", "", "", e
-			}
-		}
-	}
-	return scFilePath, mcFilePath, tfFilePath, nil
+	return filePath, nil
 }
 
-func (this ExamPaper) PostUpload(file *os.File, qType string) revel.Result {
-	scFilePath, mcFilePath, tfFilePath, err := this.parseExamPaperFile(file)
+func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
+	filePath, err := this.saveExamPaperFile(file)
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+
+	examPaper, scFilePath, mcFilePath, tfFilePath, err := models.ParseExamPaperFile(filePath)
 	if err != nil {
 		this.Response.Status = 500
 		return this.RenderError(err)
@@ -239,25 +172,29 @@ func (this ExamPaper) PostUpload(file *os.File, qType string) revel.Result {
 	}
 	defer tff.Close()
 
-	scs, err := models.ParseSingleChoiceFile(scf, qType)
-	mcs, err := models.ParseMultipleChoiceFile(mcf, qType)
-	tfs, err := models.ParseTrueFalseFile(tff, qType)
-	examPaper := models.ExamPaper{}
-	examPaper.Type = qType
-	examPaper.Title = "1"
+	scs, err := models.ParseSingleChoiceFile(scf, pType)
+	mcs, err := models.ParseMultipleChoiceFile(mcf, pType)
+	tfs, err := models.ParseTrueFalseFile(tff, pType)
+
+	t := time.Now()
+	//examPaper := models.ExamPaper{}
+	examPaper.Type = pType
+	//examPaper.Title = "1"
 	//	examPaper.Discription = qType
 	//	examPaper.Score = qType
 	//	examPaper.Time = qType
-	//	examPaper.TimeStamp = qType
-	//	examPaper.IDCode = qType
-	//	examPaper.CreateMethod = qType
-	//	examPaper.SCCount = qType
+	examPaper.TimeStamp = t.Format("2006-01-02 15:04:05")
+	examPaper.IDCode = "HGY" + strconv.Itoa(t.Year()) + strconv.Itoa((int)(t.Month())) +
+		strconv.Itoa(t.Day()) + strconv.Itoa(t.Hour()) +
+		strconv.Itoa(t.Minute()) + strconv.Itoa(t.Second())
+	examPaper.CreateMethod = "套题上传"
+	examPaper.SCCount = len(scs)
 	//	examPaper.SCScore = qType
 	examPaper.SC = scs
-	//	examPaper.MCCount = qType
+	examPaper.MCCount = len(mcs)
 	//	examPaper.MCScore = qType
 	examPaper.MC = mcs
-	//	examPaper.TFCount = qType
+	examPaper.TFCount = len(tfs)
 	//	examPaper.TFScore = qType
 	examPaper.TF = tfs
 
@@ -267,7 +204,7 @@ func (this ExamPaper) PostUpload(file *os.File, qType string) revel.Result {
 		return this.RenderError(err)
 	}
 	defer manager.Close()
-	
+
 	err = manager.AddExamPaper(&examPaper)
 	if err != nil {
 		this.Response.Status = 500
