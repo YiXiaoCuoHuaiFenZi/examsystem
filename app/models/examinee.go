@@ -83,3 +83,25 @@ func (this *DBManager) GetExamineeByIDCard(idCard string) (Examinee, error) {
 
 	return examinee, err
 }
+
+func (this *DBManager) UpdateExaminee(examinee *Examinee) error {
+	t := this.session.DB(DBName).C(ExamineeCollection)
+
+	var oldExp Examinee
+	err := t.Find(bson.M{"idcard": examinee.IDCard}).One(&oldExp)
+	if err != nil {
+		return err
+	}
+
+	tempInfo := oldExp
+	tempInfo.ExamType = examinee.ExamPaper.Type
+	tempInfo.ExamStatus = examinee.ExamStatus
+	tempInfo.ExamPaper = examinee.ExamPaper
+
+	err = t.Update(oldExp, tempInfo)
+	if err != nil {
+		log.Println("更新考生信息失败：")
+		return err
+	}
+	return nil
+}

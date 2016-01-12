@@ -250,10 +250,28 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 	return this.Redirect(Examinee.Index)
 }
 
-func (this Examinee) Exam() revel.Result {
+func (this Examinee) Exam(examPaperTitle string) revel.Result {
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"])
+	if err != nil {
+		log.Println(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	// TODO 支持多试卷，根据试卷标题查询得到要考试的试卷
+	this.RenderArgs["scCount"] = len(examinee.ExamPaper.SC)
+	this.RenderArgs["mcCount"] = len(examinee.ExamPaper.MC)
+	this.RenderArgs["tfCount"] = len(examinee.ExamPaper.TF)
+	this.RenderArgs["examPaper"] = examinee.ExamPaper
 	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
 	this.RenderArgs["examineeName"] = this.Session["examineeName"]
-
+	
 	return this.Render()
 }
 

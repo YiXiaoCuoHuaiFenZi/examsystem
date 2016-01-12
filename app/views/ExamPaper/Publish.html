@@ -10,7 +10,7 @@
             <div class="panel-primary">
                 <div class="panel-heading text-center">濮阳龙都考试中心欢迎您</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" action="#" method="POST">
+                    <form class="form-horizontal" role="form" action="{{url "ExamPaper.PostPublish"}}" method="POST">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -39,7 +39,7 @@
                                     <td>
                                         <div class="radio-inline">
                                             <label>
-                                                <input name="choose" type="radio">选择</label>
+                                                <input name="exmpaperTitle" type="radio" value="{{$examPaper.Title}}">选择</label>
                                         </div>
                                     </td>
                                 </tr>

@@ -177,25 +177,17 @@ func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 	tfs, err := models.ParseTrueFalseFile(tff, pType)
 
 	t := time.Now()
-	//examPaper := models.ExamPaper{}
 	examPaper.Type = pType
-	//examPaper.Title = "1"
-	//	examPaper.Discription = qType
-	//	examPaper.Score = qType
-	//	examPaper.Time = qType
 	examPaper.TimeStamp = t.Format("2006-01-02 15:04:05")
 	examPaper.IDCode = "HGY" + strconv.Itoa(t.Year()) + strconv.Itoa((int)(t.Month())) +
 		strconv.Itoa(t.Day()) + strconv.Itoa(t.Hour()) +
 		strconv.Itoa(t.Minute()) + strconv.Itoa(t.Second())
 	examPaper.CreateMethod = "套题上传"
 	examPaper.SCCount = len(scs)
-	//	examPaper.SCScore = qType
 	examPaper.SC = scs
 	examPaper.MCCount = len(mcs)
-	//	examPaper.MCScore = qType
 	examPaper.MC = mcs
 	examPaper.TFCount = len(tfs)
-	//	examPaper.TFScore = qType
 	examPaper.TF = tfs
 
 	manager, err := models.NewDBManager()
@@ -231,13 +223,9 @@ func (this ExamPaper) Preview(title string) revel.Result {
 		return this.RenderError(e)
 	}
 
-	scCount := len(examPaper.SC)
-	mcCount := len(examPaper.MC)
-	tfCount := len(examPaper.TF)
-
-	this.RenderArgs["scCount"] = scCount
-	this.RenderArgs["mcCount"] = mcCount
-	this.RenderArgs["tfCount"] = tfCount
+	this.RenderArgs["scCount"] = len(examPaper.SC)
+	this.RenderArgs["mcCount"] = len(examPaper.MC)
+	this.RenderArgs["tfCount"] = len(examPaper.TF)
 	this.RenderArgs["examPaper"] = examPaper
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
@@ -289,6 +277,58 @@ func (this ExamPaper) Publish() revel.Result {
 	this.RenderArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
+}
+
+func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
+	exmpaperTitle = strings.TrimSpace(exmpaperTitle)
+	this.Validation.Required(exmpaperTitle).Message("请选择一个试题")
+	log.Println(exmpaperTitle)
+
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect(ExamPaper.Publish)
+	}
+
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	examinees, err := manager.GetAllExaminee()
+	if err != nil {
+		log.Println(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+
+	examPaper, err := manager.GetExamPaperByTitle(exmpaperTitle)
+	if err != nil {
+		log.Println(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+
+	for _, examinee := range examinees {
+		examinee.ExamType = examPaper.Type
+		examinee.ExamStatus = "待考"	
+		models.ClearExamPaperAnswer(&examPaper)
+		examinee.ExamPaper = examPaper
+		
+		err := manager.UpdateExaminee(&examinee)
+		if err != nil {
+			log.Println(err)
+			this.Response.Status = 500
+			return this.RenderError(err)
+		}
+	}
+
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+
+	return this.Redirect(ExamPaper.Publish)
 }
 
 func (this ExamPaper) Score(idCard string) revel.Result {

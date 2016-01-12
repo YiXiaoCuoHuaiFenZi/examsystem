@@ -18,6 +18,7 @@
                                 <th>身份证号</th>
                                 <th>联系方式</th>
                                 <th>考试类别</th>
+								<th>考试</th>
                                 <th>状态</th>
                                 <th>分数</th>
                             </tr>
@@ -31,6 +32,7 @@
                                 <td>{{.IDCard}}</td>
                                 <td>{{.Mobile}}</td>
                                 <td>{{.ExamType}}</td>
+								<td><a href="{{url "ExamPaper.Preview" .ExamPaper.Title}}">{{.ExamPaper.Title}}</td>
                                 <td>{{.ExamStatus}}</td>
                                 <td>{{.Score}}</td>
                             </tr>

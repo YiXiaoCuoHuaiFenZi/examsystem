@@ -268,3 +268,17 @@ func ParseExamPaperFile(exampaperFilePath string) (ExamPaper, string, string, st
 	}
 	return exp, scFilePath, mcFilePath, tfFilePath, nil
 }
+
+func ClearExamPaperAnswer(examPaper *ExamPaper) {
+	for i, _ := range examPaper.SC {
+		examPaper.SC[i].Answer = ""
+	}
+
+	for i, _ := range examPaper.MC {
+		examPaper.MC[i].Answer = make([]string, 0)
+	}
+
+	for i, _ := range examPaper.TF {
+		examPaper.TF[i].Answer = ""
+	}
+}
