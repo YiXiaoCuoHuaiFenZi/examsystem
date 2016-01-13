@@ -264,14 +264,32 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 		this.Response.Status = 500
 		return this.RenderError(err)
 	}
+
+	scCount := len(examinee.ExamPaper.SC)
+	mcCount := len(examinee.ExamPaper.MC)
+	tfCount := len(examinee.ExamPaper.TF)
+
+	totalPages := 0
+	if (scCount+mcCount+tfCount)%15 == 0 {
+		totalPages = (scCount + mcCount + tfCount) / 15
+	} else {
+		totalPages = (scCount+mcCount+tfCount)/15 + 1
+	}
+
+	pages := make([]int, 0)
+	for i := 1; i <= totalPages; i++ {
+		pages = append(pages, i)
+	}
+
 	// TODO 支持多试卷，根据试卷标题查询得到要考试的试卷
-	this.RenderArgs["scCount"] = len(examinee.ExamPaper.SC)
-	this.RenderArgs["mcCount"] = len(examinee.ExamPaper.MC)
-	this.RenderArgs["tfCount"] = len(examinee.ExamPaper.TF)
+	this.RenderArgs["pages"] = pages
+	this.RenderArgs["scCount"] = scCount
+	this.RenderArgs["mcCount"] = mcCount
+	this.RenderArgs["tfCount"] = tfCount
 	this.RenderArgs["examPaper"] = examinee.ExamPaper
 	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
 	this.RenderArgs["examineeName"] = this.Session["examineeName"]
-	
+
 	return this.Render()
 }
 
