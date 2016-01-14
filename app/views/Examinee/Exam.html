@@ -20,13 +20,36 @@
                 </div>
             </div>
             <div class="panel-body">
+                {{$scMarks := .scMarks}}
+                {{$mcMarks := .mcMarks}}
+                {{$tfMarks := .tfMarks}}
+                {{$pageMarks := .pageMarks}}  
+                {{$scMarks}}
+                {{$mcMarks}}
+                {{$tfMarks}}
+                {{$pageMarks := .pageMarks}}           
+                  
                 <form class="form-horizontal" role="form" action="#" method="POST">
                     <div class="form-group">一、单项选择题（共{{.scCount}}题，每题{{.examPaper.SCScore}}分）</div>
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{.pages}}
                             {{range $index, $item := .examPaper.SC}}
+                                {{range $in, $it := $scMarks}}
+                                {{$iii:= eq $it $index}}
+                                {{$iii}}
+                                ###################
+                                  {{if $iii}}
+                                        <tr>
+                                        <th scope="row">
+                                          ###################
+                                          {{$it}}
+                                          {{$index}}
+                                       </th>
+                                       </tr>
+                                  {{end}}                                    
+                                {{end}}
+                                                                
                             <tr>
                                 <th scope="row">
                                     <label>{{addOne $index}}、{{$item.Discription}}</label>
@@ -55,7 +78,7 @@
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := .examPaper.MC}}
+                            {{range $index, $item := .examPaper.MC}}                                
                             <tr>
                                 <th scope="row">
                                     <label>{{addOne $index}}、{{$item.Discription}}</label>
@@ -98,7 +121,7 @@
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := .examPaper.TF}}
+                            {{range $index, $item := .examPaper.TF}}                               
                             <tr>
                                 <th scope="row">
                                     <label>{{addOne $index}}、{{$item.Discription}}</label>
@@ -124,8 +147,8 @@
                                         <span aria-hidden="true">上一页</span>
                                     </a>
                                 </li>
-                                {{range .pages}}
-                                <li><a href="#">{{.}}</a></li>
+                                {{range $index, $item := .pageMarks}}
+                                <li><a href="#">{{addOne $index}}</a></li>                                 
                                 {{end}}
                                 <li>
                                     <a href="#" aria-label="Next">

@@ -269,20 +269,29 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	mcCount := len(examinee.ExamPaper.MC)
 	tfCount := len(examinee.ExamPaper.TF)
 
-	totalPages := 0
-	if (scCount+mcCount+tfCount)%15 == 0 {
-		totalPages = (scCount + mcCount + tfCount) / 15
-	} else {
-		totalPages = (scCount+mcCount+tfCount)/15 + 1
-	}
+	left := 0
+	scMarks := make([]int, 0)
+	mcMarks := make([]int, 0)
+	tfMarks := make([]int, 0)
 
-	pages := make([]int, 0)
-	for i := 1; i <= totalPages; i++ {
-		pages = append(pages, i)
+	for i := 0; i < scCount; i += 5 {
+		scMarks = append(scMarks, i)
+		left = scCount - i
+	}
+	for i := 5 - left; i < mcCount; i += 5 {
+		mcMarks = append(mcMarks, i)
+		left = scCount - i
+	}
+	for i := 5 - left; i < tfCount; i += 5 {
+		tfMarks = append(tfMarks, i)
+		left = scCount - i
 	}
 
 	// TODO 支持多试卷，根据试卷标题查询得到要考试的试卷
-	this.RenderArgs["pages"] = pages
+	this.RenderArgs["scMarks"] = scMarks
+	this.RenderArgs["mcMarks"] = mcMarks
+	this.RenderArgs["tfMarks"] = tfMarks
+
 	this.RenderArgs["scCount"] = scCount
 	this.RenderArgs["mcCount"] = mcCount
 	this.RenderArgs["tfCount"] = tfCount

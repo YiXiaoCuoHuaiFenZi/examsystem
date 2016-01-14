@@ -33,6 +33,7 @@ func init() {
 	revel.TemplateFuncs["addOne"] = func(a int) int {
 		return a + 1
 	}
+
 	revel.TemplateFuncs["eq"] = func(a, b interface{}) bool {
 		return a == 0 || a == b
 	}
