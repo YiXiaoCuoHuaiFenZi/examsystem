@@ -20,57 +20,36 @@
                 </div>
             </div>
             <div class="panel-body">
-                {{$scMarks := .scMarks}}
-                {{$mcMarks := .mcMarks}}
-                {{$tfMarks := .tfMarks}}
-                {{$pageMarks := .pageMarks}}  
-                {{$scMarks}}
-                {{$mcMarks}}
-                {{$tfMarks}}
-                {{$pageMarks := .pageMarks}}           
-                  
-                <form class="form-horizontal" role="form" action="#" method="POST">
+				{{$sc := .scws}}
+                {{$mc := .mcws}}
+                {{$tf := .tfws}}
+                <form class="form-horizontal" role="form" action="#" method="POST">				    
                     <div class="form-group">一、单项选择题（共{{.scCount}}题，每题{{.examPaper.SCScore}}分）</div>
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := .examPaper.SC}}
-                                {{range $in, $it := $scMarks}}
-                                {{$iii:= eq $it $index}}
-                                {{$iii}}
-                                ###################
-                                  {{if $iii}}
-                                        <tr>
-                                        <th scope="row">
-                                          ###################
-                                          {{$it}}
-                                          {{$index}}
-                                       </th>
-                                       </tr>
-                                  {{end}}                                    
-                                {{end}}
-                                                                
+                            {{range $index, $item := $sc}}							  
                             <tr>
-                                <th scope="row">
-                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                <th scope="row" id="sc{{$index}}" name="{{$item.Page}}"{{if greaterThan $item.Page 1}}style="display:none;"{{end}}>
+                                    <label>{{addOne $index}}、{{$item.SC.Discription}}</label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeOne" value="交通">A、{{$item.A}}
+                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeOne" value="交通">A、{{$item.SC.A}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeTwo" value="司法">B、{{$item.A}}
+                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeTwo" value="司法">B、{{$item.SC.B}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeThree" value="建筑">C、{{$item.C}}
+                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeThree" value="建筑">C、{{$item.SC.C}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeThree" value="建筑">D、{{$item.D}}
+                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeThree" value="建筑">D、{{$item.SC.D}}
                                     </label>
                                 </th>
-                            </tr>
+                            </tr>							
                             {{end}}
                         </tbody>
                     </table>
@@ -78,38 +57,38 @@
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := .examPaper.MC}}                                
+                            {{range $index, $item := $mc}}							                                  
                             <tr>
-                                <th scope="row">
-                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                <th scope="row" id="mc{{$index}}" name="{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;"{{end}}>									
+                                    <label>{{addOne $index}}、{{$item.MC.Discription}}</label>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}A" value="A">A、{{$item.A}}
+                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}A" value="A">A、{{$item.MC.A}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}B" value="B">B、{{$item.B}}
+                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}B" value="B">B、{{$item.MC.B}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}C" value="C">C、{{$item.C}}
+                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}C" value="C">C、{{$item.MC.C}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}D" value="D">D、{{$item.D}}
+                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}D" value="D">D、{{$item.MC.D}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}E" value="E">E、{{$item.E}}
+                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}E" value="E">E、{{$item.MC.E}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}F" value="F">F、{{$item.F}}
+                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}F" value="F">F、{{$item.MC.F}}
                                         </label>
                                     </div>
                                 </th>
@@ -121,10 +100,10 @@
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := .examPaper.TF}}                               
+                            {{range $index, $item := $tf}}							                               
                             <tr>
-                                <th scope="row">
-                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                <th scope="row" id="tf{{$index}}" name="{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;"{{end}}>
+                                    <label>{{addOne $index}}、{{$item.TF.Discription}}</label>
                                     <br>
                                     <label class="radio-inline">
                                         <input type="radio" name="{{addOne $index}}" id="ExamTypeOne" value="对">对
@@ -138,7 +117,7 @@
                             </tr>
                             {{end}}
                         </tbody>
-                    </table>
+                    </table>					
                     <nav>
                         <div class="row text-center">
                             <ul class="pagination">
@@ -147,8 +126,8 @@
                                         <span aria-hidden="true">上一页</span>
                                     </a>
                                 </li>
-                                {{range $index, $item := .pageMarks}}
-                                <li><a href="#">{{addOne $index}}</a></li>                                 
+                                {{range $index, $item := .pages}}
+                                <li><a href="#">{{$item}}</a></li>                                 
                                 {{end}}
                                 <li>
                                     <a href="#" aria-label="Next">

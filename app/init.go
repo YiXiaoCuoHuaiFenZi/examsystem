@@ -34,9 +34,18 @@ func init() {
 		return a + 1
 	}
 
-	revel.TemplateFuncs["eq"] = func(a, b interface{}) bool {
-		return a == 0 || a == b
+   revel.TemplateFuncs["lessThan"] = func(a, b int) bool {
+		return a < b
 	}
+	
+	revel.TemplateFuncs["eq"] = func(a, b interface{}) bool {
+		return a == b
+	}
+	
+	revel.TemplateFuncs["greaterThan"] = func(a, b int) bool {
+		return a > b
+	}
+	
 	revel.TemplateFuncs["len"] = func(a []interface{}) int {
 		return len(a)
 	}

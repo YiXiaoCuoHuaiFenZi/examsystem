@@ -85,6 +85,21 @@ type TrueFalse struct {
 	Answer      string // 正确答案
 }
 
+type SCWithPage struct {
+	Page int          // 考试时所在试卷上的页码标识
+	SC   SingleChoice // 单选题信息
+}
+
+type MCWithPage struct {
+	Page int            // 考试时所在试卷上的页码标识
+	MC   MultipleChoice // 多选题信息
+}
+
+type TFWithPage struct {
+	Page int       // 考试时所在试卷上的页码标识
+	TF   TrueFalse // 判断题信息
+}
+
 type ExamPaper struct {
 	Type         string           // 所属考试类别
 	Title        string           // 试卷标题

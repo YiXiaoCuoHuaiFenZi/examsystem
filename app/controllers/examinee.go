@@ -269,28 +269,52 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	mcCount := len(examinee.ExamPaper.MC)
 	tfCount := len(examinee.ExamPaper.TF)
 
-	left := 0
-	scMarks := make([]int, 0)
-	mcMarks := make([]int, 0)
-	tfMarks := make([]int, 0)
+	scws := make([]models.SCWithPage, 0)
+	mcws := make([]models.MCWithPage, 0)
+	tfws := make([]models.TFWithPage, 0)
 
-	for i := 0; i < scCount; i += 5 {
-		scMarks = append(scMarks, i)
-		left = scCount - i
+	npp := 10
+	scpagenum := 0
+	scleft := 0
+	for index, item := range examinee.ExamPaper.SC {
+		t := models.SCWithPage{}
+		scpagenum = index/npp + 1
+		t.Page = scpagenum
+		t.SC = item
+		scws = append(scws, t)
+		scleft = index % npp
 	}
-	for i := 5 - left; i < mcCount; i += 5 {
-		mcMarks = append(mcMarks, i)
-		left = scCount - i
+
+	mcpagenum := 0
+	mcleft := 0
+	for index, item := range examinee.ExamPaper.MC {
+		t := models.MCWithPage{}
+		mcpagenum = (scleft + index) / npp
+		t.Page = mcpagenum + scpagenum
+		t.MC = item
+		mcws = append(mcws, t)
+		mcleft = index % npp
 	}
-	for i := 5 - left; i < tfCount; i += 5 {
-		tfMarks = append(tfMarks, i)
-		left = scCount - i
+
+	tfpagenum := 0
+	for index, item := range examinee.ExamPaper.TF {
+		t := models.TFWithPage{}
+		tfpagenum = (mcleft + index) / npp
+		t.Page = tfpagenum + mcpagenum + scpagenum
+		t.TF = item
+		tfws = append(tfws, t)
+	}
+
+	pages := make([]int, 0)
+	for i := 1; i <= (tfpagenum + mcpagenum + scpagenum); i++ {
+		pages = append(pages, i)
 	}
 
 	// TODO 支持多试卷，根据试卷标题查询得到要考试的试卷
-	this.RenderArgs["scMarks"] = scMarks
-	this.RenderArgs["mcMarks"] = mcMarks
-	this.RenderArgs["tfMarks"] = tfMarks
+	this.RenderArgs["scws"] = scws
+	this.RenderArgs["mcws"] = mcws
+	this.RenderArgs["tfws"] = tfws
+	this.RenderArgs["pages"] = pages
 
 	this.RenderArgs["scCount"] = scCount
 	this.RenderArgs["mcCount"] = mcCount
