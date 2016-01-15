@@ -273,40 +273,30 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	mcws := make([]models.MCWithPage, 0)
 	tfws := make([]models.TFWithPage, 0)
 
-	npp := 10
-	scpagenum := 0
-	scleft := 0
+	npp, left := 10, 0 // npp: number per page
 	for index, item := range examinee.ExamPaper.SC {
-		t := models.SCWithPage{}
-		scpagenum = index/npp + 1
-		t.Page = scpagenum
-		t.SC = item
-		scws = append(scws, t)
-		scleft = index % npp
+		scws = append(scws, models.SCWithPage{Page: index/npp + 1, SC: item})
 	}
+	left = scCount % npp
 
-	mcpagenum := 0
-	mcleft := 0
 	for index, item := range examinee.ExamPaper.MC {
-		t := models.MCWithPage{}
-		mcpagenum = (scleft + index) / npp
-		t.Page = mcpagenum + scpagenum
-		t.MC = item
-		mcws = append(mcws, t)
-		mcleft = index % npp
+		mcws = append(mcws, models.MCWithPage{Page: scCount/npp + (left+index)/npp + 1, MC: item})
+	}
+	left = (scCount + mcCount) % npp
+
+	for index, item := range examinee.ExamPaper.TF {
+		tfws = append(tfws, models.TFWithPage{Page: (scCount+mcCount)/npp + (left+index)/npp + 1, TF: item})
 	}
 
-	tfpagenum := 0
-	for index, item := range examinee.ExamPaper.TF {
-		t := models.TFWithPage{}
-		tfpagenum = (mcleft + index) / npp
-		t.Page = tfpagenum + mcpagenum + scpagenum
-		t.TF = item
-		tfws = append(tfws, t)
+	p := 0
+	if (scCount+mcCount+tfCount)%npp > 0 {
+		p = (scCount+mcCount+tfCount)/npp + 1
+	} else {
+		p = (scCount + mcCount + tfCount) / npp
 	}
 
 	pages := make([]int, 0)
-	for i := 1; i <= (tfpagenum + mcpagenum + scpagenum); i++ {
+	for i := 1; i <= p; i++ {
 		pages = append(pages, i)
 	}
 
