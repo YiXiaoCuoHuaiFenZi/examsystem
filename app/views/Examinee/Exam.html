@@ -1,4 +1,5 @@
 {{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
+<script src="/public/js/examinee-exam.js" type="text/javascript" charset="utf-8"></script>
 <div class="container">
     <div class="row">
         <br>
@@ -16,17 +17,19 @@
                         <div class="text-left">试卷编号：{{.examPaper.IDCode}}</div>
                         <div class="text-left">考生姓名：{{.examineeName}}</div>
                         <div class="text-left" id="timer"></div>
+                        <button type="submit" class="btn btn-primary btn-group-justified" id="ExamFormSubmit">交卷</button>
                     </div>
                 </div>
             </div>
             <div class="panel-body">
-                {{$sc := .scws}} {{$mc := .mcws}} {{$tf := .tfws}}
+                {{$sc := .scws}} {{$mc := .mcws}} {{$tf := .tfws}} {{$scCount := .scCount}}{{$mcCount := .mcCount}}{{$tfCount := .tfCount}} {{$scScore:=.examPaper.SCScore}}{{$mcScore:=.examPaper.MCScore}}{{$tfScore:=.examPaper.TFScore}}
                 <form class="form-horizontal" role="form" action="#" method="POST">
-                    <div class="form-group">一、单项选择题（共{{.scCount}}题，每题{{.examPaper.SCScore}}分）</div>
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := $sc}}
+                            {{range $index, $item := $sc}} {{if eq $index 0}}
+                            <div class="form-group" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>一、单项选择题（共{{$scCount}}题，每题{{$scScore}}分）</div>
+                            {{end}}
                             <tr>
                                 <th scope="row" id="sc{{$index}}" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>
                                     <label>{{addOne $index}}、{{$item.SC.Discription}}</label>
@@ -51,11 +54,12 @@
                             {{end}}
                         </tbody>
                     </table>
-                    <div class="form-group">二、多项选择题（共{{.mcCount}}题，每题{{.examPaper.MCScore}}分）</div>
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := $mc}}
+                            {{range $index, $item := $mc}} {{if eq $index 0}}
+                            <div class="form-group" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>二、多项选择题（共{{$mcCount}}题，每题{{$mcScore}}分）</div>
+                            {{end}}
                             <tr>
                                 <th scope="row" id="mc{{$index}}" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>
                                     <label>{{addOne $index}}、{{$item.MC.Discription}}</label>
@@ -94,11 +98,12 @@
                             {{end}}
                         </tbody>
                     </table>
-                    <div class="form-group">三、判断题（共{{.tfCount}}题，每题{{.examPaper.TFScore}}分）</div>
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := $tf}}
+                            {{range $index, $item := $tf}} {{if eq $index 0}}
+                            <div class="form-group" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>三、判断题（共{{$tfCount}}题，每题{{$tfScore}}分）</div>
+                            {{end}}
                             <tr>
                                 <th scope="row" id="tf{{$index}}" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>
                                     <label>{{addOne $index}}、{{$item.TF.Discription}}</label>
@@ -119,22 +124,22 @@
                     <nav>
                         <div class="row text-center">
                             <ul class="pagination">
-                                <li>
+                                <li id="controll_page_Previous" name="pageList" onclick="pageClick(this)">
                                     <a href="#" aria-label="Previous">
                                         <span aria-hidden="true">上一页</span>
                                     </a>
                                 </li>
                                 {{range $index, $item := .pages}}
-                                <li><a href="#">{{$item}}</a></li>
+                                <li id="controll_page_{{$item}}" name="pageList" {{if eq $item 1}} class="active" {{end}} onclick="pageClick(this)"><a href="#">{{$item}}</a></li>
                                 {{end}}
-                                <li>
+                                <li id="controll_page_Next" name="pageList" onclick="pageClick(this)">
                                     <a href="#" aria-label="Next">
                                         <span aria-hidden="true">下一页</span>
                                     </a>
                                 </li>
                             </ul>
+                        </div>
                     </nav>
-                    </div>
                 </form>
             </div>
         </div>
