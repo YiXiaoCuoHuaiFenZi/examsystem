@@ -316,6 +316,19 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	return this.Render()
 }
 
+func (this Examinee) PostExam(sc_1 string) revel.Result {
+	log.Println(sc_1)
+	log.Println(this.Params)
+	var answers []string
+	this.Params.Bind(&answers, "mc_1_answers")
+	log.Println(answers)
+
+	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
+	this.RenderArgs["examineeName"] = this.Session["examineeName"]
+
+	return this.Render()
+}
+
 func (this Examinee) SignOut() revel.Result {
 	for k := range this.Session {
 		delete(this.Session, k)

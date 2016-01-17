@@ -17,17 +17,22 @@
                         <div class="text-left">试卷编号：{{.examPaper.IDCode}}</div>
                         <div class="text-left">考生姓名：{{.examineeName}}</div>
                         <div class="text-left" id="timer"></div>
-                        <button type="submit" class="btn btn-primary btn-group-justified" id="ExamFormSubmit">交卷</button>
                     </div>
                 </div>
             </div>
             <div class="panel-body">
-                {{$sc := .scws}} {{$mc := .mcws}} {{$tf := .tfws}} {{$scCount := .scCount}}{{$mcCount := .mcCount}}{{$tfCount := .tfCount}} {{$scScore:=.examPaper.SCScore}}{{$mcScore:=.examPaper.MCScore}}{{$tfScore:=.examPaper.TFScore}}
-                <form class="form-horizontal" role="form" action="#" method="POST">
+               {{$scCount := .scCount}}{{$mcCount := .mcCount}}{{$tfCount := .tfCount}} {{$scScore:=.examPaper.SCScore}}{{$mcScore:=.examPaper.MCScore}}{{$tfScore:=.examPaper.TFScore}}
+                <form class="form-horizontal" role="form" action="{{url "Examinee.PostExam"}}" method="POST">
+                    <div class="form-group">
+                        <div class="col-md-10"></div>
+                        <div class="col-md-2 text-left">
+                            <button type="submit" class="btn btn-primary btn-group-justified" id="ExamFormSubmit">交卷</button>
+                        </div>
+                    </div>
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := $sc}} {{if eq $index 0}}
+                            {{range $index, $item := .scws}} {{if eq $index 0}}
                             <div class="form-group" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>一、单项选择题（共{{$scCount}}题，每题{{$scScore}}分）</div>
                             {{end}}
                             <tr>
@@ -35,19 +40,19 @@
                                     <label>{{addOne $index}}、{{$item.SC.Discription}}</label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sc_{{addOne $index}}" id="sc_{{addOne $index}}" value="A">A、{{$item.SC.A}}
+                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_A" value="A">A、{{$item.SC.A}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sc_{{addOne $index}}" id="sc_{{addOne $index}}" value="B">B、{{$item.SC.B}}
+                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_B" value="B">B、{{$item.SC.B}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sc_{{addOne $index}}" id="sc_{{addOne $index}}" value="C">C、{{$item.SC.C}}
+                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_C" value="C">C、{{$item.SC.C}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sc_{{addOne $index}}" id="sc_{{addOne $index}}" value="D">D、{{$item.SC.D}}
+                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_D" value="D">D、{{$item.SC.D}}
                                     </label>
                                 </th>
                             </tr>
@@ -57,7 +62,7 @@
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := $mc}} {{if eq $index 0}}
+                            {{range $index, $item := .mcws}} {{if eq $index 0}}
                             <div class="form-group" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>二、多项选择题（共{{$mcCount}}题，每题{{$mcScore}}分）</div>
                             {{end}}
                             <tr>
@@ -65,32 +70,32 @@
                                     <label>{{addOne $index}}、{{$item.MC.Discription}}</label>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}A" value="A">A、{{$item.MC.A}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers" id="mc_{{addOne $index}}_A" value="A">A、{{$item.MC.A}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}B" value="B">B、{{$item.MC.B}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers" id="mc_{{addOne $index}}_B" value="B">B、{{$item.MC.B}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}C" value="C">C、{{$item.MC.C}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers" id="mc_{{addOne $index}}_C" value="C">C、{{$item.MC.C}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}D" value="D">D、{{$item.MC.D}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers" id="mc_{{addOne $index}}_D" value="D">D、{{$item.MC.D}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}E" value="E">E、{{$item.MC.E}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers" id="mc_{{addOne $index}}_E" value="E">E、{{$item.MC.E}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="answers[]" id="{{addOne $index}}F" value="F">F、{{$item.MC.F}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers" id="mc_{{addOne $index}}_F" value="F">F、{{$item.MC.F}}
                                         </label>
                                     </div>
                                 </th>
@@ -101,7 +106,7 @@
                     <table class="table table-hover">
                         <thead></thead>
                         <tbody>
-                            {{range $index, $item := $tf}} {{if eq $index 0}}
+                            {{range $index, $item := .tfws}} {{if eq $index 0}}
                             <div class="form-group" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>三、判断题（共{{$tfCount}}题，每题{{$tfScore}}分）</div>
                             {{end}}
                             <tr>
@@ -109,11 +114,11 @@
                                     <label>{{addOne $index}}、{{$item.TF.Discription}}</label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeOne" value="对">对
+                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_T" value="对">对
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="{{addOne $index}}" id="ExamTypeTwo" value="错">错
+                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_F" value="错">错
                                     </label>
                                     <br>
                                 </th>
