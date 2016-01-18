@@ -334,25 +334,21 @@ func (this Examinee) PostExam() revel.Result {
 
 	// 页面上显示的name值已经增加了1，所以这里需要加1，以将其对应起来
 	for index, _ := range examinee.ExamPaper.SC {
-		var answer string
-		this.Params.Bind(&answer, "sc_"+strconv.Itoa(index+1)+"_answer")
+		answer := this.Params.Form.Get("sc_" + strconv.Itoa(index+1) + "_answer")
 		examinee.ExamPaper.SC[index].Answer = answer
 	}
 
 	for index, _ := range examinee.ExamPaper.MC {
-		var answers []string
-		this.Params.Bind(&answers, "mc_"+strconv.Itoa(index+1)+"_answers[]")
-		log.Println(answers)
+		answers := this.Params.Form["mc_"+strconv.Itoa(index+1)+"_answers[]"]
 		examinee.ExamPaper.MC[index].Answer = answers
 	}
 
 	for index, _ := range examinee.ExamPaper.TF {
-		var answer string
-		this.Params.Bind(&answer, "tf_"+strconv.Itoa(index+1)+"_answer")
+		answer := this.Params.Form.Get("tf_" + strconv.Itoa(index+1) + "_answer")
 		examinee.ExamPaper.TF[index].Answer = answer
 	}
 	examinee.ExamStatus = "完成"
-	log.Println(this.Params)
+
 	err = manager.UpdateExaminee(&examinee)
 	if err != nil {
 		log.Println(err)
@@ -360,10 +356,12 @@ func (this Examinee) PostExam() revel.Result {
 		return this.RenderError(err)
 	}
 
+	this.Flash.Success("成功交卷")
+
 	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
 	this.RenderArgs["examineeName"] = this.Session["examineeName"]
 
-	return this.Render()
+	return this.Redirect(Examinee.Index)
 }
 
 func (this Examinee) SignOut() revel.Result {

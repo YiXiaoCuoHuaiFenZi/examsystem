@@ -18,7 +18,7 @@
                                 <th>身份证号</th>
                                 <th>联系方式</th>
                                 <th>考试类别</th>
-								<th>考试</th>
+                                <th>考试</th>
                                 <th>状态</th>
                                 <th>分数</th>
                             </tr>
@@ -31,22 +31,21 @@
                                 <td>{{.examinee.IDCard}}</td>
                                 <td>{{.examinee.Mobile}}</td>
                                 <td>{{.examinee.ExamType}}</td>
-								<td><a href="{{url "Examinee.Exam" .examinee.ExamPaper.Title}}">{{.examinee.ExamPaper.Title}}</td>
+                                <td><a href="{{url "Examinee.Exam" .examinee.ExamPaper.Title}}">{{.examinee.ExamPaper.Title}}</td>
                                 <td>{{.examinee.ExamStatus}}</td>
                                 <td>{{.examinee.Score}}</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> 
+                    <div class="row">
+                        <div class="span6 text-center">
+                            {{template "flash.html" .}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="span6">
-            {{template "flash.html" .}}
-        </div>
-    </div>
+
 </div>
 {{template "footer.html" .}}
