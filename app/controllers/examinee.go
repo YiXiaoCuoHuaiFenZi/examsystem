@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/revel/revel"
@@ -316,12 +317,48 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	return this.Render()
 }
 
-func (this Examinee) PostExam(sc_1 string) revel.Result {
-	log.Println(sc_1)
+func (this Examinee) PostExam() revel.Result {
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"])
+	if err != nil {
+		log.Println(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+
+	// 页面上显示的name值已经增加了1，所以这里需要加1，以将其对应起来
+	for index, _ := range examinee.ExamPaper.SC {
+		var answer string
+		this.Params.Bind(&answer, "sc_"+strconv.Itoa(index+1)+"_answer")
+		examinee.ExamPaper.SC[index].Answer = answer
+	}
+
+	for index, _ := range examinee.ExamPaper.MC {
+		var answers []string
+		this.Params.Bind(&answers, "mc_"+strconv.Itoa(index+1)+"_answers[]")
+		log.Println(answers)
+		examinee.ExamPaper.MC[index].Answer = answers
+	}
+
+	for index, _ := range examinee.ExamPaper.TF {
+		var answer string
+		this.Params.Bind(&answer, "tf_"+strconv.Itoa(index+1)+"_answer")
+		examinee.ExamPaper.TF[index].Answer = answer
+	}
+	examinee.ExamStatus = "完成"
 	log.Println(this.Params)
-	var answers []string
-	this.Params.Bind(&answers, "mc_1_answers")
-	log.Println(answers)
+	err = manager.UpdateExaminee(&examinee)
+	if err != nil {
+		log.Println(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
 
 	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
 	this.RenderArgs["examineeName"] = this.Session["examineeName"]
