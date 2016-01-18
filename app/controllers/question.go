@@ -173,7 +173,7 @@ func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.R
 		return this.Redirect(Question.Create)
 	}
 
-	this.Session["createStatus"] = "success"
+	this.Flash.Success("创建题目成功")
 	log.Println("创建题目成功：", singleChoice)
 
 	return this.Redirect(Question.Create)
@@ -249,7 +249,7 @@ func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, a
 		return this.Redirect(Question.Create)
 	}
 
-	this.Session["createStatus"] = "success"
+	this.Flash.Success("创建题目成功")
 	log.Println("创建题目成功：", multipleChoice)
 
 	return this.Redirect(Question.Create)
@@ -291,7 +291,7 @@ func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
 		return this.Redirect(Question.Create)
 	}
 
-	this.Session["createStatus"] = "success"
+	this.Flash.Success("创建题目成功")
 	log.Println("创建题目成功：", trueFalse)
 
 	return this.Redirect(Question.Create)
@@ -311,29 +311,21 @@ func (this Question) PostBatchSingleChoice(batchSingleChoiceFile *os.File, qType
 	defer manager.Close()
 
 	var errorMsg = ""
-	var successMsg = ""
+	var successMsg = "s"
 	for _, sc := range scs {
-		err = manager.AddSingleChoice(&sc)
-		if err != nil {
-			if err != nil {
-				m := err.Error() + "：" + sc.Discription + "  <br>"
-				errorMsg += m
-				log.Println(m)
-			} else {
-				successMsg += "创建成功：" + sc.Discription + "  <br>"
-				log.Println("创建成功：", sc)
-			}
+		e := manager.AddSingleChoice(&sc)
+		if e != nil {
+			m := e.Error() + "：" + sc.Discription + "\n"
+			errorMsg += m
+			log.Println(m)
+		} else {
+			successMsg += "创建成功：" + sc.Discription + "\n"
+			log.Println("创建成功：", sc)
 		}
 	}
 
-	this.Flash.Error(successMsg + errorMsg)
-	if errorMsg != "" {
-		this.Flash.Error(successMsg + errorMsg)
-	}
-	//	if successMsg != "" {
-	//		this.Flash.Success("创建成功：", successMsg)
-	//	}
-	//this.Session["SignUpStatus"] = "true"
+	this.Flash.Success(successMsg + errorMsg)
+
 	this.Session["batch"] = "true"
 	return this.Redirect(Question.Create)
 }
@@ -356,25 +348,17 @@ func (this Question) PostBatchMultipleChoice(batchMultipleChoiceFile *os.File, q
 	for _, mc := range mcs {
 		err = manager.AddMultipleChoice(&mc)
 		if err != nil {
-			if err != nil {
-				m := err.Error() + "：" + mc.Discription + "  <br>"
-				errorMsg += m
-				log.Println(m)
-			} else {
-				successMsg += "创建成功：" + mc.Discription + "  <br>"
-				log.Println("创建成功：", mc)
-			}
+			m := err.Error() + "：" + mc.Discription + "\n"
+			errorMsg += m
+			log.Println(m)
+		} else {
+			successMsg += "创建成功：" + mc.Discription + "\n"
+			log.Println("创建成功：", mc)
 		}
 	}
 
-	this.Flash.Error(successMsg + errorMsg)
-	if errorMsg != "" {
-		this.Flash.Error(successMsg + errorMsg)
-	}
-	//	if successMsg != "" {
-	//		this.Flash.Success("创建成功：", successMsg)
-	//	}
-	//this.Session["SignUpStatus"] = "true"
+	this.Flash.Success(successMsg + errorMsg)
+
 	this.Session["batch"] = "true"
 	return this.Redirect(Question.Create)
 }
@@ -397,25 +381,17 @@ func (this Question) PostBatchTrueFalse(batchTrueFalseFile *os.File, qType strin
 	for _, tf := range tfs {
 		err = manager.AddTrueFalse(&tf)
 		if err != nil {
-			if err != nil {
-				m := err.Error() + "：" + tf.Discription + "  <br>"
-				errorMsg += m
-				log.Println(m)
-			} else {
-				successMsg += "创建成功：" + tf.Discription + "  <br>"
-				log.Println("创建成功：", tf)
-			}
+			m := err.Error() + "：" + tf.Discription + "\n"
+			errorMsg += m
+			log.Println(m)
+		} else {
+			successMsg += "创建成功：" + tf.Discription + "\n"
+			log.Println("创建成功：", tf)
 		}
 	}
 
-	this.Flash.Error(successMsg + errorMsg)
-	if errorMsg != "" {
-		this.Flash.Error(successMsg + errorMsg)
-	}
-	//	if successMsg != "" {
-	//		this.Flash.Success("创建成功：", successMsg)
-	//	}
-	//this.Session["SignUpStatus"] = "true"
+	this.Flash.Success(successMsg + errorMsg)
+
 	this.Session["batch"] = "true"
 	return this.Redirect(Question.Create)
 }

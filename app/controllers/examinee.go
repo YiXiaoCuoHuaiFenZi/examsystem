@@ -168,23 +168,16 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 
 		err = manager.SignUp(&e)
 		if err != nil {
-			m := err.Error() + "：" + e.IDCard + "  <br>"
+			m := err.Error() + "：" + e.IDCard + "\n"
 			errorMsg += m
 			log.Println(m)
 		} else {
-			successMsg += "注册成功：" + e.IDCard + "  <br>"
+			successMsg += "注册成功：" + e.IDCard + "\n"
 			log.Println("注册成功：", e)
 		}
 	}
 
-	this.Flash.Error(successMsg + errorMsg)
-	//	if errorMsg != "" {
-	//		this.Flash.Error(successMsg+errorMsg)
-	//	}
-	//	if successMsg != "" {
-	//		this.Flash.Success("注册成功：", successMsg)
-	//	}
-	//this.Session["SignUpStatus"] = "true"
+	this.Flash.Success(successMsg + errorMsg)
 	this.Session["batch"] = "true"
 	return this.Redirect(Examinee.SignUp)
 }

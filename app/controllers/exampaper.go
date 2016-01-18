@@ -26,12 +26,12 @@ func (this ExamPaper) Create() revel.Result {
 
 func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	examPaper.Type = strings.TrimSpace(examPaper.Type)
-	examPaper.CreateMethod = strings.TrimSpace(examPaper.CreateMethod)
+	//examPaper.CreateMethod = strings.TrimSpace(examPaper.CreateMethod)
 	examPaper.Title = strings.TrimSpace(examPaper.Title)
 	examPaper.Discription = strings.TrimSpace(examPaper.Discription)
 
 	this.Validation.Required(examPaper.Type).Message("请选择试卷类别")
-	this.Validation.Required(examPaper.CreateMethod).Message("请选择试卷生成方式")
+	//this.Validation.Required(examPaper.CreateMethod).Message("请选择试卷生成方式")
 	this.Validation.Required(examPaper.Title).Message("请填写试卷标题")
 	this.Validation.Required(examPaper.Discription).Message("请填写试卷描述")
 	this.Validation.Required(examPaper.Score > 0).Message("请设置试卷总分数(大于零)")
@@ -43,6 +43,7 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	this.Validation.Required(examPaper.TFCount > 0).Message("请设置判断题数量(大于零)")
 	this.Validation.Required(examPaper.TFScore > 0).Message("请设置判断题每题分值(大于零)")
 
+	examPaper.CreateMethod = "随机生成"
 	if this.Validation.HasErrors() {
 		this.Validation.Keep()
 		this.FlashParams()
@@ -98,6 +99,8 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 		this.Response.Status = 500
 		return this.RenderError(err)
 	}
+
+	this.Flash.Success("试卷成功生成")
 
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
@@ -202,6 +205,8 @@ func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 		this.Response.Status = 500
 		return this.RenderError(err)
 	}
+
+	this.Flash.Success("试卷成功上传")
 
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
@@ -313,10 +318,10 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 
 	for _, examinee := range examinees {
 		examinee.ExamType = examPaper.Type
-		examinee.ExamStatus = "待考"	
+		examinee.ExamStatus = "待考"
 		models.ClearExamPaperAnswer(&examPaper)
 		examinee.ExamPaper = examPaper
-		
+
 		err := manager.UpdateExaminee(&examinee)
 		if err != nil {
 			log.Println(err)
@@ -324,6 +329,8 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 			return this.RenderError(err)
 		}
 	}
+
+	this.Flash.Success("考试成功发布")
 
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
