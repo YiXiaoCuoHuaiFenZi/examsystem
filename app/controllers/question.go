@@ -310,17 +310,17 @@ func (this Question) PostBatchSingleChoice(batchSingleChoiceFile *os.File, qType
 	}
 	defer manager.Close()
 
-	var errorMsg = ""
-	var successMsg = "s"
+	successMsg, errorMsg := "", ""
 	for _, sc := range scs {
 		e := manager.AddSingleChoice(&sc)
 		if e != nil {
 			m := e.Error() + "：" + sc.Discription + "\n"
+			log.Println(sc.Discription)
 			errorMsg += m
 			log.Println(m)
 		} else {
 			successMsg += "创建成功：" + sc.Discription + "\n"
-			log.Println("创建成功：", sc)
+			log.Println("创建成功：", sc.Discription)
 		}
 	}
 
@@ -343,8 +343,7 @@ func (this Question) PostBatchMultipleChoice(batchMultipleChoiceFile *os.File, q
 	}
 	defer manager.Close()
 
-	var errorMsg = ""
-	var successMsg = ""
+	successMsg, errorMsg := "", ""
 	for _, mc := range mcs {
 		err = manager.AddMultipleChoice(&mc)
 		if err != nil {
@@ -376,8 +375,7 @@ func (this Question) PostBatchTrueFalse(batchTrueFalseFile *os.File, qType strin
 	}
 	defer manager.Close()
 
-	var errorMsg = ""
-	var successMsg = ""
+	successMsg, errorMsg := "", ""
 	for _, tf := range tfs {
 		err = manager.AddTrueFalse(&tf)
 		if err != nil {

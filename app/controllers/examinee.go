@@ -61,11 +61,6 @@ func (this Examinee) Info() revel.Result {
 }
 
 func (this Examinee) SignUp() revel.Result {
-	if this.Session["SignUpStatus"] == "true" {
-		this.RenderArgs["SignUpStatus"] = true
-		this.Session["SignUpStatus"] = "false"
-	}
-
 	this.RenderArgs["batch"] = this.Session["batch"]
 	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
 	this.RenderArgs["adminName"] = this.Session["adminName"]
@@ -115,9 +110,8 @@ func (this Examinee) PostSignUp(signUpExaminee *models.SignUpExaminee) revel.Res
 		return this.Redirect(Examinee.SignUp)
 	}
 
-	this.Session["SignUpStatus"] = "true"
-	log.Println("注册成功！")
-	log.Println(signUpExaminee)
+	log.Println("注册成功：" + signUpExaminee.Name)
+	this.Flash.Success("注册成功：" + signUpExaminee.Name)
 
 	return this.Redirect((*Examinee).SignUp)
 }
@@ -173,7 +167,7 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 			log.Println(m)
 		} else {
 			successMsg += "注册成功：" + e.IDCard + "\n"
-			log.Println("注册成功：", e)
+			log.Println("注册成功：", e.IDCard)
 		}
 	}
 

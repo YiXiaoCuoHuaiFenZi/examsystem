@@ -20,10 +20,8 @@ func (this Admin) Index() revel.Result {
 }
 
 func (this Admin) SignUp() revel.Result {
-	if this.Session["SignUpStatus"] == "true" {
-		this.RenderArgs["SignUpStatus"] = true
-		this.Session["SignUpStatus"] = "false"
-	}
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
@@ -70,9 +68,8 @@ func (this Admin) PostSignUp(signUpAdmin *models.SignUpAdmin) revel.Result {
 		return this.Redirect(Admin.SignUp)
 	}
 
-	this.Session["SignUpStatus"] = "true"
-	log.Println("注册成功！")
-	log.Println(signUpAdmin)
+	log.Println("注册成功：" + signUpAdmin.Name)
+	this.Flash.Success("注册成功：" + signUpAdmin.Name)
 
 	return this.Redirect(Admin.SignUp)
 }
