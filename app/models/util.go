@@ -209,7 +209,7 @@ func ParseExamPaperFile(exampaperFilePath string) (ExamPaper, string, string, st
 					log.Println(err)
 					return exp, "", "", "", err
 				}
-				exp.Score = i
+				exp.Score = float32(i)
 			}
 			if strings.HasPrefix(l, "考试时间：") {
 				i, err := strconv.Atoi(strings.Trim(strings.TrimPrefix(l, "考试时间："), "分钟"))
@@ -281,4 +281,46 @@ func ClearExamPaperAnswer(examPaper *ExamPaper) {
 	for i, _ := range examPaper.TF {
 		examPaper.TF[i].Answer = ""
 	}
+}
+
+// 批改试卷
+// e: 考生试卷
+// s: 试卷库标准答案试卷
+func MarkExamPaper(e, s ExamPaper) float32 {
+	var sScore, mScore, tScore float32 = 0.0, 0.0, 0.0
+
+	for i, sc := range s.SC {
+		if e.SC[i].Answer == sc.Answer {
+			sScore += e.SCScore
+		}
+	}
+
+	for i, mc := range s.MC {
+		if len(e.MC[i].Answer) == len(mc.Answer) {
+			same, set := false, make(map[string]bool)
+			for _, v := range mc.Answer {
+				set[v] = true
+			}
+
+			for _, k := range e.MC[i].Answer {
+				if set[k] {
+					same = true
+				} else {
+					same = false
+				}
+			}
+
+			if same {
+				mScore += e.MCScore
+			}
+		}
+	}
+
+	for i, tf := range s.TF {
+		if e.TF[i].Answer == tf.Answer {
+			tScore += e.TFScore
+		}
+	}
+
+	return sScore + mScore + tScore
 }

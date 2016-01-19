@@ -54,7 +54,7 @@ type Examinee struct {
 	ExamType   string    // 所属考试类别、科目
 	ExamStatus string    // 考试状态：未完成、完成
 	ExamPaper  ExamPaper // 所有试卷
-	Score      int       // 考试分数
+	Score      float32   // 考试分数
 }
 
 type SingleChoice struct {
@@ -104,7 +104,7 @@ type ExamPaper struct {
 	Type         string           // 所属考试类别
 	Title        string           // 试卷标题
 	Discription  string           // 试卷描述
-	Score        int              // 总分值
+	Score        float32          // 总分值
 	Time         int              // 考试时间
 	TimeStamp    string           // 时间戳
 	IDCode       string           // 编号

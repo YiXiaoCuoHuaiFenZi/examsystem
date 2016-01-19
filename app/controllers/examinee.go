@@ -239,7 +239,7 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 
 	this.RenderArgs["examineeIDCard"] = e.IDCard
 	this.RenderArgs["examineeName"] = e.Name
-	log.Println("登录成功: ", e)
+	log.Println("登录成功: ", e.Name)
 
 	return this.Redirect(Examinee.Index)
 }
@@ -341,6 +341,14 @@ func (this Examinee) PostExam() revel.Result {
 		examinee.ExamPaper.TF[index].Answer = answer
 	}
 	examinee.ExamStatus = "完成"
+
+	s, err := manager.GetExamPaperByTitle(examinee.ExamPaper.Title)
+	if err != nil {
+		log.Println(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	examinee.Score = models.MarkExamPaper(examinee.ExamPaper, s)
 
 	err = manager.UpdateExaminee(&examinee)
 	if err != nil {
