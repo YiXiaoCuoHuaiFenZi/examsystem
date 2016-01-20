@@ -1,44 +1,40 @@
 <!DOCTYPE html>
-
 <html>
-  <head>
+
+<head>
     <title>{{.title}}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--<link rel="stylesheet" type="text/css" href="/public/css/bootstrap.css">-->
-	<!-- 新 Bootstrap 核心 CSS 文件 -->
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="shortcut icon" type="image/png" href="/public/img/favicon.png">
     <script src="/public/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/public/js/timer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/js/timer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/public/js/anti-cheating.js" type="text/javascript" charset="utf-8"></script>
     {{range .moreStyles}}
-      <link rel="stylesheet" type="text/css" href="/public/{{.}}">
+    <link rel="stylesheet" type="text/css" href="/public/{{.}}"> {{end}} {{range .moreScripts}}
+    <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
     {{end}}
-    {{range .moreScripts}}
-      <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
-    {{end}}
-  </head>
+</head>
 
-  <body onload="timer()">   
-	<header class="hero-unit" style="background-color:#78C7B4">
-      <div class="container">		       
-        <div class="row">		
-	      <div class="col-md-2"></div>	
-	      <div class="col-md-8">
-            <div class="hero-text text-center">
-              <h4>濮阳市龙都考试中心</h4>
+<body onload="timer()" onkeydown="KeyDown()">
+    <header class="hero-unit" style="background-color:#78C7B4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="hero-text text-center">
+                        <h4>濮阳市龙都考试中心</h4>
+                    </div>
+                </div>
             </div>
-	      </div>		  
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="text-right">
+                    {{if .adminName}} 管理员：{{.adminName}}&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="{{url "Admin.SignOut" }}">注销</a> {{end}} {{if .examineeName}} 学员：{{.examineeName}}&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="{{url "Examinee.SignOut" }}">注销</a> {{end}}
+                </div>
+            </div>
         </div>
-		<div class="row">		
-	      <div class="col-md-2"></div>	      
-		  <div class="text-right">
-		    {{if .adminName}}
-	          管理员：{{.adminName}}&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url "Admin.SignOut" }}">注销</a>
-			{{end}}
-			{{if .examineeName}}
-	          学员：{{.examineeName}}&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url "Examinee.SignOut" }}">注销</a>
-			{{end}}
-	     </div>
-        </div>
-      </div>
     </header>

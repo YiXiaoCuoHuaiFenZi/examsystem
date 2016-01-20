@@ -31,7 +31,7 @@
                                 <td>{{.examinee.IDCard}}</td>
                                 <td>{{.examinee.Mobile}}</td>
                                 <td>{{.examinee.ExamType}}</td>
-                                <td><a href="{{url "Examinee.Exam" .examinee.ExamPaper.Title}}">{{.examinee.ExamPaper.Title}}</td>
+                                <td><a href="#" onclick="OpenPopUpWindow({{url "Examinee.Exam" .examinee.ExamPaper.Title}})">{{.examinee.ExamPaper.Title}}</td>
                                 <td>{{.examinee.ExamStatus}}</td>
                                 <td>{{.examinee.Score}}</td>
                             </tr>
