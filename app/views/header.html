@@ -10,14 +10,17 @@
     <link rel="shortcut icon" type="image/png" href="/public/img/favicon.png">
     <script src="/public/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="/public/js/timer.js" type="text/javascript" charset="utf-8"></script>
+    {{if .exam}}
     <script src="/public/js/anti-cheating.js" type="text/javascript" charset="utf-8"></script>
+    {{end}}
+
     {{range .moreStyles}}
     <link rel="stylesheet" type="text/css" href="/public/{{.}}"> {{end}} {{range .moreScripts}}
     <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
     {{end}}
 </head>
 
-<body onload="timer()" onkeydown="KeyDown()">
+<body {{if .exam}} onload="timer()" {{end}}>
     <header class="hero-unit" style="background-color:#78C7B4">
         <div class="container">
             <div class="row">

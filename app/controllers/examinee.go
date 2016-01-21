@@ -288,6 +288,7 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 		pages = append(pages, i)
 	}
 
+	this.RenderArgs["exam"] = "true"
 	// TODO 支持多试卷，根据试卷标题查询得到要考试的试卷
 	this.RenderArgs["scws"] = scws
 	this.RenderArgs["mcws"] = mcws
