@@ -94,10 +94,7 @@ func (this *DBManager) UpdateExaminee(examinee *Examinee) error {
 	}
 
 	tempInfo := oldExp
-	tempInfo.ExamType = examinee.ExamPaper.Type
-	tempInfo.ExamStatus = examinee.ExamStatus
 	tempInfo.ExamPaper = examinee.ExamPaper
-	tempInfo.Score = examinee.Score
 
 	err = t.Update(oldExp, tempInfo)
 	if err != nil {

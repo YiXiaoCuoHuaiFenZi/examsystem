@@ -1,0 +1,141 @@
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
+<div class="container">
+    <div class="row">
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="panel-default">
+                <h4 class="text-center">2015年教练员模拟考试</h4>
+                <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3 text-left">
+                        <div class="text-left">总共分数：{{.examPaper.Score}}分</div>
+                        <div class="text-left">考试时间：{{.examPaper.Time}}分钟</div>
+                        <div class="text-left">试卷编号：{{.examPaper.IDCode}}</div>
+                        <div class="text-left">考生姓名：{{.examineeName}}</div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" action="#" method="POST">
+                    <div class="form-group">一、单项选择题（共{{.scCount}}题，每题{{.examPaper.SCScore}}分）</div>
+                    <table class="table table-hover">
+                        <thead></thead>
+                        <tbody>
+                            {{range $index, $item := .examPaper.SC}}
+                            <tr>
+                                <th scope="row">
+                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                    <br>
+                                    <label class="radio-inline">
+                                        <input type="radio" type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_A" value="{{$item.A}}" disabled="true" {{if eq $item.A $item.ActualAnswer}}checked{{end}}>A、{{$item.A}}
+                                    </label>
+                                    <br>
+                                    <label class="radio-inline">
+                                        <input type="radio" type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_B" value="{{$item.B}}" disabled="true" {{if eq $item.B $item.ActualAnswer}}checked{{end}}>B、{{$item.B}}
+                                    </label>
+                                    <br>
+                                    <label class="radio-inline">
+                                        <input type="radio" type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_C" value="{{$item.C}}" disabled="true" {{if eq $item.C $item.ActualAnswer}}checked{{end}}>C、{{$item.C}}
+                                    </label>
+                                    <br>									
+                                    <label class="radio-inline">
+                                        <input type="radio" type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_D" value="{{$item.D}}" disabled="true" {{if eq $item.D $item.ActualAnswer}}checked{{end}}>D、{{$item.D}}
+                                    </label>
+									<br><br>
+									<div class="alert alert-success">正确答案：{{$item.Answer}}	
+                                    </div>
+                                </th>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                    <div class="form-group">二、多项选择题（共{{.mcCount}}题，每题{{.examPaper.MCScore}}分）</div>
+                    <table class="table table-hover">
+                        <thead></thead>
+                        <tbody>
+                            {{range $index, $item := .examPaper.MC}}
+                            <tr>
+                                <th scope="row">
+                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                   <div class="checkbox">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_A" value="{{$item.A}}">A、{{$item.A}}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_B" value="{{$item.B}}">B、{{$item.B}}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_C" value="{{$item.C}}">C、{{$item.C}}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_D" value="{{$item.D}}">D、{{$item.D}}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_E" value="{{$item.E}}">E、{{$item.E}}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_F" value="{{$item.F}}">F、{{$item.F}}
+                                        </label>
+                                    </div>
+									<div class="checkbox">
+                                        <label class="radio-inline">
+                                            正确答案：{{$item.Answer}}
+                                        </label>
+                                    </div>
+                                </th>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                    <div class="form-group">三、判断题（共{{.tfCount}}题，每题{{.examPaper.TFScore}}分）</div>
+                    <table class="table table-hover">
+                        <thead></thead>
+                        <tbody>
+                            {{range $index, $item := .examPaper.TF}}
+                            <tr>
+                                <th scope="row">
+                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                    <br>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_T" value="对">对
+                                    </label>
+                                    <br>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_F" value="错">错
+                                    </label>
+									<label class="radio-inline">
+                                        正确答案：{{$item.Answer}}
+                                    </label>
+                                    <br>
+                                </th>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
+    </div>
+</div>
+{{template "footer.html" .}}

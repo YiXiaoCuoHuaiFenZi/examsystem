@@ -323,27 +323,20 @@ func (this Examinee) PostExam() revel.Result {
 	// 页面上显示的name值已经增加了1，所以这里需要加1，以将其对应起来
 	for index, _ := range examinee.ExamPaper.SC {
 		answer := this.Params.Form.Get("sc_" + strconv.Itoa(index+1) + "_answer")
-		examinee.ExamPaper.SC[index].Answer = answer
+		examinee.ExamPaper.SC[index].ActualAnswer = answer
 	}
 
 	for index, _ := range examinee.ExamPaper.MC {
 		answers := this.Params.Form["mc_"+strconv.Itoa(index+1)+"_answers[]"]
-		examinee.ExamPaper.MC[index].Answer = answers
+		examinee.ExamPaper.MC[index].ActualAnswer = answers
 	}
 
 	for index, _ := range examinee.ExamPaper.TF {
 		answer := this.Params.Form.Get("tf_" + strconv.Itoa(index+1) + "_answer")
-		examinee.ExamPaper.TF[index].Answer = answer
+		examinee.ExamPaper.TF[index].ActualAnswer = answer
 	}
-	examinee.ExamStatus = "完成"
-
-	s, err := manager.GetExamPaperByTitle(examinee.ExamPaper.Title)
-	if err != nil {
-		log.Println(err)
-		this.Response.Status = 500
-		return this.RenderError(err)
-	}
-	examinee.Score = models.MarkExamPaper(examinee.ExamPaper, s)
+	examinee.ExamPaper.Status = models.Done
+	models.MarkExamPaper(&examinee.ExamPaper)
 
 	err = manager.UpdateExaminee(&examinee)
 	if err != nil {
@@ -358,6 +351,34 @@ func (this Examinee) PostExam() revel.Result {
 	this.RenderArgs["examineeName"] = this.Session["examineeName"]
 
 	return this.Redirect(Examinee.Index)
+}
+
+func (this Examinee) ExamResult(idCard, title string) revel.Result {
+	manager, err := models.NewDBManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	examinee, err := manager.GetExamineeByIDCard(idCard)
+	if err != nil {
+		log.Println(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+
+	this.RenderArgs["scCount"] = len(examinee.ExamPaper.SC)
+	this.RenderArgs["mcCount"] = len(examinee.ExamPaper.MC)
+	this.RenderArgs["tfCount"] = len(examinee.ExamPaper.TF)
+	this.RenderArgs["examPaper"] = examinee.ExamPaper
+
+	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
+	this.RenderArgs["examineeName"] = this.Session["examineeName"]
+
+	return this.Render()
 }
 
 func (this Examinee) SignOut() revel.Result {

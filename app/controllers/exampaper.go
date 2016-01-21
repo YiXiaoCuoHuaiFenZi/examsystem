@@ -317,9 +317,7 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 	}
 
 	for _, examinee := range examinees {
-		examinee.ExamType = examPaper.Type
-		examinee.ExamStatus = "待考"
-		models.ClearExamPaperAnswer(&examPaper)
+		examPaper.Status = models.UnFinished
 		examinee.ExamPaper = examPaper
 
 		err := manager.UpdateExaminee(&examinee)

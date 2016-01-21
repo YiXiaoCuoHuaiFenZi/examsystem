@@ -286,23 +286,23 @@ func ClearExamPaperAnswer(examPaper *ExamPaper) {
 // 批改试卷
 // e: 考生试卷
 // s: 试卷库标准答案试卷
-func MarkExamPaper(e, s ExamPaper) float32 {
+func MarkExamPaper(e *ExamPaper) {
 	var sScore, mScore, tScore float32 = 0.0, 0.0, 0.0
 
-	for i, sc := range s.SC {
-		if e.SC[i].Answer == sc.Answer {
+	for _, sc := range e.SC {
+		if sc.ActualAnswer == sc.Answer {
 			sScore += e.SCScore
 		}
 	}
 
-	for i, mc := range s.MC {
-		if len(e.MC[i].Answer) == len(mc.Answer) {
+	for _, mc := range e.MC {
+		if len(mc.ActualAnswer) == len(mc.Answer) {
 			same, set := false, make(map[string]bool)
 			for _, v := range mc.Answer {
 				set[v] = true
 			}
 
-			for _, k := range e.MC[i].Answer {
+			for _, k := range mc.ActualAnswer {
 				if set[k] {
 					same = true
 				} else {
@@ -316,11 +316,11 @@ func MarkExamPaper(e, s ExamPaper) float32 {
 		}
 	}
 
-	for i, tf := range s.TF {
-		if e.TF[i].Answer == tf.Answer {
+	for _, tf := range e.TF {
+		if tf.ActualAnswer == tf.Answer {
 			tScore += e.TFScore
 		}
 	}
 
-	return sScore + mScore + tScore
+	e.ActualScore = sScore + mScore + tScore
 }

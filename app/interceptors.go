@@ -57,7 +57,8 @@ func beforeExamineeController(this *revel.Controller) revel.Result {
 	// 设置考生的访问权限
 	if this.Session["examinee"] == "true" {
 		if this.Action == "Examinee.Exam" || this.Action == "Examinee.PostExam" ||
-			this.Action == "Examinee.Index" || this.Action == "Examinee.SignOut" {
+			this.Action == "Examinee.Index" || this.Action == "Examinee.SignOut" ||
+			this.Action == "Examinee.ExamResult" {
 			return nil
 		} else if this.Action == "Examinee.SignIn" || this.Action == "Examinee.PostSignIn" {
 			this.Flash.Error("您已经登录，请先注销再登录。")

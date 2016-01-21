@@ -30,10 +30,16 @@
                                 <td>{{.examinee.Gender}}</td>
                                 <td>{{.examinee.IDCard}}</td>
                                 <td>{{.examinee.Mobile}}</td>
-                                <td>{{.examinee.ExamType}}</td>
-                                <td><a href="{{url "Examinee.Exam" .examinee.ExamPaper.Title}}">{{.examinee.ExamPaper.Title}}</td>
-                                <td>{{.examinee.ExamStatus}}</td>
-                                <td>{{.examinee.Score}}</td>
+                                <td>{{.examinee.ExamPaper.Type}}</td>
+                                <td><a 
+								{{if eq .examinee.ExamPaper.Status "完成"}}
+								href="{{url "Examinee.ExamResult" .examinee.IDCard .examinee.ExamPaper.Title}}"
+								{{else}}
+								href="{{url "Examinee.Exam" .examinee.ExamPaper.Title}}"
+								{{end}}
+								>{{.examinee.ExamPaper.Title}}</td>
+                                <td>{{.examinee.ExamPaper.Status}}</td>
+                                <td>{{.examinee.ExamPaper.ActualScore}}</td>
                             </tr>
                         </tbody>
                     </table> 
