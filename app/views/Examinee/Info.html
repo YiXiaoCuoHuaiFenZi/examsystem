@@ -24,6 +24,7 @@
                             </tr>
                         </thead>
                         <tbody>
+						{{$adminName := .adminName}}
                             {{range $index, $examinee := .examinees}}
                             <tr>
                                 <th scope="row">{{addOne $index}}</th>
@@ -34,9 +35,13 @@
                                 <td>{{.ExamPaper.Type}}</td>
 								<td><a
 								{{if eq .ExamPaper.Status "完成"}}
-								href="{{url "Examinee.ExamResult" .IDCard .ExamPaper.Title}}"
+								    href="{{url "Examinee.ExamResult" .IDCard .ExamPaper.Title}}"
 								{{else}}
-								href="{{url "Examinee.Exam" .ExamPaper.Title}}"
+								    {{if $adminName}}
+									    href="{{url "ExamPaper.Preview" .ExamPaper.Title}}"
+									{{else}}
+									    href="{{url "Examinee.Exam" .ExamPaper.Title}}"
+									{{end}}
 								{{end}}
 								>{{.ExamPaper.Title}}</td>
                                 <td>{{.ExamPaper.Status}}</td>
