@@ -45,8 +45,7 @@
                                         <input type="radio" type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_D" value="{{$item.D}}" disabled="true" {{if eq $item.D $item.ActualAnswer}}checked{{end}}>D、{{$item.D}}
                                     </label>
 									<br><br>
-									<div class="alert alert-success">正确答案：{{$item.Answer}}	
-                                    </div>
+									<div class="text-success">正确答案：{{$item.Answer}}</div>
                                 </th>
                             </tr>
                             {{end}}
@@ -62,39 +61,36 @@
                                     <label>{{addOne $index}}、{{$item.Discription}}</label>
                                    <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_A" value="{{$item.A}}">A、{{$item.A}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_A" value="{{$item.A}}" disabled="true" {{if has $item.ActualAnswer $item.A}}checked{{end}}>A、{{$item.A}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_B" value="{{$item.B}}">B、{{$item.B}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_B" value="{{$item.B}}" disabled="true" {{if has $item.ActualAnswer $item.B}}checked{{end}}>B、{{$item.B}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_C" value="{{$item.C}}">C、{{$item.C}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_C" value="{{$item.C}}" disabled="true" {{if has $item.ActualAnswer $item.C}}checked{{end}}>C、{{$item.C}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_D" value="{{$item.D}}">D、{{$item.D}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_D" value="{{$item.D}}" disabled="true" {{if has $item.ActualAnswer $item.D}}checked{{end}}>D、{{$item.D}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_E" value="{{$item.E}}">E、{{$item.E}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_E" value="{{$item.E}}" disabled="true" {{if has $item.ActualAnswer $item.E}}checked{{end}}>E、{{$item.E}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_F" value="{{$item.F}}">F、{{$item.F}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_F" value="{{$item.F}}" disabled="true" {{if has $item.ActualAnswer $item.F}}checked{{end}}>F、{{$item.F}}
                                         </label>
                                     </div>
-									<div class="checkbox">
-                                        <label class="radio-inline">
-                                            正确答案：{{$item.Answer}}
-                                        </label>
-                                    </div>
+									<br><br>
+                                    <div class="text-success">正确答案：{{$item.Answer}}</div>
                                 </th>
                             </tr>
                             {{end}}
@@ -110,15 +106,14 @@
                                     <label>{{addOne $index}}、{{$item.Discription}}</label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_T" value="对">对
+                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_T" value="对" disabled="true" {{if eq $item.Answer $item.ActualAnswer}}checked{{end}}>对
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_F" value="错">错
+                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_F" value="错" disabled="true" {{if eq $item.Answer $item.ActualAnswer}}checked{{end}}>错
                                     </label>
-									<label class="radio-inline">
-                                        正确答案：{{$item.Answer}}
-                                    </label>
+									<br><br>
+                                    <div class="text-success">正确答案：{{$item.Answer}}</div>
                                     <br>
                                 </th>
                             </tr>

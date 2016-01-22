@@ -34,20 +34,31 @@ func init() {
 		return a + 1
 	}
 
-   revel.TemplateFuncs["lessThan"] = func(a, b int) bool {
+	revel.TemplateFuncs["lessThan"] = func(a, b int) bool {
 		return a < b
 	}
-	
+
 	revel.TemplateFuncs["eq"] = func(a, b interface{}) bool {
 		return a == b
 	}
-	
+
 	revel.TemplateFuncs["greaterThan"] = func(a, b int) bool {
 		return a > b
 	}
-	
+
 	revel.TemplateFuncs["len"] = func(a []interface{}) int {
 		return len(a)
+	}
+
+	revel.TemplateFuncs["has"] = func(a []string, b string) bool {
+		r := false
+		for _, v := range a {
+			if v == b {
+				r = true
+			}
+		}
+
+		return r
 	}
 
 	//revel.InterceptFunc(checkUser, revel.BEFORE, &App{})
