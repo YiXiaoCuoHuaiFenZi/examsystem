@@ -1,8 +1,21 @@
 {{set . "title" "登录"}} {{template "header.html" .}}
-</br>
-</br>
-</br>
+<br>
+<br>
+<br>
 <div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <ul class="nav nav-pills">
+                <li role="presentation"><a href="{{url "App.Introduce" }}">系统介绍</a></li>
+                <li role="presentation"><a href="{{url "App.About" }}">联系我们</a></li>
+                <li role="presentation"><a href="{{url "Examinee.SignIn" }}">考生登录</a></li>
+                <li role="presentation"><a href="{{url "Admin.SignIn" }}">管理员登录</a></li>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <br>
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">

@@ -64,7 +64,7 @@ func init() {
 	//revel.InterceptFunc(checkUser, revel.BEFORE, &App{})
 	revel.InterceptFunc(beforeAdminController, revel.BEFORE, &controllers.Admin{})
 	revel.InterceptFunc(beforeExamineeController, revel.BEFORE, &controllers.Examinee{})
-	revel.InterceptFunc(beforeAboutController, revel.BEFORE, &controllers.About{})
+	//revel.InterceptFunc(beforeAboutController, revel.BEFORE, &controllers.About{})
 	revel.InterceptFunc(beforeExamPaperController, revel.BEFORE, &controllers.ExamPaper{})
 	revel.InterceptFunc(beforeQuestionController, revel.BEFORE, &controllers.Question{})
 }

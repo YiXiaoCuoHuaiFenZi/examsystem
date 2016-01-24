@@ -1,0 +1,56 @@
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
+<div class="container">
+    <br>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <ul class="nav nav-pills">
+                <li class="active" role="presentation"><a href="{{url "App.Introduce" }}">系统介绍</a></li>
+                <li role="presentation"><a href="{{url "App.About" }}">联系我们</a></li>
+                <li role="presentation"><a href="{{url "Examinee.SignIn" }}">考生登录</a></li>
+                <li role="presentation"><a href="{{url "Admin.SignIn" }}">管理员登录</a></li>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <div class="list-group">
+                <h4 class="list-group-item-heading"> 一、设计简洁</h4>
+                <p class="list-group-item-text">不含任何考试非必需模块。 易用性为最大原则</p>
+            </div>
+            <div class="list-group">
+                <h4 class="list-group-item-heading"> 二、部署快速</h4>
+                <p class="list-group-item-text">一键式部署，最大程度降低了系统维护成本</p>
+            </div>
+            <div class="list-group">
+                <h4 class="list-group-item-heading"> 三、强大的防作弊功能</h4>
+                <p>（1）、防刷新处理：每次考试都有计时器，考试时已禁止考生刷新页面。</p>
+                <p>（2）、防离开考场上网找答案：防切屏处理，考生考试时不能随意离开考场，切换浏览器窗口或者其他计算机程序。</p>
+                <p>（3）、考生相互之间的作弊：考题乱序处理， 同一份试卷每位考生考题顺序都不一样，有效防止考生间相互传递答案。</p>
+                <p>（4）、考生故意死机或关机：许多考生入考场后，做了一半，发现时间不够，故意踢掉电源，造成电脑故障。要求老师设置重考。系统具有定时保存功能，就算重新开机登录，也只能续考，不会重新考试。
+                </p>
+                <p>（5）、忠告：在线考试防作弊除了技术手段，还需要人为监考和控制。</p>
+            </div>
+            <div class="list-group">
+                <h4 class="list-group-item-heading"> 四、管理员管理模块</h4>
+                <p>系统分为考生模块和管理员模块，管理员模块负责维护考题、试卷、考生信息、考生状态、发布考试等。</p>
+            </div>
+            <div class="list-group">
+                <h4 class="list-group-item-heading"> 五、考生模块</h4>
+                <p>考生模块包含了登录、查看考生考试信息和考试。</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
+    </div>
+</div>
+{{template "footer.html" .}}

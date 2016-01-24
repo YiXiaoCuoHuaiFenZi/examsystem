@@ -1,0 +1,36 @@
+{{set . "title" "濮阳市龙都考试中心"}} {{template "header.html" .}}
+<div class="container">
+    <br>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <ul class="nav nav-pills">
+                <li class="active" role="presentation"><a href="{{url "App.Introduce" }}">系统介绍</a></li>
+                <li role="presentation"><a href="{{url "App.About" }}">联系我们</a></li>
+                <li role="presentation"><a href="{{url "Examinee.SignIn" }}">考生登录</a></li>
+                <li role="presentation"><a href="{{url "Admin.SignIn" }}">管理员登录</a></li>
+            </ul>           
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">   
+        <ul class="nav nav-pills">        
+            <p class="text-left">邮件地址： xausee@gmail.com</p>
+            <p class="text-left">移动电话： 15220134343</p>
+            <p class="text-left">QQ号码： 249664317</p>
+        </div>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
+    </div>
+</div>
+{{template "footer.html" .}}
