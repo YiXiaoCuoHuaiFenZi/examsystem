@@ -20,6 +20,7 @@ func (this Examinee) Index() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
+		this.Flash.Error(err.Error())
 		return this.RenderError(err)
 	}
 	defer manager.Close()
@@ -29,6 +30,7 @@ func (this Examinee) Index() revel.Result {
 
 	if e != nil {
 		this.Response.Status = 500
+		this.Flash.Error(e.Error())
 		return this.RenderError(e)
 	}
 
@@ -43,14 +45,15 @@ func (this Examinee) Info() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		return this.Render(err)
 	}
 	defer manager.Close()
 
 	examinees, e := manager.GetAllExaminee()
 	if e != nil {
 		this.Response.Status = 500
-		return this.RenderError(e)
+		this.Flash.Error(err.Error())
+		return this.Render(e)
 	}
 
 	this.RenderArgs["examinees"] = examinees
@@ -91,7 +94,8 @@ func (this Examinee) PostSignUp(signUpExaminee *models.SignUpExaminee) revel.Res
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Examinee.SignUp)
 	}
 	defer manager.Close()
 
@@ -107,13 +111,14 @@ func (this Examinee) PostSignUp(signUpExaminee *models.SignUpExaminee) revel.Res
 
 		this.Validation.Keep()
 		this.FlashParams()
+		this.Flash.Error(err.Error())
 		return this.Redirect(Examinee.SignUp)
 	}
 
 	log.Println("注册成功：" + signUpExaminee.Name)
 	this.Flash.Success("注册成功：" + signUpExaminee.Name)
 
-	return this.Redirect((*Examinee).SignUp)
+	return this.Redirect(Examinee.SignUp)
 }
 
 func (this Examinee) BatchSignUp() revel.Result {
@@ -129,7 +134,8 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Examinee.SignUp)
 	}
 	defer manager.Close()
 
@@ -142,7 +148,8 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 			break
 		} else if err != nil {
 			log.Println(err)
-			return this.RenderError(err)
+			this.Flash.Error(err.Error())
+			return this.Redirect(Examinee.SignUp)
 		}
 
 		//忽略第一行表头
@@ -196,13 +203,14 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 	if this.Validation.HasErrors() {
 		this.Validation.Keep()
 		this.FlashParams()
-		return this.Redirect((*Examinee).SignIn)
+		return this.Redirect(Examinee.SignIn)
 	}
 
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Examinee.SignIn)
 	}
 	defer manager.Close()
 
@@ -224,7 +232,8 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 
 		this.Validation.Keep()
 		this.FlashParams()
-		return this.Redirect((*Examinee).SignIn)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Examinee.SignIn)
 	}
 
 	this.Session["examineeIDCard"] = e.IDCard
@@ -242,7 +251,8 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 	defer manager.Close()
 
@@ -250,7 +260,8 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	scCount := len(examinee.ExamPaper.SC)
@@ -309,7 +320,8 @@ func (this Examinee) PostExam() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Examinee.Exam)
 	}
 	defer manager.Close()
 
@@ -317,7 +329,8 @@ func (this Examinee) PostExam() revel.Result {
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Examinee.Exam)
 	}
 
 	// 页面上显示的name值已经增加了1，所以这里需要加1，以将其对应起来
@@ -342,7 +355,8 @@ func (this Examinee) PostExam() revel.Result {
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Examinee.Exam)
 	}
 
 	this.Flash.Success("成功交卷")
@@ -357,7 +371,8 @@ func (this Examinee) ExamResult(idCard, title string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 	defer manager.Close()
 
@@ -365,7 +380,8 @@ func (this Examinee) ExamResult(idCard, title string) revel.Result {
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	this.RenderArgs["scCount"] = len(examinee.ExamPaper.SC)

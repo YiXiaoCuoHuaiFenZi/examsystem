@@ -53,7 +53,8 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 	defer manager.Close()
 
@@ -63,7 +64,8 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 
 	mc := []models.MultipleChoice{}
@@ -72,7 +74,8 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 
 	tf := []models.TrueFalse{}
@@ -81,7 +84,8 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 
 	examPaper.SC = sc
@@ -97,7 +101,8 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	err = manager.AddExamPaper(examPaper)
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 
 	this.Flash.Success("试卷成功生成")
@@ -150,28 +155,33 @@ func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 	filePath, err := this.saveExamPaperFile(file)
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 
 	examPaper, scFilePath, mcFilePath, tfFilePath, err := models.ParseExamPaperFile(filePath)
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 
 	scf, err := os.Open(scFilePath)
 	if err != nil {
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 	defer scf.Close()
 	mcf, err := os.Open(mcFilePath)
 	if err != nil {
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 	defer mcf.Close()
 	tff, err := os.Open(tfFilePath)
 	if err != nil {
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 	defer tff.Close()
 
@@ -196,14 +206,16 @@ func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 	defer manager.Close()
 
 	err = manager.AddExamPaper(&examPaper)
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Create)
 	}
 
 	this.Flash.Success("试卷成功上传")
@@ -218,14 +230,16 @@ func (this ExamPaper) Preview(title string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 	defer manager.Close()
 
 	examPaper, e := manager.GetExamPaperByTitle(title)
 	if e != nil {
 		this.Response.Status = 500
-		return this.RenderError(e)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	this.RenderArgs["scCount"] = len(examPaper.SC)
@@ -242,7 +256,8 @@ func (this ExamPaper) View() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 	defer manager.Close()
 
@@ -251,7 +266,8 @@ func (this ExamPaper) View() revel.Result {
 	if e != nil {
 		log.Println(e)
 		this.Response.Status = 500
-		return this.RenderError(e)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	this.RenderArgs["examPapers"] = examPapers
@@ -265,7 +281,8 @@ func (this ExamPaper) Publish() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 	defer manager.Close()
 
@@ -274,7 +291,8 @@ func (this ExamPaper) Publish() revel.Result {
 	if e != nil {
 		log.Println(e)
 		this.Response.Status = 500
-		return this.RenderError(e)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	this.RenderArgs["examPapers"] = examPapers
@@ -298,7 +316,8 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Publish)
 	}
 	defer manager.Close()
 
@@ -306,14 +325,16 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Publish)
 	}
 
 	examPaper, err := manager.GetExamPaperByTitle(exmpaperTitle)
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(ExamPaper.Publish)
 	}
 
 	for _, examinee := range examinees {
@@ -324,7 +345,8 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 		if err != nil {
 			log.Println(err)
 			this.Response.Status = 500
-			return this.RenderError(err)
+			this.Flash.Error(err.Error())
+			return this.Redirect(ExamPaper.Publish)
 		}
 	}
 
@@ -340,7 +362,8 @@ func (this ExamPaper) Score(idCard string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 	defer manager.Close()
 
@@ -349,7 +372,8 @@ func (this ExamPaper) Score(idCard string) revel.Result {
 	if e != nil {
 		log.Println(e)
 		this.Response.Status = 500
-		return this.RenderError(e)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	log.Println("查到考生信息: ", examinee)

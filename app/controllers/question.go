@@ -24,26 +24,30 @@ func (this Question) View() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 	defer manager.Close()
 
 	var singleChoiceSummary map[string]int
 	singleChoiceSummary, err = manager.GetSingleChoiceSummary()
 	if err != nil {
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	var multipleChoiceSummary map[string]int
 	multipleChoiceSummary, err = manager.GetMultipleChoiceSummary()
 	if err != nil {
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	var trueFalseSummary map[string]int
 	trueFalseSummary, err = manager.GetTrueFalseSummary()
 	if err != nil {
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 
 	trafficQuestionInfo := make(map[string]int)
@@ -155,7 +159,8 @@ func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.R
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Render()
 	}
 	defer manager.Close()
 
@@ -170,6 +175,7 @@ func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.R
 
 		this.Validation.Keep()
 		this.FlashParams()
+		this.Flash.Error(err.Error())
 		return this.Redirect(Question.Create)
 	}
 
@@ -231,7 +237,8 @@ func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, a
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Question.Create)
 	}
 	defer manager.Close()
 
@@ -246,6 +253,7 @@ func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, a
 
 		this.Validation.Keep()
 		this.FlashParams()
+		this.Flash.Error(err.Error())
 		return this.Redirect(Question.Create)
 	}
 
@@ -273,7 +281,8 @@ func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Question.Create)
 	}
 	defer manager.Close()
 
@@ -288,6 +297,7 @@ func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
 
 		this.Validation.Keep()
 		this.FlashParams()
+		this.Flash.Error(err.Error())
 		return this.Redirect(Question.Create)
 	}
 
@@ -306,7 +316,8 @@ func (this Question) PostBatchSingleChoice(batchSingleChoiceFile *os.File, qType
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Question.Create)
 	}
 	defer manager.Close()
 
@@ -339,7 +350,8 @@ func (this Question) PostBatchMultipleChoice(batchMultipleChoiceFile *os.File, q
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Question.Create)
 	}
 	defer manager.Close()
 
@@ -371,7 +383,8 @@ func (this Question) PostBatchTrueFalse(batchTrueFalseFile *os.File, qType strin
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect(Question.Create)
 	}
 	defer manager.Close()
 

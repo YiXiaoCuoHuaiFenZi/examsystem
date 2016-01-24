@@ -49,7 +49,8 @@ func (this Admin) PostSignUp(signUpAdmin *models.SignUpAdmin) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
-		return this.RenderError(err)
+		this.Flash.Error(err.Error())
+		return this.Redirect((*Examinee).SignUp)
 	}
 	defer manager.Close()
 
@@ -65,6 +66,7 @@ func (this Admin) PostSignUp(signUpAdmin *models.SignUpAdmin) revel.Result {
 
 		this.Validation.Keep()
 		this.FlashParams()
+		this.Flash.Error(err.Error())
 		return this.Redirect(Admin.SignUp)
 	}
 
@@ -96,6 +98,7 @@ func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
 		this.Response.Status = 500
+		this.Flash.Error(err.Error())
 		return this.RenderError(err)
 	}
 	defer manager.Close()
@@ -118,6 +121,7 @@ func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
 
 		this.Validation.Keep()
 		this.FlashParams()
+		this.Flash.Error(err.Error())
 		return this.Redirect(Admin.SignIn)
 	}
 
