@@ -5,13 +5,43 @@
 <div class="container">
     <div class="row">
         <div class="col-md-2"></div>
-        <div class="col-md-10">
-            <ul class="nav nav-pills">
-                <li role="presentation"><a href="{{url "App.Introduce" }}">系统介绍</a></li>
-                <li role="presentation"><a href="{{url "App.About" }}">联系我们</a></li>
-                <li role="presentation"><a href="{{url "Examinee.SignIn" }}">考生登录</a></li>
-                <li role="presentation"><a href="{{url "Admin.SignIn" }}">管理员登录</a></li>
-            </ul>
+        <div class="col-md-8">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div style="height: 100px;" class="thumbnail text-center">
+                    <div class="caption">
+                        <h3>
+                             <a href="{{url "App.Introduce" }}">系统介绍<br></a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div style="height: 100px;" class="thumbnail text-center">
+                    <div class="caption">
+                        <h3>
+                             <a href="{{url "Examinee.SignIn" }}">考生登录<br></a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div style="height: 100px;" class="thumbnail text-center">
+                    <div class="caption">
+                        <h3>
+                             <a href="{{url "Admin.SignIn" }}">管理员登录<br></a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div style="height: 100px;" class="thumbnail text-center">
+                    <div class="caption">
+                        <h3>
+                             <a href="{{url "App.About" }}">联系我们<br></a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <br>
@@ -25,7 +55,7 @@
                     <form class="form-horizontal" role="form" action="{{url "Examinee.SignIn"}}" method="POST">
                         {{with $field := field "signInExaminee.IDCard" .}}
                         <div class="form-group {{$field.ErrorClass}}">
-                            <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label>
+                            <label class="col-sm-3 control-label" for="{{$field.Id}}">考生身份证号</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号"> {{if $field.Error}}
                                 <span class="help-inline">{{$field.Error}}</span> {{end}}
