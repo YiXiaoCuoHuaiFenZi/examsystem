@@ -4,10 +4,12 @@ import (
 	"bufio"
 	"io"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func ParseSingleChoiceFile(file *os.File, qType string) ([]SingleChoice, error) {
@@ -269,23 +271,21 @@ func ParseExamPaperFile(exampaperFilePath string) (ExamPaper, string, string, st
 	return exp, scFilePath, mcFilePath, tfFilePath, nil
 }
 
-func ClearExamPaperAnswer(examPaper *ExamPaper) {
-	for i, _ := range examPaper.SC {
-		examPaper.SC[i].Answer = ""
+func ClearExamPaperAnswer(e *ExamPaper) {
+	for i, _ := range e.SC {
+		e.SC[i].Answer = ""
 	}
 
-	for i, _ := range examPaper.MC {
-		examPaper.MC[i].Answer = make([]string, 0)
+	for i, _ := range e.MC {
+		e.MC[i].Answer = make([]string, 0)
 	}
 
-	for i, _ := range examPaper.TF {
-		examPaper.TF[i].Answer = ""
+	for i, _ := range e.TF {
+		e.TF[i].Answer = ""
 	}
 }
 
-// 批改试卷
-// e: 考生试卷
-// s: 试卷库标准答案试卷
+// 试卷评分
 func MarkExamPaper(e *ExamPaper) {
 	var sScore, mScore, tScore float32 = 0.0, 0.0, 0.0
 
@@ -323,4 +323,42 @@ func MarkExamPaper(e *ExamPaper) {
 	}
 
 	e.ActualScore = sScore + mScore + tScore
+}
+
+// 试卷题目乱序处理
+func ChaosExamPaper(e *ExamPaper) {
+	ls := len(e.SC)
+	sc := []SingleChoice{}
+
+	for i := 0; i < ls; i++ {
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		rn := r.Intn(len(e.SC))
+
+		sc = append(sc, e.SC[rn])
+		e.SC = append(e.SC[:rn], e.SC[rn+1:]...)
+	}
+
+	lm := len(e.MC)
+	mc := []MultipleChoice{}
+
+	for i := 0; i < lm; i++ {
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		rn := r.Intn(len(e.MC))
+
+		mc = append(mc, e.MC[rn])
+		e.MC = append(e.MC[:rn], e.MC[rn+1:]...)
+	}
+
+	lt := len(e.TF)
+	tf := []TrueFalse{}
+
+	for i := 0; i < lt; i++ {
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		rn := r.Intn(len(e.TF))
+
+		tf = append(tf, e.TF[rn])
+		e.TF = append(e.TF[:rn], e.TF[rn+1:]...)
+	}
+
+	e.SC, e.MC, e.TF = sc, mc, tf
 }

@@ -33,13 +33,7 @@
                                 <td>{{.Mobile}}</td>
                                 <td>{{.ExamPaper.Type}}</td>
                                 <td>
-                                    <a
-                                    {{if eq .ExamPaper.Status "完成"}}
-                                        href="{{url "Examinee.ExamResult" .IDCard .ExamPaper.Title}}"
-                                    {{else}}
-                                        href="{{url "ExamPaper.Preview" .ExamPaper.Title}}"
-                                    {{end}}
-                                    >
+                                    <a href="{{url "Examinee.ExamResult" .IDCard .ExamPaper.Title}}">
                                     {{.ExamPaper.Title}}
                                 </td>
                                 <td>{{.ExamPaper.Status}}</td>

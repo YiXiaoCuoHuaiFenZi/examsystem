@@ -339,6 +339,7 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 
 	for _, examinee := range examinees {
 		examPaper.Status = models.UnFinished
+		models.ChaosExamPaper(&examPaper)
 		examinee.ExamPaper = examPaper
 
 		err := manager.UpdateExaminee(&examinee)
