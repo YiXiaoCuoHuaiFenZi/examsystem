@@ -18,13 +18,12 @@
                                 <th>身份证号</th>
                                 <th>联系方式</th>
                                 <th>考试类别</th>
-								<th>考试</th>
+                                <th>考试</th>
                                 <th>状态</th>
                                 <th>分数</th>
                             </tr>
                         </thead>
                         <tbody>
-						{{$adminName := .adminName}}
                             {{range $index, $examinee := .examinees}}
                             <tr>
                                 <th scope="row">{{addOne $index}}</th>
@@ -33,17 +32,16 @@
                                 <td>{{.IDCard}}</td>
                                 <td>{{.Mobile}}</td>
                                 <td>{{.ExamPaper.Type}}</td>
-								<td><a
-								{{if eq .ExamPaper.Status "完成"}}
-								    href="{{url "Examinee.ExamResult" .IDCard .ExamPaper.Title}}"
-								{{else}}
-								    {{if $adminName}}
-									    href="{{url "ExamPaper.Preview" .ExamPaper.Title}}"
-									{{else}}
-									    href="{{url "Examinee.Exam" .ExamPaper.Title}}"
-									{{end}}
-								{{end}}
-								>{{.ExamPaper.Title}}</td>
+                                <td>
+                                    <a
+                                    {{if eq .ExamPaper.Status "完成"}}
+                                        href="{{url "Examinee.ExamResult" .IDCard .ExamPaper.Title}}"
+                                    {{else}}
+                                        href="{{url "ExamPaper.Preview" .ExamPaper.Title}}"
+                                    {{end}}
+                                    >
+                                    {{.ExamPaper.Title}}
+                                </td>
                                 <td>{{.ExamPaper.Status}}</td>
                                 <td>{{.ExamPaper.ActualScore}}</td>
                             </tr>
