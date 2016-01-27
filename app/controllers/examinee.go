@@ -264,6 +264,10 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 		return this.Render()
 	}
 
+	if examinee.ExamPaper.Status == models.Done {
+		return this.Redirect("/Examinee/ExamResult?idCard=%s&title=%s", this.Session["examineeIDCard"], examPaperTitle)
+	}
+
 	scCount := len(examinee.ExamPaper.SC)
 	mcCount := len(examinee.ExamPaper.MC)
 	tfCount := len(examinee.ExamPaper.TF)

@@ -18,30 +18,32 @@ function checkTime(i) {
     return i;
 }
 
-function SaveData(){
+function SubmitExamPaper() {
+    var result = "";
     $.ajax({
-                cache: true,
-                type: "POST",
-                url:"/Examinee/PostExam",
-                data:$('#ExamForm').serialize(),// 你的formid
-                async: false,
-                error: function(request) {
-                    alert("Connection error");
-                },
-                success: function(data) {
-                    $("#ExamForm").parent().html(data);
-                }
-            });
+        cache: true,
+        type: "POST",
+        url: "/Examinee/PostExam",
+        data: $('#ExamForm').serialize(), // 你的formid
+        async: false,
+        error: function(request) {
+            alert("Connection error");
+        },
+        success: function(data) {}
+    });
 }
 
-times=0
-window.onblur = function() { 
-times+=1;
-SaveData()  
-    alert("请勿离开考场，否则将视为作弊，自动交卷！"); 
-    //alert(times)  
+loseFocusTimes = 0
+window.onblur = function() {
+    loseFocusTimes += 1;
+    if (loseFocusTimes > 3) {
+        SubmitExamPaper();
+        window.location.reload();
+        alert("你切屏超过3次，视为作弊，已经自动交卷！");
+    } else {
+        alert("第" + loseFocusTimes + "次离开考场，超过3次将视为作弊，自动交卷！");
+    }
 }
-
 
 // 鼠标移动事件，如果移出考试区域则弹出提示
 // 响应速度太慢，不满足要求，暂时停用
@@ -87,16 +89,16 @@ SaveData()
 //     iPreX = x;
 //     iPreY = y;
 // }
- 
+
 window.onkeydown = function() { //屏蔽鼠标右键、Ctrl+n、shift+F10、F5刷新、退格键
     //e = e || window.event; // 兼容IE和FF
-    e = event ? event : (window.event ? window.event : null);// ie firefox都可以使用的事件
+    e = event ? event : (window.event ? window.event : null); // ie firefox都可以使用的事件
     if ((e.altKey) &&
         ((e.keyCode == 37) || //屏蔽   Alt+   方向键   ←  
             (e.keyCode == 39))) { //屏蔽   Alt+   方向键   →  
         alert("已禁用ALT+方向键快捷键前进或后退网页，请认真答题！");
         e.returnValue = false;
-    }    
+    }
     if ((e.keyCode == 8) || //屏蔽退格删除键  
         (e.keyCode == 116) || //屏蔽   F5   刷新键  
         (e.keyCode == 112) || //屏蔽   F1   刷新键  
