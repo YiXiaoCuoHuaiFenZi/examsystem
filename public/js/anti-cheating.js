@@ -18,9 +18,30 @@ function checkTime(i) {
     return i;
 }
 
-window.onblur = function() {
-    alert("请勿离开考场，否则将视为作弊，自动交卷！");   
+function SaveData(){
+    $.ajax({
+                cache: true,
+                type: "POST",
+                url:"/Examinee/PostExam",
+                data:$('#ExamForm').serialize(),// 你的formid
+                async: false,
+                error: function(request) {
+                    alert("Connection error");
+                },
+                success: function(data) {
+                    $("#ExamForm").parent().html(data);
+                }
+            });
 }
+
+times=0
+window.onblur = function() { 
+times+=1;
+SaveData()  
+    alert("请勿离开考场，否则将视为作弊，自动交卷！"); 
+    //alert(times)  
+}
+
 
 // 鼠标移动事件，如果移出考试区域则弹出提示
 // 响应速度太慢，不满足要求，暂时停用

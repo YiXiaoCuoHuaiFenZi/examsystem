@@ -22,7 +22,7 @@
             </div>
             <div class="panel-body">
                 {{$scCount := .scCount}}{{$mcCount := .mcCount}}{{$tfCount := .tfCount}} {{$scScore:=.examPaper.SCScore}}{{$mcScore:=.examPaper.MCScore}}{{$tfScore:=.examPaper.TFScore}}
-                <form class="form-horizontal" role="form" action="{{url "Examinee.PostExam"}}" method="POST">
+                <form class="form-horizontal" role="form" id="ExamForm" action="{{url "Examinee.PostExam"}}" method="POST">
                     <div class="form-group">
                         <div class="col-md-10"></div>
                         <div class="col-md-2 text-left">
