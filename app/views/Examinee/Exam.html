@@ -40,19 +40,19 @@
                                     <label>{{addOne $index}}、{{$item.SC.Discription}}</label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_A" value="{{$item.SC.A}}">A、{{$item.SC.A}}
+                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_A" value="{{$item.SC.A}}" {{if eq $item.SC.Answer $item.SC.ActualAnswer}}disabled="true" checked{{end}}>A、{{$item.SC.A}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_B" value="{{$item.SC.B}}">B、{{$item.SC.B}}
+                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_B" value="{{$item.SC.B}}" {{if eq $item.SC.Answer $item.SC.ActualAnswer}}disabled="true" checked{{end}}>B、{{$item.SC.B}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_C" value="{{$item.SC.C}}">C、{{$item.SC.C}}
+                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_C" value="{{$item.SC.C}}" {{if eq $item.SC.Answer $item.SC.ActualAnswer}}disabled="true" checked{{end}}>C、{{$item.SC.C}}
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_D" value="{{$item.SC.D}}">D、{{$item.SC.D}}
+                                        <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_D" value="{{$item.SC.D}}" {{if eq $item.SC.Answer $item.SC.ActualAnswer}}disabled="true" checked{{end}}>D、{{$item.SC.D}}
                                     </label>
                                 </th>
                             </tr>
@@ -70,32 +70,32 @@
                                     <label>{{addOne $index}}、{{$item.MC.Discription}}</label>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_A" value="{{$item.MC.A}}">A、{{$item.MC.A}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_A" value="{{$item.MC.A}}" {{if has $item.MC.ActualAnswer $item.MC.A}}disabled="true" checked{{end}}>A、{{$item.MC.A}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_B" value="{{$item.MC.B}}">B、{{$item.MC.B}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_B" value="{{$item.MC.B}}" {{if has $item.MC.ActualAnswer $item.MC.B}}disabled="true" checked{{end}}>B、{{$item.MC.B}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_C" value="{{$item.MC.C}}">C、{{$item.MC.C}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_C" value="{{$item.MC.C}}" {{if has $item.MC.ActualAnswer $item.MC.C}}disabled="true" checked{{end}}>C、{{$item.MC.C}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_D" value="{{$item.MC.D}}">D、{{$item.MC.D}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_D" value="{{$item.MC.D}}" {{if has $item.MC.ActualAnswer $item.MC.D}}disabled="true" checked{{end}}>D、{{$item.MC.D}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_E" value="{{$item.MC.E}}">E、{{$item.MC.E}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_E" value="{{$item.MC.E}}" {{if has $item.MC.ActualAnswer $item.MC.E}}disabled="true" checked{{end}}>E、{{$item.MC.E}}
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label class="radio-inline">
-                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_F" value="{{$item.MC.F}}">F、{{$item.MC.F}}
+                                            <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_F" value="{{$item.MC.F}}" {{if has $item.MC.ActualAnswer $item.MC.F}}disabled="true" checked{{end}}>F、{{$item.MC.F}}
                                         </label>
                                     </div>
                                 </th>
@@ -114,11 +114,11 @@
                                     <label>{{addOne $index}}、{{$item.TF.Discription}}</label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_T" value="对">对
+                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_T" value="对" {{if eq $item.TF.Answer $item.TF.ActualAnswer}}disabled="true" checked{{end}}>对
                                     </label>
                                     <br>
                                     <label class="radio-inline">
-                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_F" value="错">错
+                                        <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_F" value="错" {{if eq $item.TF.Answer $item.TF.ActualAnswer}}disabled="true" checked{{end}}>错
                                     </label>
                                     <br>
                                 </th>

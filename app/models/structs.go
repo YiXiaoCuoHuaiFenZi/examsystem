@@ -114,7 +114,8 @@ type ExamPaper struct {
 	Discription  string           // 试卷描述
 	Score        float32          // 总分值
 	ActualScore  float32          // 考生实际得分
-	Time         int              // 考试时间
+	Time         int              // 考试时间 单位：分钟
+	LeftTime     int64            // 考试过程中所剩时间： 单位：毫秒
 	TimeStamp    string           // 时间戳
 	IDCode       string           // 编号
 	CreateMethod string           // 试卷的生成方式：随机、套题

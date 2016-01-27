@@ -337,6 +337,20 @@ func (this Examinee) PostExam() revel.Result {
 		return this.Redirect(Examinee.Exam)
 	}
 
+	leftTime := this.Params.Form.Get("leftTime")
+	if leftTime != "" {
+		lt, err := strconv.ParseInt(leftTime, 10, 64)
+		if err != nil {
+			log.Println("转换剩余时间出错")
+			return nil
+		}
+		examinee.ExamPaper.LeftTime = lt
+		examinee.ExamPaper.Status = models.Doing
+		log.Println("自动保存 " + examinee.Name + " 的试卷，考试剩余时间：" + leftTime + "毫秒")
+	} else {
+		examinee.ExamPaper.Status = models.Done
+	}
+
 	// 页面上显示的name值已经增加了1，所以这里需要加1，以将其对应起来
 	for index, _ := range examinee.ExamPaper.SC {
 		answer := this.Params.Form.Get("sc_" + strconv.Itoa(index+1) + "_answer")
@@ -352,7 +366,6 @@ func (this Examinee) PostExam() revel.Result {
 		answer := this.Params.Form.Get("tf_" + strconv.Itoa(index+1) + "_answer")
 		examinee.ExamPaper.TF[index].ActualAnswer = answer
 	}
-	examinee.ExamPaper.Status = models.Done
 	models.MarkExamPaper(&examinee.ExamPaper)
 
 	err = manager.UpdateExaminee(&examinee)
@@ -364,10 +377,8 @@ func (this Examinee) PostExam() revel.Result {
 	}
 
 	this.Flash.Success("成功交卷")
-
 	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
 	this.RenderArgs["examineeName"] = this.Session["examineeName"]
-
 	return this.Redirect(Examinee.Index)
 }
 

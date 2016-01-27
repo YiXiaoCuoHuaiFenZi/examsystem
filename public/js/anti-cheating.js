@@ -18,8 +18,28 @@ function checkTime(i) {
     return i;
 }
 
+// 自动保存试卷，每分钟执行一次
+function SaveExamPaperResults() {
+    $.ajax({
+        cache: true,
+        type: "POST",
+        url: "/Examinee/PostExam",
+        data: $('#ExamForm').serialize() + "&leftTime=" + ms, // 你的formid
+        async: false,
+        error: function(request) {
+            alert("Connection error");
+        },
+        success: function(data) {}
+    });
+    // 每分钟保存一次
+    setTimeout(function() {
+        SaveExamPaperResults();
+    }, 60000);
+}
+SaveExamPaperResults();
+
+// 检查是否切屏，切屏三次则强行交卷
 function SubmitExamPaper() {
-    var result = "";
     $.ajax({
         cache: true,
         type: "POST",
