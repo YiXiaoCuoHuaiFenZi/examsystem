@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"ExamSystem/app/models"
+	"examsystem/app/models"
 	"log"
 	"os"
 	"strings"
@@ -14,8 +14,8 @@ type Question struct {
 }
 
 func (this Question) Create() revel.Result {
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
@@ -113,16 +113,16 @@ func (this Question) View() revel.Result {
 	results["司法"] = lawQuestionInfo
 	results["建筑"] = constructionQuestionInfo
 
-	this.RenderArgs["results"] = results
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["results"] = results
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
 
 func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.Result {
 	singleChoice.Type = strings.TrimSpace(singleChoice.Type)
-	singleChoice.Discription = strings.TrimSpace(singleChoice.Discription)
+	singleChoice.Description = strings.TrimSpace(singleChoice.Description)
 	singleChoice.A = strings.TrimSpace(singleChoice.A)
 	singleChoice.B = strings.TrimSpace(singleChoice.B)
 	singleChoice.C = strings.TrimSpace(singleChoice.C)
@@ -130,7 +130,7 @@ func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.R
 	singleChoice.Answer = strings.TrimSpace(singleChoice.Answer)
 
 	this.Validation.Required(singleChoice.Type).Message("请选择试题类别")
-	this.Validation.Required(singleChoice.Discription).Message("题目描述不能为空")
+	this.Validation.Required(singleChoice.Description).Message("题目描述不能为空")
 	this.Validation.Required(singleChoice.A).Message("选项A不能为空")
 	this.Validation.Required(singleChoice.B).Message("选项B不能为空")
 	this.Validation.Required(singleChoice.C).Message("选项C不能为空")
@@ -170,7 +170,7 @@ func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.R
 
 		var e revel.ValidationError
 		e.Message = err.Error()
-		e.Key = "singleChoice.Discription"
+		e.Key = "singleChoice.Description"
 		this.Validation.Errors = append(this.Validation.Errors, &e)
 
 		this.Validation.Keep()
@@ -187,7 +187,7 @@ func (this Question) PostSingleChoice(singleChoice *models.SingleChoice) revel.R
 
 func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, answers []string) revel.Result {
 	multipleChoice.Type = strings.TrimSpace(multipleChoice.Type)
-	multipleChoice.Discription = strings.TrimSpace(multipleChoice.Discription)
+	multipleChoice.Description = strings.TrimSpace(multipleChoice.Description)
 	multipleChoice.A = strings.TrimSpace(multipleChoice.A)
 	multipleChoice.B = strings.TrimSpace(multipleChoice.B)
 	multipleChoice.C = strings.TrimSpace(multipleChoice.C)
@@ -197,7 +197,7 @@ func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, a
 	//multipleChoice.Answer = strings.TrimSpace(multipleChoice.Answer)
 
 	this.Validation.Required(multipleChoice.Type).Message("请选择试题类别")
-	this.Validation.Required(multipleChoice.Discription).Message("题目描述不能为空")
+	this.Validation.Required(multipleChoice.Description).Message("题目描述不能为空")
 	this.Validation.Required(multipleChoice.A).Message("选项A不能为空")
 	this.Validation.Required(multipleChoice.B).Message("选项B不能为空")
 	this.Validation.Required(multipleChoice.C).Message("选项C不能为空")
@@ -248,7 +248,7 @@ func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, a
 
 		var e revel.ValidationError
 		e.Message = err.Error()
-		e.Key = "multipleChoice.Discription"
+		e.Key = "multipleChoice.Description"
 		this.Validation.Errors = append(this.Validation.Errors, &e)
 
 		this.Validation.Keep()
@@ -265,11 +265,11 @@ func (this Question) PostMultipleChoice(multipleChoice *models.MultipleChoice, a
 
 func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
 	trueFalse.Type = strings.TrimSpace(trueFalse.Type)
-	trueFalse.Discription = strings.TrimSpace(trueFalse.Discription)
+	trueFalse.Description = strings.TrimSpace(trueFalse.Description)
 	trueFalse.Answer = strings.TrimSpace(trueFalse.Answer)
 
 	this.Validation.Required(trueFalse.Type).Message("请选择试题类别")
-	this.Validation.Required(trueFalse.Discription).Message("题目描述不能为空")
+	this.Validation.Required(trueFalse.Description).Message("题目描述不能为空")
 	this.Validation.Required(trueFalse.Answer).Message("答案不能为空")
 
 	if this.Validation.HasErrors() {
@@ -292,7 +292,7 @@ func (this Question) PostTrueFalse(trueFalse *models.TrueFalse) revel.Result {
 
 		var e revel.ValidationError
 		e.Message = err.Error()
-		e.Key = "trueFalse.Discription"
+		e.Key = "trueFalse.Description"
 		this.Validation.Errors = append(this.Validation.Errors, &e)
 
 		this.Validation.Keep()
@@ -325,13 +325,13 @@ func (this Question) PostBatchSingleChoice(batchSingleChoiceFile *os.File, qType
 	for _, sc := range scs {
 		e := manager.AddSingleChoice(&sc)
 		if e != nil {
-			m := e.Error() + "：" + sc.Discription + "\n"
-			log.Println(sc.Discription)
+			m := e.Error() + "：" + sc.Description + "\n"
+			log.Println(sc.Description)
 			errorMsg += m
 			log.Println(m)
 		} else {
-			successMsg += "创建成功：" + sc.Discription + "\n"
-			log.Println("创建成功：", sc.Discription)
+			successMsg += "创建成功：" + sc.Description + "\n"
+			log.Println("创建成功：", sc.Description)
 		}
 	}
 
@@ -359,11 +359,11 @@ func (this Question) PostBatchMultipleChoice(batchMultipleChoiceFile *os.File, q
 	for _, mc := range mcs {
 		err = manager.AddMultipleChoice(&mc)
 		if err != nil {
-			m := err.Error() + "：" + mc.Discription + "\n"
+			m := err.Error() + "：" + mc.Description + "\n"
 			errorMsg += m
 			log.Println(m)
 		} else {
-			successMsg += "创建成功：" + mc.Discription + "\n"
+			successMsg += "创建成功：" + mc.Description + "\n"
 			log.Println("创建成功：", mc)
 		}
 	}
@@ -392,11 +392,11 @@ func (this Question) PostBatchTrueFalse(batchTrueFalseFile *os.File, qType strin
 	for _, tf := range tfs {
 		err = manager.AddTrueFalse(&tf)
 		if err != nil {
-			m := err.Error() + "：" + tf.Discription + "\n"
+			m := err.Error() + "：" + tf.Description + "\n"
 			errorMsg += m
 			log.Println(m)
 		} else {
-			successMsg += "创建成功：" + tf.Discription + "\n"
+			successMsg += "创建成功：" + tf.Description + "\n"
 			log.Println("创建成功：", tf)
 		}
 	}

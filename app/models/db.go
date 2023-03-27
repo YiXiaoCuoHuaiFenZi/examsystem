@@ -23,7 +23,8 @@ func NewDBManager() (*DBManager, error) {
 	revel.Config.SetSection("db")
 	ip, found := revel.Config.String("ip")
 	if !found {
-		revel.ERROR.Fatal("Cannot load database ip from app.conf")
+		// TODO for debug
+		// revel.ERROR.Fatal("Cannot load database ip from app.conf")
 	}
 
 	session, err := mgo.Dial(ip)

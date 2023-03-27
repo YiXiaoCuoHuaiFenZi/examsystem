@@ -1,10 +1,18 @@
 package app
 
 import (
-	//"ExamSystem/app/controllers" 为什么不对？
 	"examsystem/app/controllers"
 
+	_ "github.com/revel/modules"
 	"github.com/revel/revel"
+)
+
+var (
+	// AppVersion revel app version (ldflags)
+	AppVersion string
+
+	// BuildTime revel app build-time (ldflags)
+	BuildTime string
 )
 
 func init() {
@@ -69,7 +77,7 @@ func init() {
 	revel.InterceptFunc(beforeQuestionController, revel.BEFORE, &controllers.Question{})
 }
 
-// TODO turn this into revel.HeaderFilter
+// HeaderFilter TODO turn this into revel.HeaderFilter
 // should probably also have a filter for CSRF
 // not sure if it can go in the same filter or not
 var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
@@ -77,6 +85,7 @@ var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 	c.Response.Out.Header().Add("X-Frame-Options", "SAMEORIGIN")
 	c.Response.Out.Header().Add("X-XSS-Protection", "1; mode=block")
 	c.Response.Out.Header().Add("X-Content-Type-Options", "nosniff")
+	c.Response.Out.Header().Add("Referrer-Policy", "strict-origin-when-cross-origin")
 
 	fc[0](c, fc[1:]) // Execute the next filter stage.
 }

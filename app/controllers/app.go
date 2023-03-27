@@ -15,8 +15,8 @@ func (this App) Introduce() revel.Result {
 }
 
 func (this App) About() revel.Result {
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }

@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"ExamSystem/app/models"
+	"examsystem/app/models"
 	"log"
 	"strings"
 
@@ -13,15 +13,15 @@ type Admin struct {
 }
 
 func (this Admin) Index() revel.Result {
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
 
 func (this Admin) SignUp() revel.Result {
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
@@ -129,8 +129,8 @@ func (this Admin) PostSignIn(signInAdmin *models.SignInAdmin) revel.Result {
 	this.Session["adminName"] = a.Name
 	this.Session["administrator"] = "true"
 
-	this.RenderArgs["adminIDCard"] = a.IDCard
-	this.RenderArgs["adminName"] = a.Name
+	this.ViewArgs["adminIDCard"] = a.IDCard
+	this.ViewArgs["adminName"] = a.Name
 	log.Println("登录成功: ", a)
 
 	return this.Redirect(Admin.Index)

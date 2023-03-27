@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"ExamSystem/app/models"
-	"io/ioutil"
+	"examsystem/app/models"
 	"log"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -18,8 +16,8 @@ type ExamPaper struct {
 }
 
 func (this ExamPaper) Create() revel.Result {
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
@@ -107,48 +105,50 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 
 	this.Flash.Success("试卷成功生成")
 
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Redirect(ExamPaper.Create)
 }
 
 func (this ExamPaper) saveExamPaperFile(examPaperFile *os.File) (filePath string, err error) {
-	// 使用revel requst formfile获取文件数据
-	file, handler, err := this.Request.FormFile("examPaperFile")
-	if err != nil {
-		this.Response.Status = 500
-		log.Println(err)
-		return "", err
-	}
-	// 读取所有数据
-	data, err := ioutil.ReadAll(file)
-	if err != nil {
-		this.Response.Status = 500
-		log.Println(err)
-		return "", err
-	}
-
-	// 获取当前路径
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		this.Response.Status = 500
-		log.Println(err)
-		return "", err
-	}
-
-	// 文件路径
-	filePath = dir + "/" + handler.Filename
-
-	// 保存到文件
-	err = ioutil.WriteFile(filePath, data, 0777)
-	if err != nil {
-		this.Response.Status = 500
-		log.Println(err)
-		return "", err
-	}
-
-	return filePath, nil
+	//// 使用revel request formfile获取文件数据
+	//file, handler, err := this.Request.FormFile("examPaperFile")
+	//if err != nil {
+	//	this.Response.Status = 500
+	//	log.Println(err)
+	//	return "", err
+	//}
+	//// 读取所有数据
+	//data, err := ioutil.ReadAll(file)
+	//if err != nil {
+	//	this.Response.Status = 500
+	//	log.Println(err)
+	//	return "", err
+	//}
+	//
+	//// 获取当前路径
+	//dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	//if err != nil {
+	//	this.Response.Status = 500
+	//	log.Println(err)
+	//	return "", err
+	//}
+	//
+	//// 文件路径
+	//filePath = dir + "/" + handler.Filename
+	//
+	//// 保存到文件
+	//err = ioutil.WriteFile(filePath, data, 0777)
+	//if err != nil {
+	//	this.Response.Status = 500
+	//	log.Println(err)
+	//	return "", err
+	//}
+	//
+	//return filePath, nil
+	// TODO for debug
+	return "nil", nil
 }
 
 func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
@@ -220,8 +220,8 @@ func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 
 	this.Flash.Success("试卷成功上传")
 
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Redirect(ExamPaper.Create)
 }
@@ -242,12 +242,12 @@ func (this ExamPaper) Preview(title string) revel.Result {
 		return this.Render()
 	}
 
-	this.RenderArgs["scCount"] = len(examPaper.SC)
-	this.RenderArgs["mcCount"] = len(examPaper.MC)
-	this.RenderArgs["tfCount"] = len(examPaper.TF)
-	this.RenderArgs["examPaper"] = examPaper
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["scCount"] = len(examPaper.SC)
+	this.ViewArgs["mcCount"] = len(examPaper.MC)
+	this.ViewArgs["tfCount"] = len(examPaper.TF)
+	this.ViewArgs["examPaper"] = examPaper
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
@@ -270,9 +270,9 @@ func (this ExamPaper) View() revel.Result {
 		return this.Render()
 	}
 
-	this.RenderArgs["examPapers"] = examPapers
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["examPapers"] = examPapers
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
@@ -295,9 +295,9 @@ func (this ExamPaper) Publish() revel.Result {
 		return this.Render()
 	}
 
-	this.RenderArgs["examPapers"] = examPapers
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["examPapers"] = examPapers
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
@@ -353,8 +353,8 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 
 	this.Flash.Success("考试成功发布")
 
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Redirect(ExamPaper.Publish)
 }
@@ -379,16 +379,16 @@ func (this ExamPaper) Score(idCard string) revel.Result {
 
 	log.Println("查到考生信息: ", examinee)
 
-	this.RenderArgs["examinee"] = examinee
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["examinee"] = examinee
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
 
 func (this ExamPaper) QueryScore() revel.Result {
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }

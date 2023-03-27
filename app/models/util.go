@@ -27,7 +27,7 @@ func ParseSingleChoiceFile(file *os.File, qType string) ([]SingleChoice, error) 
 		l := strings.TrimSpace(string(line))
 
 		if strings.HasPrefix(l, "题目：") {
-			sc.Discription = strings.TrimPrefix(l, "题目：")
+			sc.Description = strings.TrimPrefix(l, "题目：")
 		}
 		if strings.HasPrefix(l, "A.") {
 			sc.A = strings.TrimPrefix(l, "A.")
@@ -77,7 +77,7 @@ func ParseMultipleChoiceFile(file *os.File, qType string) ([]MultipleChoice, err
 		l := strings.TrimSpace(string(line))
 
 		if strings.HasPrefix(l, "题目：") {
-			mc.Discription = strings.TrimPrefix(l, "题目：")
+			mc.Description = strings.TrimPrefix(l, "题目：")
 		}
 		if strings.HasPrefix(l, "A.") {
 			mc.A = strings.TrimPrefix(l, "A.")
@@ -140,7 +140,7 @@ func ParseTrueFalseFile(file *os.File, qType string) ([]TrueFalse, error) {
 
 		l := strings.TrimSpace(string(line))
 		if strings.HasPrefix(l, "题目：") {
-			tf.Discription = strings.TrimPrefix(l, "题目：")
+			tf.Description = strings.TrimPrefix(l, "题目：")
 		}
 		if strings.HasPrefix(l, "答案：") {
 			tf.Answer = strings.TrimPrefix(l, "答案：")

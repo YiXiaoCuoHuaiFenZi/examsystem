@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"ExamSystem/app/models"
 	"encoding/csv"
+	"examsystem/app/models"
 	"io"
 	"log"
 	"os"
@@ -25,7 +25,9 @@ func (this Examinee) Index() revel.Result {
 	}
 	defer manager.Close()
 
-	idCard := this.Session["examineeIDCard"]
+	//idCard := this.Session["examineeIDCard"]
+	// TODO for debug
+	idCard := "debug"
 	examinee, e := manager.GetExamineeByIDCard(idCard)
 
 	if e != nil {
@@ -34,9 +36,9 @@ func (this Examinee) Index() revel.Result {
 		return this.RenderError(e)
 	}
 
-	this.RenderArgs["examinee"] = examinee
-	this.RenderArgs["examineeIDCard"] = idCard
-	this.RenderArgs["examineeName"] = this.Session["examineeName"]
+	this.ViewArgs["examinee"] = examinee
+	this.ViewArgs["examineeIDCard"] = idCard
+	this.ViewArgs["examineeName"] = this.Session["examineeName"]
 
 	return this.Render()
 }
@@ -56,17 +58,17 @@ func (this Examinee) Info() revel.Result {
 		return this.Render(e)
 	}
 
-	this.RenderArgs["examinees"] = examinees
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["examinees"] = examinees
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
 
 func (this Examinee) SignUp() revel.Result {
-	this.RenderArgs["batch"] = this.Session["batch"]
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["batch"] = this.Session["batch"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
 
 	return this.Render()
 }
@@ -184,10 +186,10 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 }
 
 func (this Examinee) SignIn() revel.Result {
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
-	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
-	this.RenderArgs["examineeName"] = this.Session["examineeName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["examineeIDCard"] = this.Session["examineeIDCard"]
+	this.ViewArgs["examineeName"] = this.Session["examineeName"]
 
 	return this.Render()
 }
@@ -240,8 +242,8 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 	this.Session["examineeName"] = e.Name
 	this.Session["examinee"] = "true"
 
-	this.RenderArgs["examineeIDCard"] = e.IDCard
-	this.RenderArgs["examineeName"] = e.Name
+	this.ViewArgs["examineeIDCard"] = e.IDCard
+	this.ViewArgs["examineeName"] = e.Name
 	log.Println("登录成功: ", e.Name)
 
 	return this.Redirect(Examinee.Index)
@@ -256,7 +258,9 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	}
 	defer manager.Close()
 
-	examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"])
+	//examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"])
+	// TODO for debug
+	examinee, err := manager.GetExamineeByIDCard("debug")
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
@@ -303,19 +307,19 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 		pages = append(pages, i)
 	}
 
-	this.RenderArgs["exam"] = "true"
+	this.ViewArgs["exam"] = "true"
 	// TODO 支持多试卷，根据试卷标题查询得到要考试的试卷
-	this.RenderArgs["scws"] = scws
-	this.RenderArgs["mcws"] = mcws
-	this.RenderArgs["tfws"] = tfws
-	this.RenderArgs["pages"] = pages
+	this.ViewArgs["scws"] = scws
+	this.ViewArgs["mcws"] = mcws
+	this.ViewArgs["tfws"] = tfws
+	this.ViewArgs["pages"] = pages
 
-	this.RenderArgs["scCount"] = scCount
-	this.RenderArgs["mcCount"] = mcCount
-	this.RenderArgs["tfCount"] = tfCount
-	this.RenderArgs["examPaper"] = examinee.ExamPaper
-	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
-	this.RenderArgs["examineeName"] = this.Session["examineeName"]
+	this.ViewArgs["scCount"] = scCount
+	this.ViewArgs["mcCount"] = mcCount
+	this.ViewArgs["tfCount"] = tfCount
+	this.ViewArgs["examPaper"] = examinee.ExamPaper
+	this.ViewArgs["examineeIDCard"] = this.Session["examineeIDCard"]
+	this.ViewArgs["examineeName"] = this.Session["examineeName"]
 
 	return this.Render()
 }
@@ -329,7 +333,9 @@ func (this Examinee) PostExam() revel.Result {
 	}
 	defer manager.Close()
 
-	examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"])
+	//examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"])
+	// TODO for debug
+	examinee, err := manager.GetExamineeByIDCard("debug")
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
@@ -377,8 +383,8 @@ func (this Examinee) PostExam() revel.Result {
 	}
 
 	this.Flash.Success("成功交卷")
-	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
-	this.RenderArgs["examineeName"] = this.Session["examineeName"]
+	this.ViewArgs["examineeIDCard"] = this.Session["examineeIDCard"]
+	this.ViewArgs["examineeName"] = this.Session["examineeName"]
 	return this.Redirect(Examinee.Index)
 }
 
@@ -399,15 +405,15 @@ func (this Examinee) ExamResult(idCard, title string) revel.Result {
 		return this.Render()
 	}
 
-	this.RenderArgs["scCount"] = len(examinee.ExamPaper.SC)
-	this.RenderArgs["mcCount"] = len(examinee.ExamPaper.MC)
-	this.RenderArgs["tfCount"] = len(examinee.ExamPaper.TF)
-	this.RenderArgs["examPaper"] = examinee.ExamPaper
+	this.ViewArgs["scCount"] = len(examinee.ExamPaper.SC)
+	this.ViewArgs["mcCount"] = len(examinee.ExamPaper.MC)
+	this.ViewArgs["tfCount"] = len(examinee.ExamPaper.TF)
+	this.ViewArgs["examPaper"] = examinee.ExamPaper
 
-	this.RenderArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.RenderArgs["adminName"] = this.Session["adminName"]
-	this.RenderArgs["examineeIDCard"] = this.Session["examineeIDCard"]
-	this.RenderArgs["examineeName"] = this.Session["examineeName"]
+	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
+	this.ViewArgs["adminName"] = this.Session["adminName"]
+	this.ViewArgs["examineeIDCard"] = this.Session["examineeIDCard"]
+	this.ViewArgs["examineeName"] = this.Session["examineeName"]
 
 	return this.Render()
 }

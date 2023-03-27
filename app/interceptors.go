@@ -34,7 +34,8 @@ func beforeAdminController(this *revel.Controller) revel.Result {
 			log.Println("管理员访问了登录页面，已自动跳转到管理员首页")
 			return this.Redirect(controllers.Admin.Index)
 		} else {
-			log.Println("管理员 " + this.Session["adminName"] + " 访问了 " + this.Action + " 页面")
+			// TODO fix it log.Println("管理员 " + this.Session["adminName"] + " 访问了 " + this.Action + " 页面")
+			log.Println("管理员 " + "fix me" + " 访问了 " + this.Action + " 页面")
 			return nil
 		}
 	}
@@ -78,7 +79,8 @@ func beforeExamineeController(this *revel.Controller) revel.Result {
 			log.Println("管理员访问了考生登录页面，已自动跳转到管理员首页")
 			return this.Redirect(controllers.Admin.Index)
 		} else {
-			log.Println("管理员 " + this.Session["adminName"] + " 访问了 " + this.Action + " 页面")
+			// TODO fix it log.Println("管理员 " + this.Session["adminName"] + " 访问了 " + this.Action + " 页面")
+			log.Println("管理员 " + "fix me" + " 访问了 " + this.Action + " 页面")
 			return nil
 		}
 	}

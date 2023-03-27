@@ -1,6 +1,6 @@
 package models
 
-// 管理员信息数据结构--用于注册
+// SignUpAdmin 管理员信息数据结构--用于注册
 type SignUpAdmin struct {
 	IDCard          string // 身份证号
 	Name            string // 管理员姓名
@@ -9,7 +9,7 @@ type SignUpAdmin struct {
 	ConfirmPassword string // 确认密码
 }
 
-// 管理员信息数据结构--用于登录
+// SignInAdmin 管理员信息数据结构--用于登录
 type SignInAdmin struct {
 	IDCard   string // 身份证号
 	Name     string // 管理员姓名
@@ -17,7 +17,7 @@ type SignInAdmin struct {
 	Password string // 账号密码
 }
 
-// 管理员信息数据结构--真实数据
+// Admin 管理员信息数据结构--真实数据
 type Admin struct {
 	IDCard   string // 身份证号
 	Name     string // 管理员姓名
@@ -26,7 +26,7 @@ type Admin struct {
 	Level    int    // 管理员权限级别
 }
 
-// 考生信息数据结构--用于注册
+// SignUpExaminee 考生信息数据结构--用于注册
 type SignUpExaminee struct {
 	IDCard          string // 身份证号
 	Name            string // 考生姓名
@@ -36,7 +36,7 @@ type SignUpExaminee struct {
 	ConfirmPassword string // 确认密码
 }
 
-// 考生信息数据结构--用于登录
+// SignInExaminee 考生信息数据结构--用于登录
 type SignInExaminee struct {
 	IDCard   string // 身份证号
 	Name     string // 考生姓名
@@ -44,7 +44,7 @@ type SignInExaminee struct {
 	Password string // 账号密码
 }
 
-// 考生信息数据结构--真实数据
+// Examinee 考生信息数据结构--真实数据
 type Examinee struct {
 	IDCard    string    // 身份证号
 	Name      string    // 考生姓名
@@ -56,7 +56,7 @@ type Examinee struct {
 
 type SingleChoice struct {
 	Type         string // 所属考试类别
-	Discription  string // 题目描述
+	Description  string // 题目描述
 	A            string // 选项A
 	B            string // 选项B
 	C            string // 选项C
@@ -67,7 +67,7 @@ type SingleChoice struct {
 
 type MultipleChoice struct {
 	Type         string   // 所属考试类别
-	Discription  string   // 题目描述
+	Description  string   // 题目描述
 	A            string   // 选项A
 	B            string   // 选项B
 	C            string   // 选项C
@@ -80,7 +80,7 @@ type MultipleChoice struct {
 
 type TrueFalse struct {
 	Type         string // 所属考试类别
-	Discription  string // 题目描述
+	Description  string // 题目描述
 	Answer       string // 正确答案
 	ActualAnswer string // 考生实际答案
 }
