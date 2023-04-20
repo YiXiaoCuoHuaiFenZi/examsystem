@@ -1,8 +1,11 @@
 package models
 
 import (
+	"context"
 	"github.com/revel/revel"
-	"gopkg.in/mgo.v2"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 )
 
 const (
@@ -16,33 +19,58 @@ const (
 )
 
 type DBManager struct {
-	session *mgo.Session
+	client *mongo.Client
 }
 
 func NewDBManager() (*DBManager, error) {
 	revel.Config.SetSection("db")
-	ip, found := revel.Config.String("ip")
+	uri, found := revel.Config.String("uri")
 	if !found {
-		// TODO for debug
-		// revel.ERROR.Fatal("Cannot load database ip from app.conf")
+		log.Fatal("Cannot load database uri from app.conf.")
 	}
 
-	session, err := mgo.Dial(ip)
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
 	if err != nil {
-		return nil, err
+		log.Fatal("Cannot connect to database!")
 	}
 
-	return &DBManager{session}, nil
+	return &DBManager{client}, nil
 }
 
-func (manager *DBManager) DataBase(name string) *mgo.Database {
-	return manager.session.DB(name)
+func (manager *DBManager) DataBase(name string) *mongo.Database {
+	return manager.client.Database(name)
 }
 
-func (manager *DBManager) Collection(name string) *mgo.Collection {
-	return manager.session.DB(DBName).C(name)
+func (manager *DBManager) Collection(name string) *mongo.Collection {
+	return manager.client.Database(DBName).Collection(name)
+}
+
+func (manager *DBManager) GetExamineeCollection() *mongo.Collection {
+	return manager.client.Database(DBName).Collection(ExamineeCollection)
+}
+
+func (manager *DBManager) GetAdminCollection() *mongo.Collection {
+	return manager.client.Database(DBName).Collection(AdminCollection)
+}
+
+func (manager *DBManager) GetSingleChoiceCollection() *mongo.Collection {
+	return manager.client.Database(DBName).Collection(SingleChoiceCollection)
+}
+
+func (manager *DBManager) GetMultipleChoiceCollection() *mongo.Collection {
+	return manager.client.Database(DBName).Collection(MultipleChoiceCollection)
+}
+
+func (manager *DBManager) GetTrueFalseCollection() *mongo.Collection {
+	return manager.client.Database(DBName).Collection(TrueFalseCollection)
+}
+
+func (manager *DBManager) GetExamPaperCollection() *mongo.Collection {
+	return manager.client.Database(DBName).Collection(ExamPaperCollection)
 }
 
 func (manager *DBManager) Close() {
-	manager.session.Close()
+	if err := manager.client.Disconnect(context.TODO()); err != nil {
+		log.Fatal("Disconnect database fail!")
+	}
 }

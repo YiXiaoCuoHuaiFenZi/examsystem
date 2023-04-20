@@ -1,39 +1,44 @@
 package models
 
 import (
+	"context"
 	"errors"
 	"log"
 
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (this *DBManager) GetAllExamPaper() ([]ExamPaper, error) {
-	t := this.session.DB(DBName).C(ExamPaperCollection)
+func (manager *DBManager) GetAllExamPaper() ([]ExamPaper, error) {
+	t := manager.GetExamPaperCollection()
 
-	exp := []ExamPaper{}
-
-	err := t.Find(nil).All(&exp)
-	if err != nil {
-		return nil, err
+	var examPapers []ExamPaper
+	cursor, err := t.Find(context.TODO(), bson.M{})
+	for cursor.Next(context.TODO()) {
+		var examPaper = ExamPaper{}
+		err = cursor.Decode(&examPaper)
+		if err != nil {
+			log.Println(err)
+		}
+		examPapers = append(examPapers, examPaper)
 	}
 
-	if len(exp) == 0 {
+	if len(examPapers) == 0 {
 		log.Println("试卷库没有可用试卷")
 		return nil, errors.New("试卷库没有可用试卷")
 	}
 
-	return exp, nil
+	return examPapers, nil
 }
 
-func (this *DBManager) AddExamPaper(exp *ExamPaper) error {
-	t := this.session.DB(DBName).C(ExamPaperCollection)
+func (manager *DBManager) AddExamPaper(exp *ExamPaper) error {
+	t := manager.GetExamPaperCollection()
 
-	i, _ := t.Find(bson.M{"title": exp.Title}).Count()
-	if i != 0 {
+	count, err := t.CountDocuments(context.TODO(), bson.M{"title": exp.Title})
+	if count != 0 {
 		return errors.New("该试卷已经存在")
 	}
 
-	err := t.Insert(exp)
+	_, err = t.InsertOne(context.TODO(), exp)
 	if err != nil {
 		log.Println("创建试卷失败：", exp)
 	}
@@ -41,11 +46,11 @@ func (this *DBManager) AddExamPaper(exp *ExamPaper) error {
 	return err
 }
 
-func (this *DBManager) GetExamPaperByTitle(title string) (ExamPaper, error) {
-	t := this.session.DB(DBName).C(ExamPaperCollection)
+func (manager *DBManager) GetExamPaperByTitle(title string) (ExamPaper, error) {
+	t := manager.GetExamPaperCollection()
 
 	exp := ExamPaper{}
-	err := t.Find(bson.M{"title": title}).One(&exp)
+	err := t.FindOne(context.TODO(), bson.M{"title": title}).Decode(&exp)
 	if err != nil {
 		return exp, err
 	}

@@ -2,7 +2,6 @@ package app
 
 import (
 	"examsystem/app/controllers"
-
 	_ "github.com/revel/modules"
 	"github.com/revel/revel"
 )
@@ -69,6 +68,7 @@ func init() {
 		return r
 	}
 
+	revel.OnAppStart(InitDB)
 	//revel.InterceptFunc(checkUser, revel.BEFORE, &App{})
 	revel.InterceptFunc(beforeAdminController, revel.BEFORE, &controllers.Admin{})
 	revel.InterceptFunc(beforeExamineeController, revel.BEFORE, &controllers.Examinee{})

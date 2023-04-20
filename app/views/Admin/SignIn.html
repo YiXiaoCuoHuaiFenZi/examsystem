@@ -55,17 +55,17 @@
                     <form class="form-horizontal" role="form" action="{{url "Admin.SignIn"}}" method="POST">
                         {{with $field := field "signInAdmin.IDCard" .}}
                         <div class="form-group {{$field.ErrorClass}}">
-                            <label class="col-sm-3 control-label" for="{{$field.Id}}">管理员身份证</label>
+                            <label class="col-sm-3 control-label" for="{{$field.ID}}">管理员身份证</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入管理员身份证"> {{if $field.Error}}
+                                <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入管理员身份证"> {{if $field.Error}}
                                 <span class="help-inline">{{$field.Error}}</span> {{end}}
                             </div>
                         </div>
                         {{end}} {{with $field := field "signInAdmin.Password" .}}
                         <div class="form-group {{$field.ErrorClass}}">
-                            <label class="col-sm-3 control-label" for="{{$field.Id}}">输入密码</label>
+                            <label class="col-sm-3 control-label" for="{{$field.ID}}">输入密码</label>
                             <div class="col-sm-6">
-                                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="输入密码"> {{if $field.Error}}
+                                <input type="password" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="输入密码"> {{if $field.Error}}
                                 <span class="help-inline">{{$field.Error}}</span> {{end}}
                             </div>
                         </div>

@@ -15,33 +15,33 @@
                     <form class="form-horizontal" role="form" id="ManualAdd" action="{{url "Admin.SignUp"}}" method="POST">
                         {{with $field := field "signUpAdmin.Name" .}}
                         <div class="form-group {{$field.ErrorClass}}">
-                            <label class="col-sm-3 control-label" for="{{$field.Id}}">管理员姓名</label>
+                            <label class="col-sm-3 control-label" for="{{$field.ID}}">管理员姓名</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入管理员姓名"> {{if $field.Error}}
+                                <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入管理员姓名"> {{if $field.Error}}
                                 <span class="help-inline">{{$field.Error}}</span> {{end}}
                             </div>
                         </div>
                         {{end}} {{with $field := field "signUpAdmin.IDCard" .}}
                         <div class="form-group {{$field.ErrorClass}}">
-                            <label class="col-sm-3 control-label" for="{{$field.Id}}">身份证号</label>
+                            <label class="col-sm-3 control-label" for="{{$field.ID}}">身份证号</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号"> {{if $field.Error}}
+                                <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号"> {{if $field.Error}}
                                 <span class="help-inline">{{$field.Error}}</span> {{end}}
                             </div>
                         </div>
                         {{end}} {{with $field := field "signUpAdmin.Password" .}}
                         <div class="form-group {{$field.ErrorClass}}">
-                            <label class="col-sm-3 control-label" for="{{$field.Id}}">设置密码</label>
+                            <label class="col-sm-3 control-label" for="{{$field.ID}}">设置密码</label>
                             <div class="col-sm-6">
-                                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="设置密码"> {{if $field.Error}}
+                                <input type="password" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="设置密码"> {{if $field.Error}}
                                 <span class="help-inline">{{$field.Error}}</span> {{end}}
                             </div>
                         </div>
                         {{end}} {{with $field := field "signUpAdmin.ConfirmPassword" .}}
                         <div class="form-group {{$field.ErrorClass}}">
-                            <label class="col-sm-3 control-label" for="{{$field.Id}}">重复密码</label>
+                            <label class="col-sm-3 control-label" for="{{$field.ID}}">重复密码</label>
                             <div class="col-sm-6">
-                                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码"> {{if $field.Error}}
+                                <input type="password" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码"> {{if $field.Error}}
                                 <span class="help-inline">{{$field.Error}}</span> {{end}}
                             </div>
                         </div>

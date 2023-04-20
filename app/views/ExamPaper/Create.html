@@ -36,8 +36,8 @@
                             {{with $field := field "examPaper.Title" .}}
                             <div class="form-group {{$field.ErrorClass}}">
                                 <div class="col-sm-12">
-                                    <div class="form-group-addon" for="{{$field.Id}}">试卷标题：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">试卷标题：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                             </div>
@@ -47,8 +47,8 @@
                             {{with $field := field "examPaper.Discription" .}}
                             <div class="form-group {{$field.ErrorClass}}">
                                 <div class="col-sm-12">
-                                    <div class="form-group-addon" for="{{$field.Id}}">试卷描述：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">试卷描述：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                             </div>
@@ -58,14 +58,14 @@
                             <div class="form-group">
                                 {{with $field := field "examPaper.Score" .}}
                                 <div class="col-sm-6 {{$field.ErrorClass}}">
-                                    <div class="form-group-addon" for="{{$field.Id}}">试卷总分数：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">试卷总分数：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.ID}});"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                                 {{end}} {{with $field := field "examPaper.Time" .}}
                                 <div class="col-sm-6 {{$field.ErrorClass}}">
-                                    <div class="form-group-addon" for="{{$field.Id}}">考试时间：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">考试时间：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.ID}});"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                                 {{end}}
@@ -75,14 +75,14 @@
                             <div class="form-group">
                                 {{with $field := field "examPaper.SCCount" .}}
                                 <div class="col-sm-6 {{$field.ErrorClass}}">
-                                    <div class="form-group-addon" for="{{$field.Id}}">单选题数量：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">单选题数量：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.ID}});"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                                 {{end}} {{with $field := field "examPaper.SCScore" .}}
                                 <div class="col-sm-6 {{$field.ErrorClass}}">
-                                    <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">每道题分值：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.ID}});"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                                 {{end}}
@@ -92,14 +92,14 @@
                             <div class="form-group">
                                 {{with $field := field "examPaper.MCCount" .}}
                                 <div class="col-sm-6 {{$field.ErrorClass}}">
-                                    <div class="form-group-addon" for="{{$field.Id}}">多选题数量：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">多选题数量：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.ID}});"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                                 {{end}} {{with $field := field "examPaper.MCScore" .}}
                                 <div class="col-sm-6 {{$field.ErrorClass}}">
-                                    <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">每道题分值：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.ID}});"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                                 {{end}}
@@ -109,14 +109,14 @@
                             <div class="form-group">
                                 {{with $field := field "examPaper.TFCount" .}}
                                 <div class="col-sm-6 {{$field.ErrorClass}}">
-                                    <div class="form-group-addon" for="{{$field.Id}}">判断题数量：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">判断题数量：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.ID}});"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                                 {{end}} {{with $field := field "examPaper.TFScore" .}}
                                 <div class="col-sm-6 {{$field.ErrorClass}}">
-                                    <div class="form-group-addon" for="{{$field.Id}}">每道题分值：</div>
-                                    <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.Id}});"> {{if $field.Error}}
+                                    <div class="form-group-addon" for="{{$field.ID}}">每道题分值：</div>
+                                    <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" onkeyup="numCheck({{$field.ID}});"> {{if $field.Error}}
                                     <span class="help-inline">{{$field.Error}}</span> {{end}}
                                 </div>
                                 {{end}}

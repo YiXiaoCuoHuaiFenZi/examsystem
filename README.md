@@ -17,3 +17,5 @@
 
 ![首页](images/index_page.png)
 
+# 开发指引
+[社区版mongdb苹果电脑安装](![首页](images/index_page.png))

@@ -36,9 +36,9 @@ window.onload = function isSignUpSuccess() {
                     <form class="form-horizontal" role="form" id="QueryScoreForm" action="{{url "ExamPaper.PostQueryScore"}}" method="POST">
                         {{with $field := field "examineeIDCard" .}}
                         <div class="form-group {{$field.ErrorClass}}">
-                            <label class="col-sm-4 control-label" for="{{$field.Id}}">身份证号</label>
+                            <label class="col-sm-4 control-label" for="{{$field.ID}}">身份证号</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号进行查询"> {{if $field.Error}}
+                                <input type="text" class="form-control" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入身份证号进行查询"> {{if $field.Error}}
                                 <span class="help-inline">{{$field.Error}}</span> {{end}}
                             </div>
                         </div>

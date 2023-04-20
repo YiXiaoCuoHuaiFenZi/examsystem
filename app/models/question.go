@@ -1,22 +1,27 @@
 package models
 
 import (
+	"context"
 	"errors"
 	"log"
 	"math/rand"
 	"time"
 
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (this *DBManager) GetRandomSingleChoice(qtype string, count int) ([]SingleChoice, error) {
-	t := this.session.DB(DBName).C(SingleChoiceCollection)
+func (manager *DBManager) GetRandomSingleChoice(qtype string, count int) ([]SingleChoice, error) {
+	t := manager.GetSingleChoiceCollection()
 
-	ss := []SingleChoice{}
-	err := t.Find(bson.M{"type": qtype}).All(&ss)
-	if err != nil {
-		log.Println(err)
-		return nil, err
+	var ss []SingleChoice
+	cursor, err := t.Find(context.TODO(), bson.M{"type": qtype})
+	for cursor.Next(context.TODO()) {
+		var sc = SingleChoice{}
+		err = cursor.Decode(&sc)
+		if err != nil {
+			log.Println(err)
+		}
+		ss = append(ss, sc)
 	}
 
 	c := len(ss)
@@ -37,14 +42,18 @@ func (this *DBManager) GetRandomSingleChoice(qtype string, count int) ([]SingleC
 	return results, err
 }
 
-func (this *DBManager) GetRandomMultipleChoice(qtype string, count int) ([]MultipleChoice, error) {
-	t := this.session.DB(DBName).C(MultipleChoiceCollection)
+func (manager *DBManager) GetRandomMultipleChoice(qtype string, count int) ([]MultipleChoice, error) {
+	t := manager.GetMultipleChoiceCollection()
 
-	mc := []MultipleChoice{}
-	err := t.Find(bson.M{"type": qtype}).All(&mc)
-	if err != nil {
-		log.Println(err)
-		return nil, err
+	var mc []MultipleChoice
+	cursor, err := t.Find(context.TODO(), bson.M{"type": qtype})
+	for cursor.Next(context.TODO()) {
+		var m = MultipleChoice{}
+		err = cursor.Decode(&m)
+		if err != nil {
+			log.Println(err)
+		}
+		mc = append(mc, m)
 	}
 
 	c := len(mc)
@@ -53,7 +62,7 @@ func (this *DBManager) GetRandomMultipleChoice(qtype string, count int) ([]Multi
 		return nil, errors.New("随机数大于单选题库题目数")
 	}
 
-	results := []MultipleChoice{}
+	var results []MultipleChoice
 	for i := 0; i < count; i++ {
 		r := rand.New(rand.NewSource(time.Now().UnixNano()))
 		rn := r.Intn(len(mc))
@@ -65,14 +74,18 @@ func (this *DBManager) GetRandomMultipleChoice(qtype string, count int) ([]Multi
 	return results, err
 }
 
-func (this *DBManager) GetRandomTrueFalse(qtype string, count int) ([]TrueFalse, error) {
-	t := this.session.DB(DBName).C(TrueFalseCollection)
+func (manager *DBManager) GetRandomTrueFalse(qtype string, count int) ([]TrueFalse, error) {
+	t := manager.GetTrueFalseCollection()
 
 	tf := []TrueFalse{}
-	err := t.Find(bson.M{"type": qtype}).All(&tf)
-	if err != nil {
-		log.Println(err)
-		return nil, err
+	cursor, err := t.Find(context.TODO(), bson.M{"type": qtype})
+	for cursor.Next(context.TODO()) {
+		var f = TrueFalse{}
+		err = cursor.Decode(&f)
+		if err != nil {
+			log.Println(err)
+		}
+		tf = append(tf, f)
 	}
 
 	c := len(tf)
@@ -93,19 +106,27 @@ func (this *DBManager) GetRandomTrueFalse(qtype string, count int) ([]TrueFalse,
 	return results, err
 }
 
-func (this *DBManager) GetSingleChoiceByDiscription(discription string) ([]SingleChoice, error) {
-	t := this.session.DB(DBName).C(SingleChoiceCollection)
+func (manager *DBManager) GetSingleChoiceByDiscription(discription string) ([]SingleChoice, error) {
+	t := manager.GetSingleChoiceCollection()
 
-	ss := []SingleChoice{}
-	err := t.Find(bson.M{"discription": discription}).All(&ss)
+	var ss []SingleChoice
+	cursor, err := t.Find(context.TODO(), bson.M{"discription": discription})
+	for cursor.Next(context.TODO()) {
+		var sc = SingleChoice{}
+		err = cursor.Decode(&sc)
+		if err != nil {
+			log.Println(err)
+		}
+		ss = append(ss, sc)
+	}
 
 	return ss, err
 }
 
-func (this *DBManager) AddSingleChoice(s *SingleChoice) error {
-	t := this.session.DB(DBName).C(SingleChoiceCollection)
+func (manager *DBManager) AddSingleChoice(s *SingleChoice) error {
+	t := manager.GetSingleChoiceCollection()
 
-	scs, err := this.GetSingleChoiceByDiscription(s.Description)
+	scs, err := manager.GetSingleChoiceByDiscription(s.Description)
 	if err != nil {
 		return err
 	}
@@ -121,7 +142,7 @@ func (this *DBManager) AddSingleChoice(s *SingleChoice) error {
 		}
 	}
 
-	err = t.Insert(s)
+	_, err = t.InsertOne(context.TODO(), s)
 	if err != nil {
 		return err
 	}
@@ -129,19 +150,27 @@ func (this *DBManager) AddSingleChoice(s *SingleChoice) error {
 	return nil
 }
 
-func (this *DBManager) GetMultipleChoiceByDiscription(discription string) ([]MultipleChoice, error) {
-	t := this.session.DB(DBName).C(MultipleChoiceCollection)
+func (manager *DBManager) GetMultipleChoiceByDiscription(discription string) ([]MultipleChoice, error) {
+	t := manager.GetMultipleChoiceCollection()
 
-	ms := []MultipleChoice{}
-	err := t.Find(bson.M{"discription": discription}).All(&ms)
+	var ms []MultipleChoice
+	cursor, err := t.Find(context.TODO(), bson.M{"discription": discription})
+	for cursor.Next(context.TODO()) {
+		var m = MultipleChoice{}
+		err = cursor.Decode(&m)
+		if err != nil {
+			log.Println(err)
+		}
+		ms = append(ms, m)
+	}
 
 	return ms, err
 }
 
-func (this *DBManager) AddMultipleChoice(m *MultipleChoice) error {
-	t := this.session.DB(DBName).C(MultipleChoiceCollection)
+func (manager *DBManager) AddMultipleChoice(m *MultipleChoice) error {
+	t := manager.GetMultipleChoiceCollection()
 
-	mcs, err := this.GetMultipleChoiceByDiscription(m.Description)
+	mcs, err := manager.GetMultipleChoiceByDiscription(m.Description)
 	if err != nil {
 		return err
 	}
@@ -159,7 +188,7 @@ func (this *DBManager) AddMultipleChoice(m *MultipleChoice) error {
 		}
 	}
 
-	err = t.Insert(m)
+	_, err = t.InsertOne(context.TODO(), m)
 	if err != nil {
 		return err
 	}
@@ -167,19 +196,27 @@ func (this *DBManager) AddMultipleChoice(m *MultipleChoice) error {
 	return nil
 }
 
-func (this *DBManager) GetTrueFalseByDiscription(discription string) ([]TrueFalse, error) {
-	t := this.session.DB(DBName).C(TrueFalseCollection)
+func (manager *DBManager) GetTrueFalseByDiscription(discription string) ([]TrueFalse, error) {
+	t := manager.GetTrueFalseCollection()
 
-	ts := []TrueFalse{}
-	err := t.Find(bson.M{"discription": discription}).All(&ts)
+	var ts []TrueFalse
+	cursor, err := t.Find(context.TODO(), bson.M{"discription": discription})
+	for cursor.Next(context.TODO()) {
+		var f = TrueFalse{}
+		err = cursor.Decode(&f)
+		if err != nil {
+			log.Println(err)
+		}
+		ts = append(ts, f)
+	}
 
 	return ts, err
 }
 
-func (this *DBManager) AddTrueFalse(f *TrueFalse) error {
-	t := this.session.DB(DBName).C(TrueFalseCollection)
+func (manager *DBManager) AddTrueFalse(f *TrueFalse) error {
+	t := manager.GetTrueFalseCollection()
 
-	tfs, err := this.GetTrueFalseByDiscription(f.Description)
+	tfs, err := manager.GetTrueFalseByDiscription(f.Description)
 	if err != nil {
 		return err
 	}
@@ -190,7 +227,7 @@ func (this *DBManager) AddTrueFalse(f *TrueFalse) error {
 		}
 	}
 
-	err = t.Insert(f)
+	_, err = t.InsertOne(context.TODO(), f)
 	if err != nil {
 		return err
 	}
@@ -198,11 +235,20 @@ func (this *DBManager) AddTrueFalse(f *TrueFalse) error {
 	return nil
 }
 
-func (this *DBManager) GetSingleChoiceSummary() (map[string]int, error) {
-	t := this.session.DB(DBName).C(SingleChoiceCollection)
+func (manager *DBManager) GetSingleChoiceSummary() (map[string]int, error) {
+	t := manager.GetSingleChoiceCollection()
 
-	scs := []SingleChoice{}
-	err := t.Find(nil).All(&scs)
+	var scs []SingleChoice
+	cursor, err := t.Find(context.TODO(), bson.M{})
+	for cursor.Next(context.TODO()) {
+		var s = SingleChoice{}
+		err = cursor.Decode(&s)
+		if err != nil {
+			log.Println(err)
+		}
+		scs = append(scs, s)
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -219,13 +265,18 @@ func (this *DBManager) GetSingleChoiceSummary() (map[string]int, error) {
 	return results, err
 }
 
-func (this *DBManager) GetMultipleChoiceSummary() (map[string]int, error) {
-	t := this.session.DB(DBName).C(MultipleChoiceCollection)
+func (manager *DBManager) GetMultipleChoiceSummary() (map[string]int, error) {
+	t := manager.GetMultipleChoiceCollection()
 
-	mcs := []MultipleChoice{}
-	err := t.Find(nil).All(&mcs)
-	if err != nil {
-		return nil, err
+	var mcs []MultipleChoice
+	cursor, err := t.Find(context.TODO(), bson.M{})
+	for cursor.Next(context.TODO()) {
+		var m = MultipleChoice{}
+		err = cursor.Decode(&m)
+		if err != nil {
+			log.Println(err)
+		}
+		mcs = append(mcs, m)
 	}
 
 	results := make(map[string]int)
@@ -240,13 +291,18 @@ func (this *DBManager) GetMultipleChoiceSummary() (map[string]int, error) {
 	return results, err
 }
 
-func (this *DBManager) GetTrueFalseSummary() (map[string]int, error) {
-	t := this.session.DB(DBName).C(TrueFalseCollection)
+func (manager *DBManager) GetTrueFalseSummary() (map[string]int, error) {
+	t := manager.GetTrueFalseCollection()
 
-	tfs := []TrueFalse{}
-	err := t.Find(nil).All(&tfs)
-	if err != nil {
-		return nil, err
+	var tfs []TrueFalse
+	cursor, err := t.Find(context.TODO(), bson.M{})
+	for cursor.Next(context.TODO()) {
+		var f = TrueFalse{}
+		err = cursor.Decode(&f)
+		if err != nil {
+			log.Println(err)
+		}
+		tfs = append(tfs, f)
 	}
 
 	results := make(map[string]int)

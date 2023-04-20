@@ -1,16 +1,41 @@
 package app
 
 import (
-	//"ExamSystem/app/controllers" 为什么不对？
 	"examsystem/app/controllers"
+	"examsystem/app/models"
 	"log"
 
 	"github.com/revel/revel"
 )
 
+func InitDB() {
+	log.Println("初始化数据库")
+	revel.Config.SetSection("administrator")
+	idcard, found := revel.Config.String("id_card")
+	if !found {
+		log.Fatal("配置文件app.conf没有找到超级管理员administrator的身份证号码id_card")
+	}
+
+	password, found := revel.Config.String("password")
+	if !found {
+		log.Fatal("配置文件app.conf没有找到超级管理员administrator的密码配置password")
+	}
+
+	manager, err := models.NewDBManager()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = manager.CreateSuperAdministrator(idcard, password)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("初始化数据库完成")
+}
+
 func beforeAdminController(this *revel.Controller) revel.Result {
 	// 设置游客的访问权限
-	if this.Session["administrator"] == "" && this.Session["examinee"] == "" {
+	if this.Session["administrator"] == nil && this.Session["examinee"] == nil {
 		if this.Action == "Admin.SignIn" || this.Action == "Admin.PostSignIn" {
 			return nil
 		} else {
@@ -34,8 +59,7 @@ func beforeAdminController(this *revel.Controller) revel.Result {
 			log.Println("管理员访问了登录页面，已自动跳转到管理员首页")
 			return this.Redirect(controllers.Admin.Index)
 		} else {
-			// TODO fix it log.Println("管理员 " + this.Session["adminName"] + " 访问了 " + this.Action + " 页面")
-			log.Println("管理员 " + "fix me" + " 访问了 " + this.Action + " 页面")
+			log.Println("管理员 " + this.Session["adminName"].(string) + " 访问了 " + this.Action + " 页面")
 			return nil
 		}
 	}
@@ -45,7 +69,7 @@ func beforeAdminController(this *revel.Controller) revel.Result {
 
 func beforeExamineeController(this *revel.Controller) revel.Result {
 	// 设置游客的访问权限
-	if this.Session["administrator"] == "" && this.Session["examinee"] == "" {
+	if this.Session["administrator"] == nil && this.Session["examinee"] == nil {
 		if this.Action == "Examinee.SignIn" || this.Action == "Examinee.PostSignIn" {
 			return nil
 		} else {
@@ -79,8 +103,7 @@ func beforeExamineeController(this *revel.Controller) revel.Result {
 			log.Println("管理员访问了考生登录页面，已自动跳转到管理员首页")
 			return this.Redirect(controllers.Admin.Index)
 		} else {
-			// TODO fix it log.Println("管理员 " + this.Session["adminName"] + " 访问了 " + this.Action + " 页面")
-			log.Println("管理员 " + "fix me" + " 访问了 " + this.Action + " 页面")
+			log.Println("管理员 " + this.Session["adminName"].(string) + " 访问了 " + this.Action + " 页面")
 			return nil
 		}
 	}
