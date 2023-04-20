@@ -266,7 +266,7 @@ func (this ExamPaper) View() revel.Result {
 	if e != nil {
 		log.Println(e)
 		this.Response.Status = 500
-		this.Flash.Error(err.Error())
+		this.Flash.Error(e.Error())
 		return this.Render()
 	}
 
@@ -291,7 +291,7 @@ func (this ExamPaper) Publish() revel.Result {
 	if e != nil {
 		log.Println(e)
 		this.Response.Status = 500
-		this.Flash.Error(err.Error())
+		this.Flash.Error(e.Error())
 		return this.Render()
 	}
 
