@@ -25,9 +25,7 @@ func (this Examinee) Index() revel.Result {
 	}
 	defer manager.Close()
 
-	//idCard := this.Session["examineeIDCard"]
-	// TODO for debug
-	idCard := "debug"
+	idCard := this.Session["examineeIDCard"].(string)
 	examinee, e := manager.GetExamineeByIDCard(idCard)
 
 	if e != nil {
@@ -258,9 +256,7 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 	}
 	defer manager.Close()
 
-	//examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"])
-	// TODO for debug
-	examinee, err := manager.GetExamineeByIDCard("debug")
+	examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"].(string))
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500
@@ -333,9 +329,7 @@ func (this Examinee) PostExam() revel.Result {
 	}
 	defer manager.Close()
 
-	//examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"])
-	// TODO for debug
-	examinee, err := manager.GetExamineeByIDCard("debug")
+	examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"].(string))
 	if err != nil {
 		log.Println(err)
 		this.Response.Status = 500

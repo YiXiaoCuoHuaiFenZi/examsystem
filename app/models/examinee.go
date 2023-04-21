@@ -47,11 +47,10 @@ func (manager *DBManager) SignUp(signUpExaminee *SignUpExaminee) error {
 func (manager *DBManager) SignIn(signInExaminee *SignInExaminee) (examinee *Examinee, err error) {
 	t := manager.GetExamineeCollection()
 
-	log.Println("signInExaminee", signInExaminee)
 	err = t.FindOne(context.TODO(), bson.M{"idcard": signInExaminee.IDCard}).Decode(&examinee)
 	if err == mongo.ErrNoDocuments {
-		log.Println("该用户不存在")
-		err = errors.New("该用户不存在")
+		log.Println("考生不存在")
+		err = errors.New("考生不存在")
 		return
 	}
 
@@ -100,8 +99,8 @@ func (manager *DBManager) GetExamineeByIDCard(idCard string) (Examinee, error) {
 	examinee := Examinee{}
 	err := t.FindOne(context.TODO(), bson.M{"idcard": idCard}).Decode(&examinee)
 	if err == mongo.ErrNoDocuments {
-		log.Println("该用户不存在")
-		err = errors.New("该用户不存在")
+		log.Println("考生不存在")
+		err = errors.New("考生不存在")
 	}
 
 	return examinee, err
@@ -113,18 +112,21 @@ func (manager *DBManager) UpdateExaminee(examinee *Examinee) error {
 	var oldExp Examinee
 	err := t.FindOne(context.TODO(), bson.M{"idcard": examinee.IDCard}).Decode(&examinee)
 	if err == mongo.ErrNoDocuments {
-		log.Println("该用户不存在")
-		err = errors.New("该用户不存在")
+		log.Println("考生不存在")
+		err = errors.New("考生不存在")
 		return err
 	}
 
 	tempInfo := oldExp
 	tempInfo.ExamPaper = examinee.ExamPaper
 
-	_, err = t.UpdateOne(context.TODO(), bson.M{"idcard": examinee.IDCard}, &tempInfo)
+	filter := bson.D{{"idcard", examinee.IDCard}}
+	update := bson.D{{"$set", bson.D{{"exampaper", examinee.ExamPaper}}}}
+	_, err = t.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
 		log.Println("更新考生信息失败：")
 		return err
 	}
+
 	return nil
 }
