@@ -37,7 +37,7 @@
                             {{end}}
                             <tr>
                                 <th scope="row" id="sc_{{addOne $index}}" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>
-                                    <label>{{addOne $index}}、{{$item.SC.Discription}}</label>
+                                    <label>{{addOne $index}}、{{$item.SC.Description}}</label>
                                     <br>
                                     <label class="radio-inline">
                                         <input type="radio" name="sc_{{addOne $index}}_answer" id="sc_{{addOne $index}}_A" value="{{$item.SC.A}}" {{if eq $item.SC.Answer $item.SC.ActualAnswer}}disabled="true" checked{{end}}>A、{{$item.SC.A}}
@@ -67,7 +67,7 @@
                             {{end}}
                             <tr>
                                 <th scope="row" id="mc_{{addOne $index}}" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>
-                                    <label>{{addOne $index}}、{{$item.MC.Discription}}</label>
+                                    <label>{{addOne $index}}、{{$item.MC.Description}}</label>
                                     <div class="checkbox">
                                         <label class="radio-inline">
                                             <input type="checkbox" name="mc_{{addOne $index}}_answers[]" id="mc_{{addOne $index}}_A" value="{{$item.MC.A}}" {{if has $item.MC.ActualAnswer $item.MC.A}}disabled="true" checked{{end}}>A、{{$item.MC.A}}
@@ -111,7 +111,7 @@
                             {{end}}
                             <tr>
                                 <th scope="row" id="tf_{{addOne $index}}" name="page_{{$item.Page}}" {{if greaterThan $item.Page 1}}style="display:none;" {{end}}>
-                                    <label>{{addOne $index}}、{{$item.TF.Discription}}</label>
+                                    <label>{{addOne $index}}、{{$item.TF.Description}}</label>
                                     <br>
                                     <label class="radio-inline">
                                         <input type="radio" name="tf_{{addOne $index}}_answer" id="tf_{{addOne $index}}_T" value="对" {{if eq $item.TF.Answer $item.TF.ActualAnswer}}disabled="true" checked{{end}}>对

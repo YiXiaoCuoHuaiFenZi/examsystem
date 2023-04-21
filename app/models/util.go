@@ -203,7 +203,7 @@ func ParseExamPaperFile(exampaperFilePath string) (ExamPaper, string, string, st
 				exp.Title = strings.TrimPrefix(l, "试卷标题：")
 			}
 			if strings.HasPrefix(l, "试卷描述：") {
-				exp.Discription = strings.TrimPrefix(l, "试卷描述：")
+				exp.Description = strings.TrimPrefix(l, "试卷描述：")
 			}
 			if strings.HasPrefix(l, "总分值：") {
 				i, err := strconv.Atoi(strings.Trim(strings.TrimPrefix(l, "总分值："), "分"))

@@ -111,7 +111,7 @@ const (
 type ExamPaper struct {
 	Type         string           // 所属考试类别
 	Title        string           // 试卷标题
-	Discription  string           // 试卷描述
+	Description  string           // 试卷描述
 	Score        float32          // 总分值
 	ActualScore  float32          // 考生实际得分
 	Time         int              // 考试时间 单位：分钟

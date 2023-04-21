@@ -49,7 +49,7 @@
                                     <input type="radio" name="singleChoice.Type" id="ExamTypeThree" value="建筑">建筑
                                 </label>
                             </div>
-                            {{with $field := field "singleChoice.Discription" .}}
+                            {{with $field := field "singleChoice.Description" .}}
                             <div class="form-group {{$field.ErrorClass}}">
                                 <div class="form-group-addon">题目内容</div>
                                 <textarea class="form-control" rows="1" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>
@@ -118,7 +118,7 @@
                                     <input type="radio" name="multipleChoice.Type" id="ExamTypeThree" value="建筑">建筑
                                 </label>
                             </div>
-                            {{with $field := field "multipleChoice.Discription" .}}
+                            {{with $field := field "multipleChoice.Description" .}}
                             <div class="form-group {{$field.ErrorClass}}">
                                 <div class="form-group-addon">题目内容</div>
                                 <textarea class="form-control" rows="1" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>
@@ -201,7 +201,7 @@
                                     <input type="radio" name="trueFalse.Type" id="ExamTypeThree" value="建筑">建筑
                                 </label>
                             </div>
-                            {{with $field := field "trueFalse.Discription" .}}
+                            {{with $field := field "trueFalse.Description" .}}
                             <div class="form-group {{$field.ErrorClass}}">
                                 <div class="form-group-addon">题目内容</div>
                                 <textarea class="form-control" rows="1" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请填写题目内容"></textarea>

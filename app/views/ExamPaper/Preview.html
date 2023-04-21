@@ -28,7 +28,7 @@
                             {{range $index, $item := .examPaper.SC}}
                             <tr>
                                 <th scope="row">
-                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                    <label>{{addOne $index}}、{{$item.Description}}</label>
                                     <br>
                                     <label class="radio-inline">
                                         <input type="radio" name="{{addOne $index}}" id="ExamTypeOne" value="交通">A、{{$item.A}}
@@ -57,7 +57,7 @@
                             {{range $index, $item := .examPaper.MC}}
                             <tr>
                                 <th scope="row">
-                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                    <label>{{addOne $index}}、{{$item.Description}}</label>
                                     <div class="checkbox">
                                         <label class="radio-inline">
                                             <input type="checkbox" name="answers[]" id="{{addOne $index}}A" value="A">A、{{$item.A}}
@@ -100,7 +100,7 @@
                             {{range $index, $item := .examPaper.TF}}
                             <tr>
                                 <th scope="row">
-                                    <label>{{addOne $index}}、{{$item.Discription}}</label>
+                                    <label>{{addOne $index}}、{{$item.Description}}</label>
                                     <br>
                                     <label class="radio-inline">
                                         <input type="radio" name="{{addOne $index}}" id="ExamTypeOne" value="对">对

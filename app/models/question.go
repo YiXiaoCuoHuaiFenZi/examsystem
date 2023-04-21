@@ -106,11 +106,11 @@ func (manager *DBManager) GetRandomTrueFalse(qtype string, count int) ([]TrueFal
 	return results, err
 }
 
-func (manager *DBManager) GetSingleChoiceByDiscription(discription string) ([]SingleChoice, error) {
+func (manager *DBManager) GetSingleChoiceByDescription(description string) ([]SingleChoice, error) {
 	t := manager.GetSingleChoiceCollection()
 
 	var ss []SingleChoice
-	cursor, err := t.Find(context.TODO(), bson.M{"discription": discription})
+	cursor, err := t.Find(context.TODO(), bson.M{"description": description})
 	for cursor.Next(context.TODO()) {
 		var sc = SingleChoice{}
 		err = cursor.Decode(&sc)
@@ -126,7 +126,7 @@ func (manager *DBManager) GetSingleChoiceByDiscription(discription string) ([]Si
 func (manager *DBManager) AddSingleChoice(s *SingleChoice) error {
 	t := manager.GetSingleChoiceCollection()
 
-	scs, err := manager.GetSingleChoiceByDiscription(s.Description)
+	scs, err := manager.GetSingleChoiceByDescription(s.Description)
 	if err != nil {
 		return err
 	}
@@ -150,11 +150,11 @@ func (manager *DBManager) AddSingleChoice(s *SingleChoice) error {
 	return nil
 }
 
-func (manager *DBManager) GetMultipleChoiceByDiscription(discription string) ([]MultipleChoice, error) {
+func (manager *DBManager) GetMultipleChoiceByDiscription(description string) ([]MultipleChoice, error) {
 	t := manager.GetMultipleChoiceCollection()
 
 	var ms []MultipleChoice
-	cursor, err := t.Find(context.TODO(), bson.M{"discription": discription})
+	cursor, err := t.Find(context.TODO(), bson.M{"description": description})
 	for cursor.Next(context.TODO()) {
 		var m = MultipleChoice{}
 		err = cursor.Decode(&m)
@@ -196,11 +196,11 @@ func (manager *DBManager) AddMultipleChoice(m *MultipleChoice) error {
 	return nil
 }
 
-func (manager *DBManager) GetTrueFalseByDiscription(discription string) ([]TrueFalse, error) {
+func (manager *DBManager) GetTrueFalseByDiscription(description string) ([]TrueFalse, error) {
 	t := manager.GetTrueFalseCollection()
 
 	var ts []TrueFalse
-	cursor, err := t.Find(context.TODO(), bson.M{"discription": discription})
+	cursor, err := t.Find(context.TODO(), bson.M{"description": description})
 	for cursor.Next(context.TODO()) {
 		var f = TrueFalse{}
 		err = cursor.Decode(&f)
