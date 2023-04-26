@@ -6,17 +6,17 @@ type App struct {
 	*revel.Controller
 }
 
-func (this App) Index() revel.Result {
-	return this.Render()
+func (ap App) Index() revel.Result {
+	return ap.Render()
 }
 
-func (this App) Introduce() revel.Result {
-	return this.Render()
+func (ap App) Introduce() revel.Result {
+	return ap.Render()
 }
 
-func (this App) About() revel.Result {
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+func (ap App) About() revel.Result {
+	ap.ViewArgs["adminIDCard"] = ap.Session["adminIDCard"]
+	ap.ViewArgs["adminName"] = ap.Session["adminName"]
 
-	return this.Render()
+	return ap.Render()
 }

@@ -15,44 +15,44 @@ type ExamPaper struct {
 	*revel.Controller
 }
 
-func (this ExamPaper) Create() revel.Result {
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+func (ep ExamPaper) Create() revel.Result {
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Render()
+	return ep.Render()
 }
 
-func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
+func (ep ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	examPaper.Type = strings.TrimSpace(examPaper.Type)
 	//examPaper.CreateMethod = strings.TrimSpace(examPaper.CreateMethod)
 	examPaper.Title = strings.TrimSpace(examPaper.Title)
 	examPaper.Description = strings.TrimSpace(examPaper.Description)
 
-	this.Validation.Required(examPaper.Type).Message("请选择试卷类别")
-	//this.Validation.Required(examPaper.CreateMethod).Message("请选择试卷生成方式")
-	this.Validation.Required(examPaper.Title).Message("请填写试卷标题")
-	this.Validation.Required(examPaper.Description).Message("请填写试卷描述")
-	this.Validation.Required(examPaper.Score > 0).Message("请设置试卷总分数(大于零)")
-	this.Validation.Required(examPaper.Time > 0).Message("请设置考试时间(大于零)")
-	this.Validation.Required(examPaper.SCCount > 0).Message("请设置单选题数量(大于零)")
-	this.Validation.Required(examPaper.SCScore > 0).Message("请设置单选题每题分值(大于零)")
-	this.Validation.Required(examPaper.MCCount > 0).Message("请设置多选题数量(大于零)")
-	this.Validation.Required(examPaper.MCScore > 0).Message("请设置多选题每题分值(大于零)")
-	this.Validation.Required(examPaper.TFCount > 0).Message("请设置判断题数量(大于零)")
-	this.Validation.Required(examPaper.TFScore > 0).Message("请设置判断题每题分值(大于零)")
+	ep.Validation.Required(examPaper.Type).Message("请选择试卷类别")
+	//ep.Validation.Required(examPaper.CreateMethod).Message("请选择试卷生成方式")
+	ep.Validation.Required(examPaper.Title).Message("请填写试卷标题")
+	ep.Validation.Required(examPaper.Description).Message("请填写试卷描述")
+	ep.Validation.Required(examPaper.Score > 0).Message("请设置试卷总分数(大于零)")
+	ep.Validation.Required(examPaper.Time > 0).Message("请设置考试时间(大于零)")
+	ep.Validation.Required(examPaper.SCCount > 0).Message("请设置单选题数量(大于零)")
+	ep.Validation.Required(examPaper.SCScore > 0).Message("请设置单选题每题分值(大于零)")
+	ep.Validation.Required(examPaper.MCCount > 0).Message("请设置多选题数量(大于零)")
+	ep.Validation.Required(examPaper.MCScore > 0).Message("请设置多选题每题分值(大于零)")
+	ep.Validation.Required(examPaper.TFCount > 0).Message("请设置判断题数量(大于零)")
+	ep.Validation.Required(examPaper.TFScore > 0).Message("请设置判断题每题分值(大于零)")
 
 	examPaper.CreateMethod = "随机生成"
-	if this.Validation.HasErrors() {
-		this.Validation.Keep()
-		this.FlashParams()
-		return this.Redirect(ExamPaper.Create)
+	if ep.Validation.HasErrors() {
+		ep.Validation.Keep()
+		ep.FlashParams()
+		return ep.Redirect(ExamPaper.Create)
 	}
 
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 	defer manager.Close()
 
@@ -61,9 +61,9 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	log.Println(sc)
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 
 	mc := []models.MultipleChoice{}
@@ -71,9 +71,9 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	log.Println(mc)
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 
 	tf := []models.TrueFalse{}
@@ -81,9 +81,9 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	log.Println(tf)
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 
 	examPaper.SC = sc
@@ -98,31 +98,31 @@ func (this ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 
 	err = manager.AddExamPaper(examPaper)
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 
-	this.Flash.Success("试卷成功生成")
+	ep.Flash.Success("试卷成功生成")
 
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Redirect(ExamPaper.Create)
+	return ep.Redirect(ExamPaper.Create)
 }
 
-func (this ExamPaper) saveExamPaperFile(examPaperFile *os.File) (filePath string, err error) {
+func (ep ExamPaper) saveExamPaperFile(examPaperFile *os.File) (filePath string, err error) {
 	//// 使用revel request formfile获取文件数据
-	//file, handler, err := this.Request.FormFile("examPaperFile")
+	//file, handler, err := ep.Request.FormFile("examPaperFile")
 	//if err != nil {
-	//	this.Response.Status = 500
+	//	ep.Response.Status = 500
 	//	log.Println(err)
 	//	return "", err
 	//}
 	//// 读取所有数据
 	//data, err := ioutil.ReadAll(file)
 	//if err != nil {
-	//	this.Response.Status = 500
+	//	ep.Response.Status = 500
 	//	log.Println(err)
 	//	return "", err
 	//}
@@ -130,7 +130,7 @@ func (this ExamPaper) saveExamPaperFile(examPaperFile *os.File) (filePath string
 	//// 获取当前路径
 	//dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	//if err != nil {
-	//	this.Response.Status = 500
+	//	ep.Response.Status = 500
 	//	log.Println(err)
 	//	return "", err
 	//}
@@ -141,7 +141,7 @@ func (this ExamPaper) saveExamPaperFile(examPaperFile *os.File) (filePath string
 	//// 保存到文件
 	//err = ioutil.WriteFile(filePath, data, 0777)
 	//if err != nil {
-	//	this.Response.Status = 500
+	//	ep.Response.Status = 500
 	//	log.Println(err)
 	//	return "", err
 	//}
@@ -151,37 +151,37 @@ func (this ExamPaper) saveExamPaperFile(examPaperFile *os.File) (filePath string
 	return "nil", nil
 }
 
-func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
-	filePath, err := this.saveExamPaperFile(file)
+func (ep ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
+	filePath, err := ep.saveExamPaperFile(file)
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 
 	examPaper, scFilePath, mcFilePath, tfFilePath, err := models.ParseExamPaperFile(filePath)
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 
 	scf, err := os.Open(scFilePath)
 	if err != nil {
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 	defer scf.Close()
 	mcf, err := os.Open(mcFilePath)
 	if err != nil {
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 	defer mcf.Close()
 	tff, err := os.Open(tfFilePath)
 	if err != nil {
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 	defer tff.Close()
 
@@ -205,59 +205,59 @@ func (this ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 	defer manager.Close()
 
 	err = manager.AddExamPaper(&examPaper)
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Create)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Create)
 	}
 
-	this.Flash.Success("试卷成功上传")
+	ep.Flash.Success("试卷成功上传")
 
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Redirect(ExamPaper.Create)
+	return ep.Redirect(ExamPaper.Create)
 }
 
-func (this ExamPaper) Preview(title string) revel.Result {
+func (ep ExamPaper) Preview(title string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Render()
 	}
 	defer manager.Close()
 
 	examPaper, e := manager.GetExamPaperByTitle(title)
 	if e != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Render()
 	}
 
-	this.ViewArgs["scCount"] = len(examPaper.SC)
-	this.ViewArgs["mcCount"] = len(examPaper.MC)
-	this.ViewArgs["tfCount"] = len(examPaper.TF)
-	this.ViewArgs["examPaper"] = examPaper
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+	ep.ViewArgs["scCount"] = len(examPaper.SC)
+	ep.ViewArgs["mcCount"] = len(examPaper.MC)
+	ep.ViewArgs["tfCount"] = len(examPaper.TF)
+	ep.ViewArgs["examPaper"] = examPaper
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Render()
+	return ep.Render()
 }
 
-func (this ExamPaper) View() revel.Result {
+func (ep ExamPaper) View() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Render()
 	}
 	defer manager.Close()
 
@@ -265,24 +265,24 @@ func (this ExamPaper) View() revel.Result {
 
 	if e != nil {
 		log.Println(e)
-		this.Response.Status = 500
-		this.Flash.Error(e.Error())
-		return this.Render()
+		ep.Response.Status = 500
+		ep.Flash.Error(e.Error())
+		return ep.Render()
 	}
 
-	this.ViewArgs["examPapers"] = examPapers
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+	ep.ViewArgs["examPapers"] = examPapers
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Render()
+	return ep.Render()
 }
 
-func (this ExamPaper) Publish() revel.Result {
+func (ep ExamPaper) Publish() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Render()
 	}
 	defer manager.Close()
 
@@ -290,51 +290,51 @@ func (this ExamPaper) Publish() revel.Result {
 
 	if e != nil {
 		log.Println(e)
-		this.Response.Status = 500
-		this.Flash.Error(e.Error())
-		return this.Render()
+		ep.Response.Status = 500
+		ep.Flash.Error(e.Error())
+		return ep.Render()
 	}
 
-	this.ViewArgs["examPapers"] = examPapers
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+	ep.ViewArgs["examPapers"] = examPapers
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Render()
+	return ep.Render()
 }
 
-func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
+func (ep ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 	exmpaperTitle = strings.TrimSpace(exmpaperTitle)
-	this.Validation.Required(exmpaperTitle).Message("请选择一个试题")
+	ep.Validation.Required(exmpaperTitle).Message("请选择一个试题")
 	log.Println(exmpaperTitle)
 
-	if this.Validation.HasErrors() {
-		this.Validation.Keep()
-		this.FlashParams()
-		return this.Redirect(ExamPaper.Publish)
+	if ep.Validation.HasErrors() {
+		ep.Validation.Keep()
+		ep.FlashParams()
+		return ep.Redirect(ExamPaper.Publish)
 	}
 
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Publish)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Publish)
 	}
 	defer manager.Close()
 
 	examinees, err := manager.GetAllExaminee()
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Publish)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Publish)
 	}
 
 	examPaper, err := manager.GetExamPaperByTitle(exmpaperTitle)
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(ExamPaper.Publish)
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Redirect(ExamPaper.Publish)
 	}
 
 	for _, examinee := range examinees {
@@ -345,26 +345,26 @@ func (this ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 		err := manager.UpdateExaminee(&examinee)
 		if err != nil {
 			log.Println(err)
-			this.Response.Status = 500
-			this.Flash.Error(err.Error())
-			return this.Redirect(ExamPaper.Publish)
+			ep.Response.Status = 500
+			ep.Flash.Error(err.Error())
+			return ep.Redirect(ExamPaper.Publish)
 		}
 	}
 
-	this.Flash.Success("考试成功发布")
+	ep.Flash.Success("考试成功发布")
 
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Redirect(ExamPaper.Publish)
+	return ep.Redirect(ExamPaper.Publish)
 }
 
-func (this ExamPaper) Score(idCard string) revel.Result {
+func (ep ExamPaper) Score(idCard string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Render()
 	}
 	defer manager.Close()
 
@@ -372,39 +372,39 @@ func (this ExamPaper) Score(idCard string) revel.Result {
 
 	if e != nil {
 		log.Println(e)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ep.Response.Status = 500
+		ep.Flash.Error(err.Error())
+		return ep.Render()
 	}
 
 	log.Println("查到考生信息: ", examinee)
 
-	this.ViewArgs["examinee"] = examinee
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+	ep.ViewArgs["examinee"] = examinee
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Render()
+	return ep.Render()
 }
 
-func (this ExamPaper) QueryScore() revel.Result {
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+func (ep ExamPaper) QueryScore() revel.Result {
+	ep.ViewArgs["adminIDCard"] = ep.Session["adminIDCard"]
+	ep.ViewArgs["adminName"] = ep.Session["adminName"]
 
-	return this.Render()
+	return ep.Render()
 }
 
-func (this ExamPaper) PostQueryScore(examineeIDCard string) revel.Result {
+func (ep ExamPaper) PostQueryScore(examineeIDCard string) revel.Result {
 	examineeIDCard = strings.TrimSpace(examineeIDCard)
 
-	this.Validation.Required(examineeIDCard).Message("请输入身份证号码")
-	this.Validation.Length(examineeIDCard, 18).Message("身份证号有误")
+	ep.Validation.Required(examineeIDCard).Message("请输入身份证号码")
+	ep.Validation.Length(examineeIDCard, 18).Message("身份证号有误")
 
-	if this.Validation.HasErrors() {
-		this.Validation.Keep()
-		this.FlashParams()
-		return this.Redirect(ExamPaper.QueryScore)
+	if ep.Validation.HasErrors() {
+		ep.Validation.Keep()
+		ep.FlashParams()
+		return ep.Redirect(ExamPaper.QueryScore)
 	}
 
-	return this.Redirect("/ExamPaper/Score/%s", examineeIDCard)
-	//return this.Redirect(ExamPaper.Score("huguangyue"))
+	return ep.Redirect("/ExamPaper/Score/%s", examineeIDCard)
+	//return ep.Redirect(ExamPaper.Score("huguangyue"))
 }

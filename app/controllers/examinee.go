@@ -16,116 +16,116 @@ type Examinee struct {
 	*revel.Controller
 }
 
-func (this Examinee) Index() revel.Result {
+func (ex Examinee) Index() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.RenderError(err)
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.RenderError(err)
 	}
 	defer manager.Close()
 
-	idCard := this.Session["examineeIDCard"].(string)
+	idCard := ex.Session["examineeIDCard"].(string)
 	examinee, e := manager.GetExamineeByIDCard(idCard)
 
 	if e != nil {
-		this.Response.Status = 500
-		this.Flash.Error(e.Error())
-		return this.RenderError(e)
+		ex.Response.Status = 500
+		ex.Flash.Error(e.Error())
+		return ex.RenderError(e)
 	}
 
-	this.ViewArgs["examinee"] = examinee
-	this.ViewArgs["examineeIDCard"] = idCard
-	this.ViewArgs["examineeName"] = this.Session["examineeName"]
+	ex.ViewArgs["examinee"] = examinee
+	ex.ViewArgs["examineeIDCard"] = idCard
+	ex.ViewArgs["examineeName"] = ex.Session["examineeName"]
 
-	return this.Render()
+	return ex.Render()
 }
 
-func (this Examinee) Info() revel.Result {
+func (ex Examinee) Info() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		return this.Render(err)
+		ex.Response.Status = 500
+		return ex.Render(err)
 	}
 	defer manager.Close()
 
 	examinees, e := manager.GetAllExaminee()
 	if e != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render(e)
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Render(e)
 	}
 
-	this.ViewArgs["examinees"] = examinees
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+	ex.ViewArgs["examinees"] = examinees
+	ex.ViewArgs["adminIDCard"] = ex.Session["adminIDCard"]
+	ex.ViewArgs["adminName"] = ex.Session["adminName"]
 
-	return this.Render()
+	return ex.Render()
 }
 
-func (this Examinee) SignUp() revel.Result {
-	this.ViewArgs["batch"] = this.Session["batch"]
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
+func (ex Examinee) SignUp() revel.Result {
+	ex.ViewArgs["batch"] = ex.Session["batch"]
+	ex.ViewArgs["adminIDCard"] = ex.Session["adminIDCard"]
+	ex.ViewArgs["adminName"] = ex.Session["adminName"]
 
-	return this.Render()
+	return ex.Render()
 }
 
-func (this Examinee) PostSignUp(signUpExaminee *models.SignUpExaminee) revel.Result {
+func (ex Examinee) PostSignUp(signUpExaminee *models.SignUpExaminee) revel.Result {
 	signUpExaminee.Name = strings.TrimSpace(signUpExaminee.Name)
 	signUpExaminee.IDCard = strings.TrimSpace(signUpExaminee.IDCard)
 	signUpExaminee.Password = strings.TrimSpace(signUpExaminee.Password)
 	signUpExaminee.ConfirmPassword = strings.TrimSpace(signUpExaminee.ConfirmPassword)
 
-	this.Validation.Required(signUpExaminee.Name).Message("请输入考生姓名")
-	this.Validation.Required(signUpExaminee.IDCard).Message("请输入身份证号码")
-	this.Validation.Length(signUpExaminee.IDCard, 18).Message("身份证号有误")
-	this.Validation.Required(signUpExaminee.Password).Message("请输入密码")
-	this.Validation.Required(signUpExaminee.ConfirmPassword).Message("确认密码不能为空")
-	this.Validation.MinSize(signUpExaminee.Password, 6).Message("密码长度不短于6位")
-	this.Validation.Required(signUpExaminee.ConfirmPassword == signUpExaminee.Password).Message("两次输入的密码不一致")
+	ex.Validation.Required(signUpExaminee.Name).Message("请输入考生姓名")
+	ex.Validation.Required(signUpExaminee.IDCard).Message("请输入身份证号码")
+	ex.Validation.Length(signUpExaminee.IDCard, 18).Message("身份证号有误")
+	ex.Validation.Required(signUpExaminee.Password).Message("请输入密码")
+	ex.Validation.Required(signUpExaminee.ConfirmPassword).Message("确认密码不能为空")
+	ex.Validation.MinSize(signUpExaminee.Password, 6).Message("密码长度不短于6位")
+	ex.Validation.Required(signUpExaminee.ConfirmPassword == signUpExaminee.Password).Message("两次输入的密码不一致")
 
-	if this.Validation.HasErrors() {
-		this.Validation.Keep()
-		this.FlashParams()
-		return this.Redirect(Examinee.SignUp)
+	if ex.Validation.HasErrors() {
+		ex.Validation.Keep()
+		ex.FlashParams()
+		return ex.Redirect(Examinee.SignUp)
 	}
 
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(Examinee.SignUp)
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.SignUp)
 	}
 	defer manager.Close()
 
 	err = manager.SignUp(signUpExaminee)
 	if err != nil {
-		this.Validation.Clear()
+		ex.Validation.Clear()
 
 		// 添加错误信息，显示在页面的身份证下面
 		var e revel.ValidationError
 		e.Message = err.Error()
 		e.Key = "signUpExaminee.IDCard"
-		this.Validation.Errors = append(this.Validation.Errors, &e)
+		ex.Validation.Errors = append(ex.Validation.Errors, &e)
 
-		this.Validation.Keep()
-		this.FlashParams()
-		this.Flash.Error(err.Error())
-		return this.Redirect(Examinee.SignUp)
+		ex.Validation.Keep()
+		ex.FlashParams()
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.SignUp)
 	}
 
 	log.Println("注册成功：" + signUpExaminee.Name)
-	this.Flash.Success("注册成功：" + signUpExaminee.Name)
+	ex.Flash.Success("注册成功：" + signUpExaminee.Name)
 
-	return this.Redirect(Examinee.SignUp)
+	return ex.Redirect(Examinee.SignUp)
 }
 
-func (this Examinee) BatchSignUp() revel.Result {
-	return this.Redirect(Examinee.SignUp)
+func (ex Examinee) BatchSignUp() revel.Result {
+	return ex.Redirect(Examinee.SignUp)
 }
 
-func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
+func (ex Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 	// TODO csv文件默认是ascII编码， 需要进行处理
 	// 暂时强制要求手动转换为utf8
 	reader := csv.NewReader(CSVFile)
@@ -133,9 +133,9 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(Examinee.SignUp)
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.SignUp)
 	}
 	defer manager.Close()
 
@@ -148,8 +148,8 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 			break
 		} else if err != nil {
 			log.Println(err)
-			this.Flash.Error(err.Error())
-			return this.Redirect(Examinee.SignUp)
+			ex.Flash.Error(err.Error())
+			return ex.Redirect(Examinee.SignUp)
 		}
 
 		//忽略第一行表头
@@ -178,39 +178,39 @@ func (this Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 		}
 	}
 
-	this.Flash.Success(successMsg + errorMsg)
-	this.Session["batch"] = "true"
-	return this.Redirect(Examinee.SignUp)
+	ex.Flash.Success(successMsg + errorMsg)
+	ex.Session["batch"] = "true"
+	return ex.Redirect(Examinee.SignUp)
 }
 
-func (this Examinee) SignIn() revel.Result {
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
-	this.ViewArgs["examineeIDCard"] = this.Session["examineeIDCard"]
-	this.ViewArgs["examineeName"] = this.Session["examineeName"]
+func (ex Examinee) SignIn() revel.Result {
+	ex.ViewArgs["adminIDCard"] = ex.Session["adminIDCard"]
+	ex.ViewArgs["adminName"] = ex.Session["adminName"]
+	ex.ViewArgs["examineeIDCard"] = ex.Session["examineeIDCard"]
+	ex.ViewArgs["examineeName"] = ex.Session["examineeName"]
 
-	return this.Render()
+	return ex.Render()
 }
 
-func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Result {
+func (ex Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Result {
 	signInExaminee.IDCard = strings.TrimSpace(signInExaminee.IDCard)
 	signInExaminee.Password = strings.TrimSpace(signInExaminee.Password)
 
-	this.Validation.Required(signInExaminee.IDCard).Message("请输入身份证号码")
-	this.Validation.Length(signInExaminee.IDCard, 18).Message("身份证号有误")
-	this.Validation.Required(signInExaminee.Password).Message("请输入密码")
+	ex.Validation.Required(signInExaminee.IDCard).Message("请输入身份证号码")
+	ex.Validation.Length(signInExaminee.IDCard, 18).Message("身份证号有误")
+	ex.Validation.Required(signInExaminee.Password).Message("请输入密码")
 
-	if this.Validation.HasErrors() {
-		this.Validation.Keep()
-		this.FlashParams()
-		return this.Redirect(Examinee.SignIn)
+	if ex.Validation.HasErrors() {
+		ex.Validation.Keep()
+		ex.FlashParams()
+		return ex.Redirect(Examinee.SignIn)
 	}
 
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(Examinee.SignIn)
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.SignIn)
 	}
 	defer manager.Close()
 
@@ -218,7 +218,7 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 	e, err = manager.SignIn(signInExaminee)
 
 	if err != nil {
-		this.Validation.Clear()
+		ex.Validation.Clear()
 
 		// 添加错误提示信息，显示在页面的用户名/密码下面
 		var e revel.ValidationError
@@ -228,44 +228,44 @@ func (this Examinee) PostSignIn(signInExaminee *models.SignInExaminee) revel.Res
 			e.Key = "signInExaminee.Password"
 		}
 		e.Message = err.Error()
-		this.Validation.Errors = append(this.Validation.Errors, &e)
+		ex.Validation.Errors = append(ex.Validation.Errors, &e)
 
-		this.Validation.Keep()
-		this.FlashParams()
-		this.Flash.Error(err.Error())
-		return this.Redirect(Examinee.SignIn)
+		ex.Validation.Keep()
+		ex.FlashParams()
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.SignIn)
 	}
 
-	this.Session["examineeIDCard"] = e.IDCard
-	this.Session["examineeName"] = e.Name
-	this.Session["examinee"] = "true"
+	ex.Session["examineeIDCard"] = e.IDCard
+	ex.Session["examineeName"] = e.Name
+	ex.Session["examinee"] = "true"
 
-	this.ViewArgs["examineeIDCard"] = e.IDCard
-	this.ViewArgs["examineeName"] = e.Name
+	ex.ViewArgs["examineeIDCard"] = e.IDCard
+	ex.ViewArgs["examineeName"] = e.Name
 	log.Println("登录成功: ", e.Name)
 
-	return this.Redirect(Examinee.Index)
+	return ex.Redirect(Examinee.Index)
 }
 
-func (this Examinee) Exam(examPaperTitle string) revel.Result {
+func (ex Examinee) Exam(examPaperTitle string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Render()
 	}
 	defer manager.Close()
 
-	examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"].(string))
+	examinee, err := manager.GetExamineeByIDCard(ex.Session["examineeIDCard"].(string))
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Render()
 	}
 
 	if examinee.ExamPaper.Status == models.Done {
-		return this.Redirect("/Examinee/ExamResult?idCard=%s&title=%s", this.Session["examineeIDCard"], examPaperTitle)
+		return ex.Redirect("/Examinee/ExamResult?idCard=%s&title=%s", ex.Session["examineeIDCard"], examPaperTitle)
 	}
 
 	scCount := len(examinee.ExamPaper.SC)
@@ -303,41 +303,41 @@ func (this Examinee) Exam(examPaperTitle string) revel.Result {
 		pages = append(pages, i)
 	}
 
-	this.ViewArgs["exam"] = "true"
+	ex.ViewArgs["exam"] = "true"
 	// TODO 支持多试卷，根据试卷标题查询得到要考试的试卷
-	this.ViewArgs["scws"] = scws
-	this.ViewArgs["mcws"] = mcws
-	this.ViewArgs["tfws"] = tfws
-	this.ViewArgs["pages"] = pages
+	ex.ViewArgs["scws"] = scws
+	ex.ViewArgs["mcws"] = mcws
+	ex.ViewArgs["tfws"] = tfws
+	ex.ViewArgs["pages"] = pages
 
-	this.ViewArgs["scCount"] = scCount
-	this.ViewArgs["mcCount"] = mcCount
-	this.ViewArgs["tfCount"] = tfCount
-	this.ViewArgs["examPaper"] = examinee.ExamPaper
-	this.ViewArgs["examineeIDCard"] = this.Session["examineeIDCard"]
-	this.ViewArgs["examineeName"] = this.Session["examineeName"]
+	ex.ViewArgs["scCount"] = scCount
+	ex.ViewArgs["mcCount"] = mcCount
+	ex.ViewArgs["tfCount"] = tfCount
+	ex.ViewArgs["examPaper"] = examinee.ExamPaper
+	ex.ViewArgs["examineeIDCard"] = ex.Session["examineeIDCard"]
+	ex.ViewArgs["examineeName"] = ex.Session["examineeName"]
 
-	return this.Render()
+	return ex.Render()
 }
 
-func (this Examinee) PostExam() revel.Result {
+func (ex Examinee) PostExam() revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(Examinee.Exam)
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.Exam)
 	}
 	defer manager.Close()
 
-	examinee, err := manager.GetExamineeByIDCard(this.Session["examineeIDCard"].(string))
+	examinee, err := manager.GetExamineeByIDCard(ex.Session["examineeIDCard"].(string))
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(Examinee.Exam)
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.Exam)
 	}
 
-	leftTime := this.Params.Form.Get("leftTime")
+	leftTime := ex.Params.Form.Get("leftTime")
 	if leftTime != "" {
 		lt, err := strconv.ParseInt(leftTime, 10, 64)
 		if err != nil {
@@ -353,17 +353,17 @@ func (this Examinee) PostExam() revel.Result {
 
 	// 页面上显示的name值已经增加了1，所以这里需要加1，以将其对应起来
 	for index, _ := range examinee.ExamPaper.SC {
-		answer := this.Params.Form.Get("sc_" + strconv.Itoa(index+1) + "_answer")
+		answer := ex.Params.Form.Get("sc_" + strconv.Itoa(index+1) + "_answer")
 		examinee.ExamPaper.SC[index].ActualAnswer = answer
 	}
 
 	for index, _ := range examinee.ExamPaper.MC {
-		answers := this.Params.Form["mc_"+strconv.Itoa(index+1)+"_answers[]"]
+		answers := ex.Params.Form["mc_"+strconv.Itoa(index+1)+"_answers[]"]
 		examinee.ExamPaper.MC[index].ActualAnswer = answers
 	}
 
 	for index, _ := range examinee.ExamPaper.TF {
-		answer := this.Params.Form.Get("tf_" + strconv.Itoa(index+1) + "_answer")
+		answer := ex.Params.Form.Get("tf_" + strconv.Itoa(index+1) + "_answer")
 		examinee.ExamPaper.TF[index].ActualAnswer = answer
 	}
 	models.MarkExamPaper(&examinee.ExamPaper)
@@ -371,50 +371,50 @@ func (this Examinee) PostExam() revel.Result {
 	err = manager.UpdateExaminee(&examinee)
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Redirect(Examinee.Exam)
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.Exam)
 	}
 
-	this.Flash.Success("成功交卷")
-	this.ViewArgs["examineeIDCard"] = this.Session["examineeIDCard"]
-	this.ViewArgs["examineeName"] = this.Session["examineeName"]
-	return this.Redirect(Examinee.Index)
+	ex.Flash.Success("成功交卷")
+	ex.ViewArgs["examineeIDCard"] = ex.Session["examineeIDCard"]
+	ex.ViewArgs["examineeName"] = ex.Session["examineeName"]
+	return ex.Redirect(Examinee.Index)
 }
 
-func (this Examinee) ExamResult(idCard, title string) revel.Result {
+func (ex Examinee) ExamResult(idCard, title string) revel.Result {
 	manager, err := models.NewDBManager()
 	if err != nil {
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Render()
 	}
 	defer manager.Close()
 
 	examinee, err := manager.GetExamineeByIDCard(idCard)
 	if err != nil {
 		log.Println(err)
-		this.Response.Status = 500
-		this.Flash.Error(err.Error())
-		return this.Render()
+		ex.Response.Status = 500
+		ex.Flash.Error(err.Error())
+		return ex.Render()
 	}
 
-	this.ViewArgs["scCount"] = len(examinee.ExamPaper.SC)
-	this.ViewArgs["mcCount"] = len(examinee.ExamPaper.MC)
-	this.ViewArgs["tfCount"] = len(examinee.ExamPaper.TF)
-	this.ViewArgs["examPaper"] = examinee.ExamPaper
+	ex.ViewArgs["scCount"] = len(examinee.ExamPaper.SC)
+	ex.ViewArgs["mcCount"] = len(examinee.ExamPaper.MC)
+	ex.ViewArgs["tfCount"] = len(examinee.ExamPaper.TF)
+	ex.ViewArgs["examPaper"] = examinee.ExamPaper
 
-	this.ViewArgs["adminIDCard"] = this.Session["adminIDCard"]
-	this.ViewArgs["adminName"] = this.Session["adminName"]
-	this.ViewArgs["examineeIDCard"] = this.Session["examineeIDCard"]
-	this.ViewArgs["examineeName"] = this.Session["examineeName"]
+	ex.ViewArgs["adminIDCard"] = ex.Session["adminIDCard"]
+	ex.ViewArgs["adminName"] = ex.Session["adminName"]
+	ex.ViewArgs["examineeIDCard"] = ex.Session["examineeIDCard"]
+	ex.ViewArgs["examineeName"] = ex.Session["examineeName"]
 
-	return this.Render()
+	return ex.Render()
 }
 
-func (this Examinee) SignOut() revel.Result {
-	for k := range this.Session {
-		delete(this.Session, k)
+func (ex Examinee) SignOut() revel.Result {
+	for k := range ex.Session {
+		delete(ex.Session, k)
 	}
-	return this.Redirect(Examinee.SignIn)
+	return ex.Redirect(Examinee.SignIn)
 }
