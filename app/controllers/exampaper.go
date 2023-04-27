@@ -4,6 +4,7 @@ import (
 	"examsystem/app/models"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -111,57 +112,35 @@ func (ep ExamPaper) PostCreate(examPaper *models.ExamPaper) revel.Result {
 	return ep.Redirect(ExamPaper.Create)
 }
 
-func (ep ExamPaper) saveExamPaperFile(examPaperFile *os.File) (filePath string, err error) {
-	//// 使用revel request formfile获取文件数据
-	//file, handler, err := ep.Request.FormFile("examPaperFile")
-	//if err != nil {
-	//	ep.Response.Status = 500
-	//	log.Println(err)
-	//	return "", err
-	//}
-	//// 读取所有数据
-	//data, err := ioutil.ReadAll(file)
-	//if err != nil {
-	//	ep.Response.Status = 500
-	//	log.Println(err)
-	//	return "", err
-	//}
-	//
-	//// 获取当前路径
-	//dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	//if err != nil {
-	//	ep.Response.Status = 500
-	//	log.Println(err)
-	//	return "", err
-	//}
-	//
-	//// 文件路径
-	//filePath = dir + "/" + handler.Filename
-	//
-	//// 保存到文件
-	//err = ioutil.WriteFile(filePath, data, 0777)
-	//if err != nil {
-	//	ep.Response.Status = 500
-	//	log.Println(err)
-	//	return "", err
-	//}
-	//
-	//return filePath, nil
-	// TODO for debug
-	return "nil", nil
-}
+func (ep ExamPaper) saveExamPaperFile(data []byte, fileName string) (filePath string, err error) {
+	// 获取当前路径
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		ep.Response.Status = 50
+		return "", err
+	}
 
-func (ep ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
-	filePath, err := ep.saveExamPaperFile(file)
+	// 文件路径
+	filePath = dir + "/" + fileName
+	// 保存到文件
+	err = os.WriteFile(filePath, data, 0777)
 	if err != nil {
 		ep.Response.Status = 500
+		return "", err
+	}
+
+	return filePath, nil
+}
+
+func (ep ExamPaper) PostUpload(examPaperFile []byte, pType string) revel.Result {
+	filePath, err := ep.saveExamPaperFile(examPaperFile, ep.Params.Files["examPaperFile"][0].Filename)
+	if err != nil {
 		ep.Flash.Error(err.Error())
 		return ep.Redirect(ExamPaper.Create)
 	}
 
 	examPaper, scFilePath, mcFilePath, tfFilePath, err := models.ParseExamPaperFile(filePath)
 	if err != nil {
-		ep.Response.Status = 500
 		ep.Flash.Error(err.Error())
 		return ep.Redirect(ExamPaper.Create)
 	}
@@ -172,12 +151,14 @@ func (ep ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 		return ep.Redirect(ExamPaper.Create)
 	}
 	defer scf.Close()
+
 	mcf, err := os.Open(mcFilePath)
 	if err != nil {
 		ep.Flash.Error(err.Error())
 		return ep.Redirect(ExamPaper.Create)
 	}
 	defer mcf.Close()
+
 	tff, err := os.Open(tfFilePath)
 	if err != nil {
 		ep.Flash.Error(err.Error())
@@ -205,7 +186,6 @@ func (ep ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 
 	manager, err := models.NewDBManager()
 	if err != nil {
-		ep.Response.Status = 500
 		ep.Flash.Error(err.Error())
 		return ep.Redirect(ExamPaper.Create)
 	}
@@ -213,7 +193,6 @@ func (ep ExamPaper) PostUpload(file *os.File, pType string) revel.Result {
 
 	err = manager.AddExamPaper(&examPaper)
 	if err != nil {
-		ep.Response.Status = 500
 		ep.Flash.Error(err.Error())
 		return ep.Redirect(ExamPaper.Create)
 	}
