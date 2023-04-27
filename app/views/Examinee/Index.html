@@ -20,9 +20,7 @@
                                 <th>考试类别</th>
                                 <th>考试</th>
                                 <th>状态</th>
-                                {{if .adminName}}
                                 <th>分数</th>
-                                {{end}}
                             </tr>
                         </thead>
                         <tbody>
@@ -41,9 +39,7 @@
 								{{end}}
 								>{{.examinee.ExamPaper.Title}}</td>
                                 <td>{{.examinee.ExamPaper.Status}}</td>
-                                {{if .adminName}}
                                 <td>{{.examinee.ExamPaper.ActualScore}}</td>
-                                {{end}}
                             </tr>
                         </tbody>
                     </table> 

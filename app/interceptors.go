@@ -40,7 +40,7 @@ func beforeAdminController(this *revel.Controller) revel.Result {
 			return nil
 		} else {
 			this.Flash.Error("您需要登录才能访问该页面。")
-			log.Println("游客访问了 " + this.Action + " 页面，已自动跳转到登陆页面")
+			log.Println("游客访问了 " + this.Action + " 页面，已自动跳转到登陆页面。")
 			return this.Redirect(controllers.Admin.SignIn)
 		}
 	}
@@ -56,10 +56,10 @@ func beforeAdminController(this *revel.Controller) revel.Result {
 	if this.Session["administrator"] == "true" {
 		if this.Action == "Admin.SignIn" || this.Action == "Admin.PostSignIn" {
 			this.Flash.Error("您已经登录，请先注销再登录。")
-			log.Println("管理员访问了登录页面，已自动跳转到管理员首页")
+			log.Println("管理员访问了登录页面，已自动跳转到管理员首页。")
 			return this.Redirect(controllers.Admin.Index)
 		} else {
-			log.Println("管理员 " + this.Session["adminName"].(string) + " 访问了 " + this.Action + " 页面")
+			log.Println("管理员 " + this.Session["adminName"].(string) + " 访问了 " + this.Action + " 页面。")
 			return nil
 		}
 	}
@@ -74,7 +74,7 @@ func beforeExamineeController(this *revel.Controller) revel.Result {
 			return nil
 		} else {
 			this.Flash.Error("您需要登录才能访问该页面。")
-			log.Println("游客访问了 " + this.Action + " 页面，已自动跳转到登陆页面")
+			log.Println("游客访问了 " + this.Action + " 页面，已自动跳转到登陆页面。")
 			return this.Redirect(controllers.Examinee.SignIn)
 		}
 	}
@@ -82,16 +82,23 @@ func beforeExamineeController(this *revel.Controller) revel.Result {
 	// 设置考生的访问权限
 	if this.Session["examinee"] == "true" {
 		if this.Action == "Examinee.Exam" || this.Action == "Examinee.PostExam" ||
-			this.Action == "Examinee.Index" || this.Action == "Examinee.SignOut" ||
-			this.Action == "Examinee.ExamResult" {
+			this.Action == "Examinee.Index" || this.Action == "Examinee.SignOut" {
 			return nil
+		} else if this.Action == "Examinee.ExamResult" {
+			if this.Session["examineeIDCard"] != this.Params.Get("idCard") {
+				this.Flash.Error("您访问了不属于你的考试结果页面，自动转到个人首页。")
+				log.Println("考生非法访问别人的考试结果页面，已自动跳转到考生首页。")
+				return this.Redirect(controllers.Examinee.Index)
+			} else {
+				return nil
+			}
 		} else if this.Action == "Examinee.SignIn" || this.Action == "Examinee.PostSignIn" {
 			this.Flash.Error("您已经登录，请先注销再登录。")
-			log.Println("考生访问了登录页面，已自动跳转到考生首页")
+			log.Println("考生访问了登录页面，已自动跳转到考生首页。")
 			return this.Redirect(controllers.Examinee.Index)
 		} else {
 			this.Flash.Error("您没有访问该页面的权限，已自动跳转到首页。")
-			log.Println("考生访问了禁止的页面: " + this.Action + "，已自动跳转到考生首页")
+			log.Println("考生访问了禁止的页面: " + this.Action + "，已自动跳转到考生首页。")
 			return this.Redirect(controllers.Examinee.Index)
 		}
 	}
@@ -100,10 +107,10 @@ func beforeExamineeController(this *revel.Controller) revel.Result {
 	if this.Session["administrator"] == "true" {
 		if this.Action == "Examinee.SignIn" || this.Action == "Examinee.PostSignIn" {
 			this.Flash.Error("您已经登录，请先注销再登录。")
-			log.Println("管理员访问了考生登录页面，已自动跳转到管理员首页")
+			log.Println("管理员访问了考生登录页面，已自动跳转到管理员首页。")
 			return this.Redirect(controllers.Admin.Index)
 		} else {
-			log.Println("管理员 " + this.Session["adminName"].(string) + " 访问了 " + this.Action + " 页面")
+			log.Println("管理员 " + this.Session["adminName"].(string) + " 访问了 " + this.Action + " 页面。")
 			return nil
 		}
 	}
@@ -116,7 +123,7 @@ func beforeAboutController(this *revel.Controller) revel.Result {
 		return nil
 	} else {
 		this.Flash.Error("您需要登录才能访问该页面。")
-		log.Println("非管理员访问了 " + this.Action + " 页面，已自动跳转到登陆页面")
+		log.Println("非管理员访问了 " + this.Action + " 页面，已自动跳转到登陆页面。")
 		return this.Redirect(controllers.Admin.SignIn)
 	}
 }
@@ -126,7 +133,7 @@ func beforeExamPaperController(this *revel.Controller) revel.Result {
 		return nil
 	} else {
 		this.Flash.Error("您需要登录才能访问该页面。")
-		log.Println("非管理员访问了 " + this.Action + " 页面，已自动跳转到登陆页面")
+		log.Println("非管理员访问了 " + this.Action + " 页面，已自动跳转到登陆页面。")
 		return this.Redirect(controllers.Admin.SignIn)
 	}
 }
@@ -136,7 +143,7 @@ func beforeQuestionController(this *revel.Controller) revel.Result {
 		return nil
 	} else {
 		this.Flash.Error("您需要登录才能访问该页面。")
-		log.Println("非管理员访问了 " + this.Action + " 页面，已自动跳转到登陆页面")
+		log.Println("非管理员访问了 " + this.Action + " 页面，已自动跳转到登陆页面。")
 		return this.Redirect(controllers.Admin.SignIn)
 	}
 }
