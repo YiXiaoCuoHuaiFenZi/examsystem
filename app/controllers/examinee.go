@@ -329,7 +329,8 @@ func (ex Examinee) PostExam() revel.Result {
 	}
 	defer manager.Close()
 
-	examinee, err := manager.GetExamineeByIDCard(ex.Session["examineeIDCard"].(string))
+	examineeIDCard := ex.Session["examineeIDCard"].(string)
+	examinee, err := manager.GetExamineeByIDCard(examineeIDCard)
 	if err != nil {
 		log.Println(err)
 		ex.Response.Status = 500
@@ -368,7 +369,7 @@ func (ex Examinee) PostExam() revel.Result {
 	}
 	models.MarkExamPaper(&examinee.ExamPaper)
 
-	err = manager.UpdateExaminee(&examinee)
+	err = manager.UpdateExamPaper(examineeIDCard, examinee.ExamPaper)
 	if err != nil {
 		log.Println(err)
 		ex.Response.Status = 500

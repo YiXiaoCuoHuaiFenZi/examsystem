@@ -340,9 +340,8 @@ func (ep ExamPaper) PostPublish(exmpaperTitle string) revel.Result {
 	for _, examinee := range examinees {
 		examPaper.Status = models.UnFinished
 		models.ChaosExamPaper(&examPaper)
-		examinee.ExamPaper = examPaper
 
-		err := manager.UpdateExaminee(&examinee)
+		err := manager.UpdateExamPaper(examinee.IDCard, examPaper)
 		if err != nil {
 			log.Println(err)
 			ep.Response.Status = 500

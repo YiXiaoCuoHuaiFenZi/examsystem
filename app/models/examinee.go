@@ -106,23 +106,21 @@ func (manager *DBManager) GetExamineeByIDCard(idCard string) (Examinee, error) {
 	return examinee, err
 }
 
-func (manager *DBManager) UpdateExaminee(examinee *Examinee) error {
+func (manager *DBManager) UpdateExamPaper(idCard string, examPaper ExamPaper) error {
 	t := manager.GetExamineeCollection()
 
 	var oldExp Examinee
-	err := t.FindOne(context.TODO(), bson.M{"idcard": examinee.IDCard}).Decode(&examinee)
+	err := t.FindOne(context.TODO(), bson.M{"idcard": idCard}).Decode(&oldExp)
 	if err == mongo.ErrNoDocuments {
 		log.Println("考生不存在")
 		err = errors.New("考生不存在")
 		return err
 	}
 
-	tempInfo := oldExp
-	tempInfo.ExamPaper = examinee.ExamPaper
-
-	filter := bson.D{{"idcard", examinee.IDCard}}
-	update := bson.D{{"$set", bson.D{{"exampaper", examinee.ExamPaper}}}}
-	_, err = t.UpdateOne(context.TODO(), filter, update)
+	filter := bson.D{{"idcard", idCard}}
+	update := bson.D{{"$set", bson.D{{"exampaper", examPaper}}}}
+	result, err := t.UpdateOne(context.TODO(), filter, update)
+	log.Println("UpdateExaminee：", result)
 	if err != nil {
 		log.Println("更新考生信息失败：")
 		return err

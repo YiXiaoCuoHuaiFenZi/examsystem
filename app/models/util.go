@@ -15,7 +15,7 @@ import (
 func ParseSingleChoiceFile(file *os.File, qType string) ([]SingleChoice, error) {
 	r := bufio.NewReader(file)
 
-	scs := []SingleChoice{}
+	var scs []SingleChoice
 	sc := SingleChoice{}
 	for {
 		line := make([]byte, 1024, 1024)
@@ -65,7 +65,7 @@ func ParseSingleChoiceFile(file *os.File, qType string) ([]SingleChoice, error) 
 func ParseMultipleChoiceFile(file *os.File, qType string) ([]MultipleChoice, error) {
 	r := bufio.NewReader(file)
 
-	mcs := []MultipleChoice{}
+	var mcs []MultipleChoice
 	mc := MultipleChoice{}
 	for {
 		line := make([]byte, 1024, 1024)
@@ -129,7 +129,7 @@ func ParseMultipleChoiceFile(file *os.File, qType string) ([]MultipleChoice, err
 func ParseTrueFalseFile(file *os.File, qType string) ([]TrueFalse, error) {
 	r := bufio.NewReader(file)
 
-	tfs := []TrueFalse{}
+	var tfs []TrueFalse
 	tf := TrueFalse{}
 	for {
 		line := make([]byte, 1024, 1024)
@@ -285,7 +285,7 @@ func ClearExamPaperAnswer(e *ExamPaper) {
 	}
 }
 
-// 试卷评分
+// MarkExamPaper 试卷评分
 func MarkExamPaper(e *ExamPaper) {
 	var sScore, mScore, tScore float32 = 0.0, 0.0, 0.0
 
@@ -325,10 +325,10 @@ func MarkExamPaper(e *ExamPaper) {
 	e.ActualScore = sScore + mScore + tScore
 }
 
-// 试卷题目乱序处理
+// ChaosExamPaper 试卷题目乱序处理
 func ChaosExamPaper(e *ExamPaper) {
 	ls := len(e.SC)
-	sc := []SingleChoice{}
+	var sc []SingleChoice
 
 	for i := 0; i < ls; i++ {
 		r := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -339,7 +339,7 @@ func ChaosExamPaper(e *ExamPaper) {
 	}
 
 	lm := len(e.MC)
-	mc := []MultipleChoice{}
+	var mc []MultipleChoice
 
 	for i := 0; i < lm; i++ {
 		r := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -350,7 +350,7 @@ func ChaosExamPaper(e *ExamPaper) {
 	}
 
 	lt := len(e.TF)
-	tf := []TrueFalse{}
+	var tf []TrueFalse
 
 	for i := 0; i < lt; i++ {
 		r := rand.New(rand.NewSource(time.Now().UnixNano()))
