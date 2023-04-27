@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"examsystem/app/models"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -183,6 +184,19 @@ func (ep ExamPaper) PostUpload(examPaperFile []byte, pType string) revel.Result 
 	examPaper.MC = mcs
 	examPaper.TFCount = len(tfs)
 	examPaper.TF = tfs
+
+	// 核对总分值
+	log.Println("examPaper.Score1", examPaper.Score)
+	totalScoreOfAllQuestions := examPaper.SCScore*(float32)(examPaper.SCCount) + examPaper.MCScore*(float32)(examPaper.MCCount) + examPaper.TFScore*(float32)(examPaper.TFCount)
+	if examPaper.Score != totalScoreOfAllQuestions {
+		message1 := "试卷信息里的总分值(" + fmt.Sprintf("%f", examPaper.Score) + ")与各试题分值总和(" + fmt.Sprintf("%f", totalScoreOfAllQuestions) + ")不一致，请调整后再上传："
+		message2 := "单选题数量：" + fmt.Sprintf("%d", examPaper.SCCount) + "，每题分值：" + fmt.Sprintf("%f", examPaper.Score) + "，总分：" + fmt.Sprintf("%f", examPaper.SCScore*(float32)(examPaper.SCCount))
+		message3 := "多选题数量：" + fmt.Sprintf("%d", examPaper.MCCount) + "，每题分值：" + fmt.Sprintf("%f", examPaper.MCScore) + "，总分：" + fmt.Sprintf("%f", examPaper.MCScore*(float32)(examPaper.MCCount))
+		message4 := "多选题数量：" + fmt.Sprintf("%d", examPaper.TFCount) + "，每题分值：" + fmt.Sprintf("%f", examPaper.TFScore) + "，总分：" + fmt.Sprintf("%f", examPaper.TFScore*(float32)(examPaper.TFCount))
+		strs := []string{message1, message2, message3, message4}
+		ep.Flash.Error(strings.Join(strs, "\n"))
+		return ep.Redirect(ExamPaper.Create)
+	}
 
 	manager, err := models.NewDBManager()
 	if err != nil {
