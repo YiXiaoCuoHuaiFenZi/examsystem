@@ -1,7 +1,7 @@
 # 网络在线考试系统
 
 基于Golang Web框架[Revel](https://revel.github.io/)开发的一整套线上考试系统, 欢迎fork使用\
-作者： 一小撮坏分子\
+作者： 一小撮坏分子
 
 ![首页](images/admin-examee-info.jpg)
 
@@ -30,9 +30,8 @@
 ## MAC电脑：
 
 1. 参考[安装文档](https://go.dev/doc/install)安装Golang以及配置好本地Golang环境变量GOROOT和GOPATH。
-2. 参考[Revel tutorial](https://revel.github.io/tutorial/gettingstarted.html)安装Revel框架。
-3.
-参考[社区版mongodb 6.0安装文档](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/#installing-mongodb-6.0-edition-edition))
+2. 参考[Revel tutorial](https://revel.github.io/tutorial/gettingstarted.html)安装Revel框架。 
+3. 参考[社区版mongodb 6.0安装文档](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/#installing-mongodb-6.0-edition-edition))
 安装MongoDB数据库。
 4. 克隆[examsystem](https://github.com/YiXiaoCuoHuaiFenZi/examsystem)到本地GOPATH目录。
 
