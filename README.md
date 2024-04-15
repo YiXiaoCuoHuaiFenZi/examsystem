@@ -68,3 +68,7 @@ revel run examsystem
 ## Windows电脑：
 
 依赖和步骤跟MAC一致，执行命令终端换成Windows命令行即可。
+
+## 加微信技术支持
+![image](https://github.com/YiXiaoCuoHuaiFenZi/examsystem/assets/33883485/ba578fe5-a843-4829-bda4-9b476475b050)
+
